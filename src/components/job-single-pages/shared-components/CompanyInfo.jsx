@@ -1,8 +1,9 @@
 import { useGetCompaniesData } from "@/queries/get.companies.data.query";
+import { useGetAllItemsData } from "@/queries/website.query/items.query";
 import { Alert, Skeleton } from "antd";
 import PropTypes from "prop-types";
 const CompanyInfo = ({ currentCompanyId }) => {
-  const { data: companyData, isLoading, isError } = useGetCompaniesData();
+  const { data: companyData, isLoading, isError } = useGetAllItemsData();
   if (isLoading) return <Skeleton active paragraph={{ rows: 6 }} />;
 
   if (isError)
@@ -22,9 +23,9 @@ const CompanyInfo = ({ currentCompanyId }) => {
   return (
     <ul className="company-info">
       <li>
-        Primary industry:{" "}
+        User Name:{" "}
         <span>
-          {companyinfo[0]?.company_type
+          {companyinfo[0]?.user.name
             ?.toLowerCase()
             .replace(/_/g, " ")
             .split(" ")
@@ -34,14 +35,14 @@ const CompanyInfo = ({ currentCompanyId }) => {
       </li>
 
       <li>
-        Founded in: <span>{companyinfo[0]?.stablished_in}</span>
+        Email Address: <span>{companyinfo[0]?.user?.email}</span>
       </li>
       <li>
-        Email: <span>{companyinfo[0]?.email}</span>
+        User About: <span>{companyinfo[0]?.user?.user_about}</span>
       </li>
 
       <li>
-        Location: <span>{companyinfo[0]?.location}</span>
+        Location: <span>{companyinfo[0]?.item_address}</span>
       </li>
     </ul>
   );

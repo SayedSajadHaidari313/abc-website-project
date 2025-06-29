@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // Get Company Query
 
 export const getCompanyData = async (current, pageSize, searchQuery) => {
-  return await getRequest(`create_employer`, {
+  return await getRequest(`register-user`, {
     current: current,
     pageSize: pageSize,
     searchQuery: searchQuery,
@@ -17,7 +17,7 @@ export const getCompanyData = async (current, pageSize, searchQuery) => {
 
 export const useGetCompanyData = (current, pageSize, searchQuery) => {
   return useQuery({
-    queryKey: ["fetch-create_employer", current, pageSize, searchQuery],
+    queryKey: ["fetch-register-user", current, pageSize, searchQuery],
     queryFn: () => getCompanyData(current, pageSize, searchQuery),
   });
 };
@@ -26,7 +26,7 @@ export const useGetCompanyData = (current, pageSize, searchQuery) => {
 // Create Company Query
 
 export const CompanyPostCreate = (params) => {
-  return postRequest(`create_employer`, params);
+  return postRequest(`register-user`, params);
 };
 
 export const usePostCompanyCreate = () => {
@@ -41,7 +41,7 @@ export const usePostCompanyCreate = () => {
 
 // Update Company Query
 export const updateCompany = async (params) => {
-  return postRequest(`create_employer/${params.get("id")}`, params, {
+  return postRequest(`register-user/${params.get("id")}`, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -60,7 +60,7 @@ export const useUpdateCompany = () => {
 
 // Function to delete multiple Company
 export const DeleteCompany = async (ids) => {
-  return deleteRequest(`create_employer/delete`, {
+  return deleteRequest(`register-user/delete`, {
     params: {
       ids: ids.join(","),
     },
@@ -79,7 +79,7 @@ export const useDeleteCompany = (ids) => {
 };
 
 export const singleDelete = async (id) => {
-  return deleteRequest(`create_employer/${id}`, {
+  return deleteRequest(`register-user/${id}`, {
     params: {
       id,
     },
@@ -92,5 +92,18 @@ export const useSingleDelete = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["fetch-company"]);
     },
+  });
+};
+
+// Fetch single company by slug
+export const getCompanyBySlug = async (slug) => {
+  return await getRequest(`register-user/slug/${slug}`);
+};
+
+export const useGetCompanyBySlug = (slug) => {
+  return useQuery({
+    queryKey: ["fetch-company-by-slug", slug],
+    queryFn: () => getCompanyBySlug(slug),
+    enabled: !!slug,
   });
 };

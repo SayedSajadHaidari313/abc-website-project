@@ -1469,7 +1469,7 @@ Job Detail Section
 
 .job-block-seven .content {
   position: relative;
-  padding-left: 100px;
+  padding-left: 120px;
   min-height: 51px;
 }
 
@@ -1481,15 +1481,18 @@ Job Detail Section
   position: absolute;
   left: 0;
   top: 0;
-  width: 64px;
+  width: 100px;
+  border-radius: 10px;
   -webkit-transition: all 300ms ease;
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
+  
 }
 
 .job-block-seven .company-logo img {
   display: block;
   width: 100%;
+  border-radius: 20px;
 }
 
 .job-block-seven h4 {

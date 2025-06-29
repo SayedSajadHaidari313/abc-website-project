@@ -1,7 +1,3 @@
-
-
-
-
 import Slider from "react-slick";
 
 const HeroSliderGallery = () => {

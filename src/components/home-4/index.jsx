@@ -1,17 +1,15 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import Hero4 from "../hero/hero-4";
-import JobFilterTab from "../job-featured/JobFilterTab";
 import Block2 from "../block/Block2";
 // import TopCompany from "../top-company/TopCompany";
-import JobCategorie1 from "../job-categories/JobCategorie1";
 import Blog from "../blog/Blog";
 import Partner from "../common/partner/Partner";
 import LoginPopup from "../common/form/login/LoginPopup";
 import MobileMenu from "../header/MobileMenu";
-import JobFilterTab2 from "../job-featured/JobFilterTab2";
 import JobCategorie2 from "../job-categories/JobCategorie2";
 import FaqChild from "../pages-menu/faq/FaqChild";
+import CompanyHero from "../CompanyHero";
 
 const index = () => {
   return (
@@ -28,6 +26,10 @@ const index = () => {
       <Hero4 />
       {/* <!-- End Banner Section--> */}
 
+      <section className="top-companies style-two">
+        <CompanyHero />
+      </section>
+
       <section className="job-categories">
         <div className="auto-container">
           <div className="sec-title text-center">
@@ -41,22 +43,6 @@ const index = () => {
         </div>
       </section>
 
-      <section className="job-section alternate">
-        <div className="auto-container">
-          <div className="sec-title text-center">
-            <h2>Most Popular Jobs</h2>
-            <div className="text">
-              Know your worth and find the job that qualify your life
-            </div>
-          </div>
-          {/* End sec-title */}
-
-          <div className="default-tabs tabs-box">
-            <JobFilterTab2 />
-          </div>
-          {/* End .default-tabs */}
-        </div>
-      </section>
       {/* <!-- End Job Section --> */}
 
       <section className="process-section pt-0">
@@ -73,26 +59,9 @@ const index = () => {
       </section>
       {/* <!-- End Process Section --> */}
 
-      <section className="top-companies style-two">
-        <div className="auto-container">
-          <div className="sec-title">
-            <h2>Top Company Registered</h2>
-            <div className="text">
-              Some of the companies we have helped recruit excellent applicants
-              over the years.
-            </div>
-          </div>
-
-          <div className="carousel-outer" data-aos="fade-up">
-            <div className="companies-carousel">{/* <TopCompany /> */}</div>
-          </div>
-        </div>
-      </section>
-      {/* <!-- End Top Companies --> */}
-
       {/* End Job Categorie Section */}
 
-      <section className="news-section style-two">
+      {/* <section className="news-section style-two">
         <div className="auto-container">
           <div className="sec-title text-center">
             <h2>Recent News Articles</h2>
@@ -100,12 +69,11 @@ const index = () => {
               Fresh job related news content posted each day.
             </div>
           </div>
-          {/* End ."sec-title */}
           <div className="row" data-aos="fade-up">
             <Blog />
           </div>
         </div>
-      </section>
+      </section> */}
       {/* <!-- End News Section --> */}
 
       <section className="clients-section alternate">

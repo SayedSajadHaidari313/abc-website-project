@@ -1,15 +1,43 @@
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
+import { message } from "antd";
+
 const LoginWithSocial = () => {
+  const { loginWithGoogle, loading } = useGoogleAuth();
+
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithGoogle();
+    } catch (error) {
+      console.error("Google login error:", error);
+      message.error("Failed to initiate Google login. Please try again.");
+    }
+  };
+
+  const handleFacebookLogin = () => {
+    message.info("Facebook login functionality will be implemented soon!");
+  };
+
   return (
     <div className="btn-box row">
       <div className="col-lg-6 col-md-12">
-        <a href="#" className="theme-btn social-btn-two facebook-btn">
-          <i className="fab fa-facebook-f"></i> Log In via Facebook
-        </a>
+        <button
+          onClick={handleFacebookLogin}
+          className="theme-btn social-btn-two facebook-btn"
+          disabled={loading}
+        >
+          <i className="fab fa-facebook-f"></i>
+          {loading ? "Loading..." : "Log In via Facebook"}
+        </button>
       </div>
       <div className="col-lg-6 col-md-12">
-        <a href="#" className="theme-btn social-btn-two google-btn">
-          <i className="fab fa-google"></i> Log In via Gmail
-        </a>
+        <button
+          onClick={handleGoogleLogin}
+          className="theme-btn social-btn-two google-btn"
+          disabled={loading}
+        >
+          <i className="fab fa-google"></i>
+          {loading ? "Loading..." : "Log In via Gmail"}
+        </button>
       </div>
     </div>
   );

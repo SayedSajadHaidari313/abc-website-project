@@ -21,7 +21,7 @@ import EmployersSingleV3 from "@/pages/employers-single/employers-single-v3";
 // import InsightListPage from "@/pages/insight-list";
 // import JobListPage1 from "@/pages/job-list/job-list-v1";
 import JobListPage3 from "@/pages/job-list/job-list-v3";
-import JobSingleDynamicV1 from "@/pages/job-single/job-single-v1";
+import CompanySingleDynamicV1 from "@/pages/job-single/company-single-v1";
 import NotFoundPage from "@/pages/not-found";
 import AboutPage from "@/pages/others/about";
 import ContactPage from "@/pages/others/contact";
@@ -40,6 +40,7 @@ import CheckoutPage from "@/pages/shop/checkout";
 import OrderCompletedPage from "@/pages/shop/order-completed";
 import ShopListPage from "@/pages/shop/shop-list";
 import ShopSingleDyanmic from "@/pages/shop/shop-single";
+import GoogleCallback from "@/components/auth/GoogleCallback";
 
 export const PublicRoutes = [
   { path: "/", element: <Home /> },
@@ -49,12 +50,11 @@ export const PublicRoutes = [
   { path: "/for-employers", element: <ForEmployer /> },
   { path: "/company", element: <EmployerListPage1 /> },
   { path: "/how-it-work", element: <HowItWorkPage /> },
-  { path: "/job-details/:id", element: <JobSingleDynamicV1 /> },
+  { path: "/company/:slug", element: <CompanySingleDynamicV1 /> },
   { path: "/company-details/:id", element: <EmployersSingleV1 /> },
 
   // { path: "job-list-v3", element: <JobListPage /> },
-  { path: "job-single-v1/:id", element: <JobSingleDynamicV1 /> },
-  
+
   // { path: "employers-list-v1", element: <EmployerListPage1 /> },
   { path: "employers-list-v2", element: <EmployerListPage2 /> },
   { path: "employers-list-v3", element: <EmployerListPage3 /> },
@@ -89,6 +89,9 @@ export const PublicRoutes = [
   { path: "forgot-password", element: <ForgotPasswordPage /> },
   { path: "reset-password", element: <ResetPasswordPage /> },
   { path: "register", element: <RegisterPage /> },
+
+  // Google OAuth callback route
+  { path: "auth/google/callback", element: <GoogleCallback /> },
 
   {
     /* Shop Routes */

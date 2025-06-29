@@ -49,6 +49,151 @@
   right: -16px;
 }
 
+// Job slider specific styles
+.job-slider-container {
+  .slick-slide {
+    padding: 0 10px;
+  }
+  
+  .slick-list {
+    margin: 0 -10px;
+  }
+  
+  .slick-dots {
+    position: static;
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .custom-prev,
+  .custom-next {
+    top: 50%;
+    transform: translateY(-50%);
+    
+    @media (max-width: 768px) {
+      width: 28px;
+      height: 28px;
+      left: -14px;
+      right: -14px;
+    }
+  }
+  
+  .custom-prev {
+    left: -16px;
+    
+    @media (max-width: 768px) {
+      left: -14px;
+    }
+  }
+  
+  .custom-next {
+    right: -16px;
+    
+    @media (max-width: 768px) {
+      right: -14px;
+    }
+  }
+}
+
+// Job applied slider specific styles
+.job-applied-slider-container {
+  .slick-slide {
+    padding: 0 10px;
+  }
+  
+  .slick-list {
+    margin: 0 -10px;
+  }
+  
+  .slick-dots {
+    position: static;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .custom-prev,
+  .custom-next {
+    top: 50%;
+    transform: translateY(-50%);
+    
+    @media (max-width: 768px) {
+      width: 28px;
+      height: 28px;
+      left: -14px;
+      right: -14px;
+    }
+  }
+  
+  .custom-prev {
+    left: -16px;
+    
+    @media (max-width: 768px) {
+      left: -14px;
+    }
+  }
+  
+  .custom-next {
+    right: -16px;
+    
+    @media (max-width: 768px) {
+      right: -14px;
+    }
+  }
+  
+  .job-block {
+    margin-bottom: 0;
+  }
+}
+
+// Recent jobs slider specific styles
+.recent-jobs-slider-container {
+  .slick-slide {
+    padding: 0 10px;
+  }
+  
+  .slick-list {
+    margin: 0 -10px;
+  }
+  
+  .slick-dots {
+    position: static;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .custom-prev,
+  .custom-next {
+    top: 50%;
+    transform: translateY(-50%);
+    
+    @media (max-width: 768px) {
+      width: 28px;
+      height: 28px;
+      left: -14px;
+      right: -14px;
+    }
+  }
+  
+  .custom-prev {
+    left: -16px;
+    
+    @media (max-width: 768px) {
+      left: -14px;
+    }
+  }
+  
+  .custom-next {
+    right: -16px;
+    
+    @media (max-width: 768px) {
+      right: -14px;
+    }
+  }
+  
+  .job-block-four {
+    margin-bottom: 0;
+  }
+}
 
 .slick-dots {
     position: static;

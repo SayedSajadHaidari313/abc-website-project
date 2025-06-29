@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { message, notification } from "antd";
 import Select from "react-select";
+import { usePostCompanyCreate } from "@/queries/website.query/company.query";
+import { useGetAllCategoryData } from "@/queries/website.query/category.query";
+import { usePostUserCreate } from "@/queries/website.query/register.user.query";
+import { useGetAllCitiesData } from "@/queries/website.query/cities.query";
+import { useGetAllCountryData } from "@/queries/website.query/country.query";
 
-import { usePostCompanyCreate } from "@/queries/company.query";
-import { useGetJobCategoryData } from "@/queries/job.category.query";
-
-const EmployerRegistrationForm = () => {
+const BusinessRegistrationForm = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
@@ -14,30 +16,43 @@ const EmployerRegistrationForm = () => {
     hasUpperCase: false,
     hasLowerCase: false,
     hasNumber: false,
-    hasSpecialChar: false
+    hasSpecialChar: false,
   });
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
+    name: "",
     email: "",
     password: "",
-    phone: "",
-    company_name: "",
-    company_type: "",
-    job_category_id: "",
-    stablished_in: "",
-    company_website: "https://",
-    company_description: "",
-    address: "",
-    company_status: "",
-    company_photo: null,
+    confirm_password: "",
+    user_image: null,
+    item_title: "",
+    category_id: "",
+    country_id: "",
+    city_id: "",
+    item_description: "",
+    item_phone: "",
+    item_social_facebook: "https://",
+    item_website: "https://",
   });
   const [errors, setErrors] = useState({});
-  const { mutate } = usePostCompanyCreate();
-  const { data } = useGetJobCategoryData();
-  const JobCategory = data || [];
+  const { mutate } = usePostUserCreate();
+  const { data: categoryData } = useGetAllCategoryData();
+  const category = categoryData?.data || [];
 
-  const options = JobCategory?.map((option) => ({
+  const options = category?.map((option) => ({
+    value: option.id,
+    label: option.category_name,
+  }));
+  const { data: cityData } = useGetAllCitiesData();
+  const city = cityData?.data || [];
+
+  const cityOptions = city?.map((option) => ({
+    value: option.id,
+    label: option.city_name,
+  }));
+  const { data: countryData } = useGetAllCountryData();
+  const country = countryData?.data || [];
+
+  const countryOptions = country?.map((option) => ({
     value: option.id,
     label: option.name,
   }));
@@ -49,7 +64,7 @@ const EmployerRegistrationForm = () => {
       hasUpperCase: /[A-Z]/.test(password),
       hasLowerCase: /[a-z]/.test(password),
       hasNumber: /[0-9]/.test(password),
-      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
     });
   };
 
@@ -61,7 +76,16 @@ const EmployerRegistrationForm = () => {
       validatePassword(value);
     }
 
-    if (name === "company_website") {
+    if (name === "confirm_password" && errors.confirm_password) {
+      setErrors((prev) => ({ ...prev, confirm_password: "" }));
+    }
+
+    if (name === "item_social_facebook") {
+      if (!newValue.startsWith("https://")) {
+        newValue = "https://" + newValue.replace(/^https?:\/\//, "");
+      }
+    }
+    if (name === "item_website") {
       if (!newValue.startsWith("https://")) {
         newValue = "https://" + newValue.replace(/^https?:\/\//, "");
       }
@@ -69,31 +93,24 @@ const EmployerRegistrationForm = () => {
 
     if (files) {
       const file = files[0];
+      const maxSizeMB = 2;
+      const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
-      if (name === "company_photo") {
-        const maxSizeMB = 2;
-        const maxSizeBytes = maxSizeMB * 1024 * 1024;
-
-        if (file.size > maxSizeBytes) {
-          setErrors((prev) => ({
-            ...prev,
-            company_photo: `File is too large. Maximum allowed size is ${maxSizeMB}MB.`,
-          }));
-
-          // Clear invalid file from form state
-          setFormData((prev) => ({
-            ...prev,
-            company_photo: null,
-          }));
-
-          return;
-        } else {
-          // Clear file size error if valid
-          setErrors((prev) => ({
-            ...prev,
-            company_photo: undefined,
-          }));
-        }
+      if (file.size > maxSizeBytes) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: `File is too large. Maximum allowed size is ${maxSizeMB}MB.`,
+        }));
+        setFormData((prev) => ({
+          ...prev,
+          [name]: null,
+        }));
+        return;
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: undefined,
+        }));
       }
 
       setFormData((prev) => ({
@@ -110,6 +127,13 @@ const EmployerRegistrationForm = () => {
 
   const handleNext = (e) => {
     e.preventDefault();
+    if (formData.password !== formData.confirm_password) {
+      setErrors({
+        ...errors,
+        confirm_password: "Passwords do not match.",
+      });
+      return;
+    }
     setStep(2);
   };
 
@@ -121,35 +145,57 @@ const EmployerRegistrationForm = () => {
     setLoading(true);
     e.preventDefault();
 
+    if (formData.password !== formData.confirm_password) {
+      setErrors({
+        ...errors,
+        confirm_password: "Passwords do not match.",
+      });
+      setLoading(false);
+      setStep(1);
+      message.error("Passwords do not match. Please correct and try again.");
+      return;
+    }
+
     const data = new FormData();
-    data.append("first_name", formData.first_name);
-    data.append("last_name", formData.last_name);
+    data.append("name", formData.name);
     data.append("email", formData.email);
     data.append("password", formData.password);
-    data.append("phone", formData.phone);
+    data.append("role_id", 2);
     data.append("status", "ACTIVE");
-    data.append("role", "EMPLOYER");
+    data.append("item_title", formData.item_title);
+    data.append("category_id", formData.category_id);
+    data.append("city_id", formData.city_id);
+    data.append("country_id", formData.country_id);
+    data.append("item_description", formData.item_description);
+    data.append("item_phone", formData.item_phone);
+    data.append("item_social_facebook", formData.item_social_facebook);
+    data.append("item_website", formData.item_website);
 
-    data.append("company_name", formData.company_name);
-    data.append("company_type", formData.company_type);
-    data.append("job_category_id", formData.job_category_id);
-    data.append("stablished_in", formData.stablished_in);
-    data.append("company_website", formData.company_website);
-    data.append("company_description", formData.company_description);
-    data.append("address", formData.address);
-    // data.append("company_status", formData.company_status);
-
-    if (formData.company_photo && formData.company_photo.length > 0) {
-      data.append("company_photo", formData.company_photo[0]);
+    if (formData.user_image && formData.user_image.length > 0) {
+      data.append("user_image", formData.user_image[0]);
     }
 
     mutate(data, {
       onSuccess: () => {
         notification.success({
           message: "Registration successful",
-          description: "Please check your email For Verification!",
+          item_description: "Please check your email for verification!",
         });
-        setFormData({});
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          confirm_password: "",
+          user_image: null,
+          item_title: "",
+          category_id: "",
+          country_id: "",
+          city_id: "",
+          item_description: "",
+          item_phone: "",
+          item_website: "https://",
+          item_social_facebook: "https://",
+        });
         setStep(1);
       },
       onError: (errorMsg) => {
@@ -161,38 +207,15 @@ const EmployerRegistrationForm = () => {
           message.error(
             "This email is already taken. Please use another email."
           );
+        } else {
+          message.error("An unexpected error occurred. Please try again.");
         }
       },
-
       onSettled: () => {
         setLoading(false);
       },
     });
   };
-
-  const companyTypeOptions = [
-    { label: "Company/Corporation", value: "CORPORATION" },
-    { label: "Fully Government", value: "FULLY_GOVERNMENT" },
-    { label: "NGO", value: "NGO" },
-    { label: "NPO", value: "NPO" },
-    { label: "UN", value: "UN" },
-    { label: "International NGO", value: "INTERNATIONAL_NGO" },
-    { label: "Semi Government", value: "SEMI_GOVERNMENT" },
-    { label: "Government Post Paid", value: "GOVERNMENT_POST_PAID" },
-    {
-      label: "International Package Post Paid",
-      value: "INTERNATIONAL_PACKAGE_POST_PAID",
-    },
-    {
-      label: "Pay Agent Modality NTA Base",
-      value: "PAY_AGENT_MODALITY_NTA_BASE",
-    },
-    { label: "DAI Post Paid", value: "DAI_POST_PAID" },
-    {
-      label: "Privacy Poster Organization",
-      value: "PRIVACY_POSTER_ORGANIZATION",
-    },
-  ];
 
   return (
     <form onSubmit={step === 1 ? handleNext : handleSubmit}>
@@ -201,32 +224,17 @@ const EmployerRegistrationForm = () => {
           <h3>Step 1: Personal Information</h3>
 
           <div className="form-group">
-            <label>First Name</label>
+            <label>Full Name</label>
             <input
               type="text"
-              name="first_name"
-              value={formData.first_name}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               className="form-control"
               required
               placeholder="John Doe"
               minLength={2}
-              maxLength={50}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Last Name</label>
-            <input
-              type="text"
-              name="last_name"
-              placeholder="Doe"
-              value={formData.last_name}
-              onChange={handleChange}
-              className="form-control"
-              required
-              minLength={2}
-              maxLength={50}
+              maxLength={100}
             />
           </div>
 
@@ -235,7 +243,7 @@ const EmployerRegistrationForm = () => {
             <input
               type="email"
               name="email"
-              placeholder="jDl8g@example.com"
+              placeholder="johndoe@example.com"
               value={formData.email}
               onChange={handleChange}
               className="form-control"
@@ -247,20 +255,6 @@ const EmployerRegistrationForm = () => {
                 {errors.email}
               </div>
             )}
-          </div>
-
-          <div className="form-group">
-            <label>Phone</label>
-            <input
-              type="text"
-              name="phone"
-              placeholder="+8801234567890"
-              value={formData.phone}
-              onChange={handleChange}
-              className="form-control"
-              required
-              pattern="^\+?[0-9]{7,15}$"
-            />
           </div>
 
           <div className="form-group">
@@ -276,22 +270,93 @@ const EmployerRegistrationForm = () => {
             />
             {passwordTouched && (
               <div className="password-validation mt-2">
-                <div className={`small ${passwordValidation.hasMinLength ? 'text-success' : 'text-warning'}`}>
-                  {passwordValidation.hasMinLength ? '✓' : '⚠'} At least 8 characters
+                <div
+                  className={`small ${
+                    passwordValidation.hasMinLength
+                      ? "text-success"
+                      : "text-warning"
+                  }`}
+                >
+                  {passwordValidation.hasMinLength ? "✓" : "⚠"} At least 8
+                  characters
                 </div>
-                <div className={`small ${passwordValidation.hasUpperCase ? 'text-success' : 'text-warning'}`}>
-                  {passwordValidation.hasUpperCase ? '✓' : '⚠'} At least one uppercase letter
+                <div
+                  className={`small ${
+                    passwordValidation.hasUpperCase
+                      ? "text-success"
+                      : "text-warning"
+                  }`}
+                >
+                  {passwordValidation.hasUpperCase ? "✓" : "⚠"} At least one
+                  uppercase letter
                 </div>
-                <div className={`small ${passwordValidation.hasLowerCase ? 'text-success' : 'text-warning'}`}>
-                  {passwordValidation.hasLowerCase ? '✓' : '⚠'} At least one lowercase letter
+                <div
+                  className={`small ${
+                    passwordValidation.hasLowerCase
+                      ? "text-success"
+                      : "text-warning"
+                  }`}
+                >
+                  {passwordValidation.hasLowerCase ? "✓" : "⚠"} At least one
+                  lowercase letter
                 </div>
-                <div className={`small ${passwordValidation.hasNumber ? 'text-success' : 'text-warning'}`}>
-                  {passwordValidation.hasNumber ? '✓' : '⚠'} At least one number
+                <div
+                  className={`small ${
+                    passwordValidation.hasNumber
+                      ? "text-success"
+                      : "text-warning"
+                  }`}
+                >
+                  {passwordValidation.hasNumber ? "✓" : "⚠"} At least one number
                 </div>
-                <div className={`small ${passwordValidation.hasSpecialChar ? 'text-success' : 'text-warning'}`}>
-                  {passwordValidation.hasSpecialChar ? '✓' : '⚠'} At least one special character
+                <div
+                  className={`small ${
+                    passwordValidation.hasSpecialChar
+                      ? "text-success"
+                      : "text-warning"
+                  }`}
+                >
+                  {passwordValidation.hasSpecialChar ? "✓" : "⚠"} At least one
+                  special character
                 </div>
               </div>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              name="confirm_password"
+              placeholder="********"
+              value={formData.confirm_password}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+            {errors.confirm_password && (
+              <div className="text-danger" style={{ marginTop: "5px" }}>
+                {errors.confirm_password}
+              </div>
+            )}
+          </div>
+
+          <div className="form-group ">
+            <label>User Image</label>
+            <input
+              type="file"
+              name="user_image"
+              accept="image/*"
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+            <div className="mt-2 alert alert-info py-2 px-3 small mb-0">
+              📷 Upload a clear profile picture (JPG, PNG). <br />
+              ⚠️ Max file size: <strong>2MB</strong>
+            </div>
+            {errors.user_image && (
+              <div className="text-danger mt-2">{errors.user_image}</div>
             )}
           </div>
 
@@ -305,43 +370,21 @@ const EmployerRegistrationForm = () => {
 
       {step === 2 && (
         <>
-          <h3>Step 2: Company Information</h3>
+          <h3>Step 2: Business Information</h3>
 
           <div className="form-group">
-            <label>Company Name</label>
+            <label>Business Name</label>
             <input
               type="text"
-              name="company_name"
-              placeholder="Naikbeen Control Panel Company"
-              value={formData.company_name}
+              name="item_title"
+              placeholder="e.g. Naikbeen Control Panel"
+              value={formData.item_title}
               onChange={handleChange}
               className="form-control"
               required
               minLength={2}
               maxLength={100}
             />
-          </div>
-
-          <div className="mb-3 form-group">
-            <label htmlFor="companyType" className="form-label fw-bold">
-              Company Type
-            </label>
-            <select
-              name="company_type"
-              id="companyType"
-              placeholder="Select Company Type"
-              className="form-select form-select-lg"
-              value={formData.company_type}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Company Type</option>
-              {companyTypeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div className="mb-3 form-group">
@@ -352,16 +395,93 @@ const EmployerRegistrationForm = () => {
               required
               options={options}
               value={options?.find(
-                (opt) => opt?.value === formData?.job_category_id
+                (opt) => opt?.value === formData?.category_id
               )}
               onChange={(selectedOption) =>
                 setFormData({
                   ...formData,
-                  job_category_id: selectedOption?.value,
+                  category_id: selectedOption?.value || "",
                 })
               }
               placeholder="Select Category"
               isClearable
+              isMulti={false}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  borderRadius: "6px",
+                  color: "#696969",
+                  backgroundColor: "#f0f5f7",
+                  fontSize: "16px",
+                  minHeight: "38px",
+                  boxShadow: "none",
+                  border: "none",
+                }),
+                menu: (base) => ({
+                  ...base,
+                  borderRadius: "6px",
+                }),
+              }}
+            />
+          </div>
+
+          <div className="mb-3 form-group">
+            <label htmlFor="country" className="form-label fw-bold">
+              Country
+            </label>
+            <Select
+              required
+              options={countryOptions}
+              value={countryOptions?.find(
+                (opt) => opt?.value === formData?.country_id
+              )}
+              onChange={(selectedOption) =>
+                setFormData({
+                  ...formData,
+                  country_id: selectedOption?.value || "",
+                })
+              }
+              placeholder="Select Country"
+              isClearable
+              isMulti={false}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  borderRadius: "6px",
+                  color: "#696969",
+                  backgroundColor: "#f0f5f7",
+                  fontSize: "16px",
+                  minHeight: "38px",
+                  boxShadow: "none",
+                  border: "none",
+                }),
+                menu: (base) => ({
+                  ...base,
+                  borderRadius: "6px",
+                }),
+              }}
+            />
+          </div>
+
+          <div className="mb-3 form-group">
+            <label htmlFor="city" className="form-label fw-bold">
+              City
+            </label>
+            <Select
+              required
+              options={cityOptions}
+              value={cityOptions?.find(
+                (opt) => opt?.value === formData?.city_id
+              )}
+              onChange={(selectedOption) =>
+                setFormData({
+                  ...formData,
+                  city_id: selectedOption?.value || "",
+                })
+              }
+              placeholder="Select City"
+              isClearable
+              isMulti={false}
               styles={{
                 control: (base) => ({
                   ...base,
@@ -382,113 +502,87 @@ const EmployerRegistrationForm = () => {
           </div>
 
           <div className="form-group">
-            <label>Established In</label>
-            <input
-              type="text"
-              name="stablished_in"
-              value={formData.stablished_in}
-              onChange={handleChange}
-              className="form-control"
-              pattern="^(19|20)\d{2}$"
-              placeholder="e.g. 2010"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Company Website</label>
-            <input
-              type="text"
-              name="company_website"
-              value={formData.company_website}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="https://example.com"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Company Description</label>
+            <label>Short item description</label>
             <textarea
-              name="company_description"
-              placeholder="Brief description of your company"
-              value={formData.company_description}
+              name="item_description"
+              placeholder="Brief item_description of your business"
+              value={formData.item_description}
               onChange={handleChange}
               className="form-control"
               maxLength={1000}
+              required
             />
           </div>
 
           <div className="form-group">
-            <label>Address</label>
-            <textarea
-              name="address"
-              placeholder="Company address"
-              value={formData.address}
+            <label>Company phone Number (optional)</label>
+            <input
+              type="text"
+              name="item_phone"
+              placeholder="+1234567890"
+              value={formData.item_phone}
               onChange={handleChange}
               className="form-control"
-              maxLength={255}
+              pattern="^\+?[0-9]{7,15}$"
             />
           </div>
 
-          {/* <div className="form-group">
-            <label>Company Status</label>
+          <div className="form-group">
+            <label>Business / Company Website</label>
             <input
               type="text"
-              name="company_status"
-              value={formData.company_status}
+              name="item_website"
+              value={formData.item_website}
               onChange={handleChange}
               className="form-control"
+              placeholder="https://example.com"
+              required
             />
-          </div> */}
+          </div>
+          <div className="form-group">
+            <label>Facebook Link</label>
+            <input
+              type="text"
+              name="item_social_facebook"
+              value={formData.item_social_facebook}
+              onChange={handleChange}
+              className="form-control"
+              placeholder="https://example.com"
+              required
+            />
+          </div>
 
-         <div className="form-group ">
-  <label>Company Logo</label>
-  <input
-    type="file"
-    name="company_photo"
-    accept="image/*"
-    onChange={handleChange}
-    className="form-control"
-    required
-  />
-  <div className="mt-2 alert alert-info py-2 px-3 small mb-0">
-    📷 Upload a clear Logo Company (JPG, PNG). <br />
-    ⚠️ Max file size: <strong>2MB</strong>
-  </div>
-  {errors.company_photo && (
-    <div className="text-danger mt-2">{errors.company_photo}</div>
-  )}
-</div>
+          <div
+            className="form-group d-flex align-items-center"
+            style={{ gap: "5px" }}
+          >
+            <button
+              className="theme-btn btn-style-one"
+              type="button"
+              onClick={handleBack}
+            >
+              Back
+            </button>
 
-<div className="form-group d-flex align-items-center" style={{ gap: "5px" }}>
-  <button
-    className="theme-btn btn-style-one"
-    type="button"
-    onClick={handleBack}
-  >
-    Back
-  </button>
-
-  <button
-    className="theme-btn btn-style-one d-flex align-items-center justify-content-center gap-2"
-    type="submit"
-    disabled={loading}
-  >
-    {loading && (
-      <span
-        className="spinner-border spinner-border-sm"
-        role="status"
-        aria-hidden="true"
-      ></span>
-    )}
-    {loading ? "Registering..." : "Register"}
-  </button>
-</div>
-
+            <button
+              className="theme-btn btn-style-one d-flex align-items-center justify-content-center gap-2"
+              type="submit"
+              disabled={loading}
+            >
+              {loading && (
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              )}
+              {loading ? "Registering..." : "Register"}
+            </button>
+          </div>
         </>
       )}
     </form>
   );
 };
 
-export default EmployerRegistrationForm;
+export default BusinessRegistrationForm;

@@ -3,6 +3,7 @@ import { notification } from "antd";
 import { useLoginUsers } from "@/queries/auth.query";
 import { useAuthStore } from "@/auth/auth.store";
 import { useState } from "react";
+import LoginWithSocial from "../register/LoginWithSocial";
 
 const FormContent2 = () => {
   const [formData, setFormData] = useState({
@@ -108,8 +109,22 @@ const FormContent2 = () => {
 
       <div className="bottom-box">
         <div className="text">
-          Don&apos;t have an account? <Link to="/register">Signup</Link>
+          Don&apos;t have an account?{" "}
+          <Link
+            to="#"
+            className="call-modal signup"
+            data-bs-toggle="modal"
+            data-bs-target="#registerModal"
+          >
+            Signup
+          </Link>
         </div>
+
+        <div className="divider">
+          <span>or</span>
+        </div>
+
+        <LoginWithSocial />
       </div>
     </div>
   );
