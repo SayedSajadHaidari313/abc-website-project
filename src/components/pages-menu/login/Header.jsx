@@ -11,7 +11,7 @@ const Header = () => {
     if (!path) return null;
     return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
   };
-  const datas = headerData[0];
+  const datas = headerData;
   const changeBackground = () => {
     if (window.scrollY >= 10) {
       setNavbar(true);
@@ -57,21 +57,12 @@ const Header = () => {
                     : ""}{" "}
                 </Link>
               </div>
+              
             </div>
           </div>
           {/* End nav-outer */}
 
-          <div className="outer-box">
-            {/* <!-- Login/Register --> */}
-            <div className="btn-box">
-              <Link
-                to="/jobs"
-                className="theme-btn btn-style-one"
-              >
-                <span className="btn-title">Find Jobs</span>
-              </Link>
-            </div>
-          </div>
+         
           {/* End outer-box */}
         </div>
       </div>

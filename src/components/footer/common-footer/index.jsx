@@ -10,7 +10,7 @@ const index = ({ footerStyle = "" }) => {
     if (!path) return null;
     return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
   };
-  const datas = footerData[0];
+  const datas = footerData;
   return (
     <footer className={`main-footer ${footerStyle}`}>
       <div className="auto-container">
@@ -19,30 +19,13 @@ const index = ({ footerStyle = "" }) => {
           <div className="row">
             <div className="big-column col-xl-4 col-lg-3 col-md-12">
               <div className="footer-column about-widget">
-                <div className="logo">
-                  <a href="#">
-                    <img
-                      src={
-                        datas?.md_logo ? formatImageUrl(datas?.md_logo) : null
-                      }
-                      width={100}
-                      alt={datas?.site_name}
-                    />
-                    {!datas?.md_logo && datas?.site_name
-                      ? datas?.name.charAt(0).toUpperCase()
-                      : ""}
-                  </a>
-                </div>
-                <p className="phone-num">
-                  <span>Call us </span>
-                  <a href="#">{datas?.site_phone}</a>
-                </p>
-                <p className="address">
-                  {datas?.address}
-                  <br></br>
-                  <a href={`mailto:${datas?.site_email}`} className="email">
-                    {datas?.site_email}
-                  </a>
+                <h4 className="widget-title">About</h4>
+                <p className="about-abcaf">
+                  Afghanistan Business Community is Home For all Businesses
+                  Directory in Afghanistan, The biggest and most updated (daily)
+                  business directory for Afghanistan. Find Business By category
+                  name (a-z) and list your Business for free! Also providing B2B
+                  - Business to Business Services, Publishing RFQ and RFP.
                 </p>
               </div>
             </div>

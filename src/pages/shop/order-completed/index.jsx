@@ -3,8 +3,8 @@ import OrderCompleted from "@/components/shop/order-completed";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Order Completed || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Order Completed || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const OrderCompletedPage = () => {

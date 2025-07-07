@@ -13,8 +13,8 @@ import { Alert, Avatar, Skeleton } from "antd";
 import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
 
 const metadata = {
-  title: "Employers Single Dyanmic V1 || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Employers Single Dyanmic V1 || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const EmployersSingleV1 = () => {

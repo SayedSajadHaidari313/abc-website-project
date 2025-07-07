@@ -9,7 +9,7 @@ const SidebarHeader = () => {
     if (!path) return null;
     return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
   };
-  const datas = footerData[0];
+  const datas = footerData;
   return (
     <div className="pro-header">
       <Link to="/">

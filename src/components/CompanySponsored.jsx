@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { Divider, Skeleton, Spin } from "antd";
+import { Divider, Spin } from "antd";
 import { useGetAllItemsData } from "@/queries/website.query/items.query";
 import {
   formatImageUrl,
@@ -9,6 +9,8 @@ import {
   handleImageError,
 } from "@/utils/imageUtils";
 import { useNavigate } from "react-router-dom";
+import SmartText from "@/components/common/SmartText";
+import { FaRegBuilding } from "react-icons/fa";
 
 // Custom arrow components
 const PrevArrow = (props) => {
@@ -29,43 +31,11 @@ const NextArrow = (props) => {
   );
 };
 
-const CompanyHero = ({ jobs = [] }) => {
+const CompanySponsored = ({ jobs = [] }) => {
   const { data, isLoading, isError, refetch } = useGetAllItemsData();
   const itemData = data?.data || [];
   const [imageLoadingStates, setImageLoadingStates] = React.useState({});
   const navigate = useNavigate();
-
-  console.log("itemData", itemData);
-
-  // Test image URLs when data changes
-  React.useEffect(() => {
-    if (itemData.length > 0) {
-      itemData.forEach((item, index) => {
-        const itemImageUrl = formatImageUrl(item.item_image);
-        const userImageUrl = formatImageUrl(item.user?.user_image, "user");
-
-        if (itemImageUrl) {
-          testImageUrl(itemImageUrl).then((isAccessible) => {
-            console.log(
-              `Item ${index + 1} image accessible:`,
-              isAccessible,
-              itemImageUrl
-            );
-          });
-        }
-
-        if (userImageUrl) {
-          testImageUrl(userImageUrl).then((isAccessible) => {
-            console.log(
-              `Item ${index + 1} user image accessible:`,
-              isAccessible,
-              userImageUrl
-            );
-          });
-        }
-      });
-    }
-  }, [itemData]);
 
   // Handle image loading state
   const handleImageLoad = (index, type) => {
@@ -82,28 +52,16 @@ const CompanyHero = ({ jobs = [] }) => {
     }));
   };
 
-  // Test image URL accessibility
-  const testImageUrl = async (url) => {
-    if (!url) return false;
-    try {
-      const response = await fetch(url, { method: "HEAD" });
-      return response.ok;
-    } catch (error) {
-      console.warn("Image test failed for:", url, error);
-      return false;
-    }
-  };
-
   // Transform API data to match the expected format
   const transformedItem = itemData?.map((item, index) => {
     const itemImageUrl = formatImageUrl(item.item_image);
-    const userImageUrl = formatImageUrl(item.user?.user_image, "user");
+    const userImageUrl = formatImageUrl(item.user?.user_image, "item");
 
     return {
       status: item.item_status === 1 ? "OPEN" : "CLOSED",
       featured: item.item_featured_by_admin === 1,
-      image: itemImageUrl || getFallbackImage(),
-      avatar: userImageUrl || getFallbackImage("user"),
+      image: itemImageUrl || getFallbackImage("item"),
+      avatar: userImageUrl || getFallbackImage("item"),
       title: item.item_title,
       subtitle: item.item_description,
       phone: item.item_phone,
@@ -125,16 +83,9 @@ const CompanyHero = ({ jobs = [] }) => {
   // Show loading state
   if (isLoading) {
     return (
-      <section className="job-section alternate">
-        <div className="auto-container">
-          <div className="sec-title text-center">
-            <h2>Most Popular Company</h2>
-            <div className="text">
-              <Skeleton avatar paragraph={{ rows: 10 }} />
-            </div>
-          </div>
-        </div>
-      </section>
+      <div style={{ textAlign: "center", padding: 40 }}>
+        <Spin size="large" />
+      </div>
     );
   }
 
@@ -158,7 +109,7 @@ const CompanyHero = ({ jobs = [] }) => {
       <section className="job-section alternate">
         <div className="auto-container">
           <div className="sec-title text-center">
-            <h2>Most Popular Company</h2>
+            <h2>Sponsored & Most Popular Company</h2>
             <div className="text">No Company available at the moment.</div>
           </div>
         </div>
@@ -207,7 +158,7 @@ const CompanyHero = ({ jobs = [] }) => {
     <section className="job-section alternate">
       <div className="auto-container">
         <div className="sec-title text-center">
-          <h2>Most Popular Company</h2>
+          <h2>Sponsored & Most Popular Company</h2>
           <div className="text">
             Know your worth and find the Company that qualify your life
           </div>
@@ -247,14 +198,43 @@ const CompanyHero = ({ jobs = [] }) => {
                         <Spin size="small" />
                       </div>
                     )}
-                    <img
-                      src={job.image}
-                      alt="Listing"
-                      style={{ width: "100%", height: 200, objectFit: "cover" }}
-                      onError={(e) => handleImageError(e)}
-                      onLoad={() => handleImageLoad(idx, "item")}
-                      onLoadStart={() => handleImageLoadStart(idx, "item")}
-                    />
+                    {job.image || job.avatar ? (
+                      <img
+                        src={job.image || job.avatar}
+                        alt="Listing"
+                        style={{
+                          width: "100%",
+                          height: 200,
+                          objectFit: "cover",
+                        }}
+                        onError={(e) => {
+                          if (e.target.src !== job.avatar && job.avatar) {
+                            e.target.src = job.avatar;
+                          } else {
+                            e.target.onerror = null;
+                            e.target.style.display = "none";
+                            const icon = document.createElement("span");
+                            icon.className = "fallback-icon";
+                            e.target.parentNode.appendChild(icon);
+                          }
+                        }}
+                        onLoad={() => handleImageLoad(idx, "item")}
+                        onLoadStart={() => handleImageLoadStart(idx, "item")}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: 200,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          background: "#f5f5f5",
+                        }}
+                      >
+                        <FaRegBuilding size={64} color="#bbb" />
+                      </div>
+                    )}
                     <span
                       style={{
                         position: "absolute",
@@ -292,43 +272,6 @@ const CompanyHero = ({ jobs = [] }) => {
                   </div>
                   <div className="card-body" style={{ padding: 16 }}>
                     <div
-                      style={{ position: "relative", display: "inline-block" }}
-                    >
-                      {imageLoadingStates[`${idx}-avatar`] && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            background: "#f5f5f5",
-                            borderRadius: "50%",
-                            zIndex: 1,
-                          }}
-                        >
-                          <Spin size="small" />
-                        </div>
-                      )}
-                      <img
-                        src={job.avatar}
-                        alt="Avatar"
-                        style={{
-                          width: 35,
-                          height: 35,
-                          borderRadius: "50%",
-                          marginRight: 8,
-                          marginBottom: 8,
-                        }}
-                        onError={(e) => handleImageError(e, "user")}
-                        onLoad={() => handleImageLoad(idx, "avatar")}
-                        onLoadStart={() => handleImageLoadStart(idx, "avatar")}
-                      />
-                    </div>
-                    <div
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -358,11 +301,8 @@ const CompanyHero = ({ jobs = [] }) => {
                         style={{ color: "#27ae60", marginLeft: 6 }}
                       ></i>
                     </div>
-                    <div
-                      style={{ fontSize: 13, color: "#888", marginBottom: 8 }}
-                    >
-                      {job.subtitle}
-                    </div>
+                    {/* Subtitle */}
+                    <SmartText text={job.subtitle} maxLength={80} />
                     <div
                       style={{ fontSize: 13, color: "#888", marginBottom: 8 }}
                     >
@@ -417,4 +357,4 @@ const CompanyHero = ({ jobs = [] }) => {
   );
 };
 
-export default CompanyHero;
+export default CompanySponsored;

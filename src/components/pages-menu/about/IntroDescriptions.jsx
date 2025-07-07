@@ -2,7 +2,7 @@ import { useGetSettingData } from "@/queries/settings.query";
 
 const IntroDescriptions = () => {
     const { data } = useGetSettingData();
-  const setting = data?.data?.[0]; 
+  const setting = data?.data; 
 
   return (
     <div className="text-box">

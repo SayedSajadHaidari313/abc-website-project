@@ -42,7 +42,7 @@ export const usePostJobSeekerCreate = () => {
 // Update create_jobseeker Query
 export const updateJobSeeker = async (params) => {
   return postRequest(
-    `jobseeker/job_seeker_profiles/${params.get("id")}`,
+    `user/users/${params.get("id")}`,
     params,
     {
       headers: {

@@ -7,6 +7,7 @@ import Address from "./Address";
 import ContactForm from "./ContactForm";
 import MapBox from "./MapBox";
 import Breadcrumb from "@/components/common/Breadcrumb";
+import Footer from "@/components/home-4/Footer";
 
 const index = () => {
   return (
@@ -46,7 +47,7 @@ const index = () => {
       </section>
       {/* <!-- Contact Section --> */}
 
-      <FooterDefault footerStyle="alternate5" />
+<Footer/>
       {/* <!-- End Main Footer --> */}
     </>
   );

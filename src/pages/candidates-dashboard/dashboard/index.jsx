@@ -3,8 +3,8 @@ import DashboadHome from "@/components/dashboard-pages/candidates-dashboard/dash
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Candidates Dashboard || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Candidates Dashboard || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const DashboardPage = () => {

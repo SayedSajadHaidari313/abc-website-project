@@ -4,8 +4,8 @@ import AllApplicants from "../../../components/dashboard-pages/employers-dashboa
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "All Applicants || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "All Applicants || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const AllApplicantsCandidatesPage = () => {

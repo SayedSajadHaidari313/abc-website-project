@@ -20,7 +20,7 @@ const Header = () => {
   };
   const formatImageUrlUser = (path) => {
     if (!path) return null;
-    return `${BASE_IMAGE_URL}${path.replace(/\\/g, "/")}`;
+    return `${BASE_IMAGE_URL}/${path.replace(/\\/g, "/")}`;
   };
   const datas = data?.data || {};
   const [navbar, setNavbar] = useState(false);
@@ -83,14 +83,19 @@ const Header = () => {
               >
                 <Avatar
                   size={50}
-                  src={user?.photo ? formatImageUrlUser(user?.photo) : null}
+                  src={
+                    user?.user_image
+                      ? formatImageUrlUser(user?.user_image)
+                      : null
+                  }
                   alt="user logo"
                 >
                   {!user?.company?.company_photo && user?.company?.company_name
                     ? user?.company?.company_name.charAt(0).toUpperCase()
                     : ""}
                 </Avatar>
-                <span className="name">{user?.first_name}</span>
+                <span
+                style={{ color:"white" }} className="name">{user?.name}</span>
               </a>
               <ul className="dropdown-menu mt-2">
                 <li>

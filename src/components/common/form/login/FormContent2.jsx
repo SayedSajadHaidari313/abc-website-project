@@ -109,15 +109,7 @@ const FormContent2 = () => {
 
       <div className="bottom-box">
         <div className="text">
-          Don&apos;t have an account?{" "}
-          <Link
-            to="#"
-            className="call-modal signup"
-            data-bs-toggle="modal"
-            data-bs-target="#registerModal"
-          >
-            Signup
-          </Link>
+          Don&apos;t have an account? <Link to="/register">Signup</Link>
         </div>
 
         <div className="divider">

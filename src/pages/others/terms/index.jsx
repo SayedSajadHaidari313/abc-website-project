@@ -3,8 +3,8 @@ import Terms from "@/components/pages-menu/terms";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Terms || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Terms || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const TermsPage = () => {

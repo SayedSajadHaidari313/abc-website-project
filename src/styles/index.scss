@@ -2,3 +2,11 @@
 @import "slick-carousel/slick/slick-theme.scss";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "public/scss/main.scss";
+@font-face {
+  font-family: 'Vazir';
+  src: url('/fonts/Vazir-Medium.woff2') format('woff2'),
+       url('/fonts/Vazir-Medium.woff') format('woff'),
+       url('/fonts/Vazir-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -3,8 +3,8 @@ import MyProfile from "@/components/dashboard-pages/candidates-dashboard/my-prof
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "My Profile || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "My Profile || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const MyProfilePage = () => {

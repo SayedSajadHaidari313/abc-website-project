@@ -3,8 +3,8 @@ import Checkout from "@/components/shop/checkout";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Checkout || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Checkout || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const CheckoutPage = () => {

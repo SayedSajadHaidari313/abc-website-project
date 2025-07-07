@@ -160,7 +160,7 @@ const BusinessRegistrationForm = () => {
     data.append("name", formData.name);
     data.append("email", formData.email);
     data.append("password", formData.password);
-    data.append("role_id", 2);
+    data.append("role_id", 3);
     data.append("status", "ACTIVE");
     data.append("item_title", formData.item_title);
     data.append("category_id", formData.category_id);
@@ -208,7 +208,7 @@ const BusinessRegistrationForm = () => {
             "This email is already taken. Please use another email."
           );
         } else {
-          message.error("An unexpected error occurred. Please try again.");
+          // message.error("An unexpected error occurred. Please try again.");
         }
       },
       onSettled: () => {
@@ -221,7 +221,9 @@ const BusinessRegistrationForm = () => {
     <form onSubmit={step === 1 ? handleNext : handleSubmit}>
       {step === 1 && (
         <>
-          <h3>Step 1: Personal Information</h3>
+          <h4 style={{ fontSize: "20px", marginBottom: "10px", color: "blue" }}>
+            Step 1: Personal Information
+          </h4>
 
           <div className="form-group">
             <label>Full Name</label>
@@ -370,7 +372,9 @@ const BusinessRegistrationForm = () => {
 
       {step === 2 && (
         <>
-          <h3>Step 2: Business Information</h3>
+          <h4 style={{ fontSize: "20px", marginBottom: "10px", color: "blue" }}>
+            Step 2: Business Information
+          </h4>
 
           <div className="form-group">
             <label>Business Name</label>

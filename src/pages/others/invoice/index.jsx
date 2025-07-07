@@ -3,8 +3,8 @@ import Invoice from "@/components/pages-menu/invoice";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Invoice || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Invoice || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const InvoicePage = () => {

@@ -3,8 +3,8 @@ import Messages from "@/components/dashboard-pages/employers-dashboard/messages"
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Messages || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Messages || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const MessageEmploeeDBPage = () => {

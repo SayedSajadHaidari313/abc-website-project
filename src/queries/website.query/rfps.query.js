@@ -1,8 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteRequest, getRequest, postRequest } from "auth/FetchInterceptor";
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+} from "@/auth/FetchInterceptor";
 
 export const getRfpsData = async (current, pageSize, searchQuery, category) => {
-  return await getRequest(`admin/rfps`, {
+  return await getRequest(`get-all-rfp`, {
     current: current,
     pageSize: pageSize,
     searchQuery: searchQuery,
@@ -12,7 +16,7 @@ export const getRfpsData = async (current, pageSize, searchQuery, category) => {
 
 export const useGetRfpsData = (current, pageSize, searchQuery, category) => {
   return useQuery({
-    queryKey: ["fetch-rfps", current, pageSize, searchQuery, category],
+    queryKey: ["fetch-get-all-rfp", current, pageSize, searchQuery, category],
     queryFn: () => getRfpsData(current, pageSize, searchQuery, category),
   });
 };
@@ -98,12 +102,42 @@ export const useSingleDelete = () => {
 // get Rfps data without Pagination and Search
 
 export const getRfpsAllData = async () => {
-  return await getRequest(`get-rfps`);
+  return await getRequest(`get-all-rfp`);
 };
 
 export const useGetAllRfpsData = () => {
   return useQuery({
-    queryKey: ["fetch-rfps-all"],
+    queryKey: ["fetch-get-all-rfp"],
     queryFn: () => getRfpsAllData(),
+  });
+};
+
+// Fetch a single RFP by ID
+export const getRfpById = async (id) => {
+  return await getRequest(`get-rfp/${id}`);
+};
+
+export const useGetRfpById = (id) => {
+  return useQuery({
+    queryKey: ["fetch-get-rfp", id],
+    queryFn: () => getRfpById(id),
+    enabled: !!id,
+  });
+};
+
+
+export const getMyRfpsData = async (current, pageSize, searchQuery, category) => {
+  return await getRequest(`user/my-rfps`, {
+    current: current,
+    pageSize: pageSize,
+    searchQuery: searchQuery,
+    category,
+  });
+};
+
+export const useGetMyRfpsData = (current, pageSize, searchQuery, category) => {
+  return useQuery({
+    queryKey: ["fetch-get-my-rfps", current, pageSize, searchQuery, category],
+    queryFn: () => getRfpsData(current, pageSize, searchQuery, category),
   });
 };

@@ -3,8 +3,8 @@ import ShortlistedResumes from "@/components/dashboard-pages/employers-dashboard
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Shortlisted Resumes || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Shortlisted Resumes || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const ShortListedResumeEmploeeDBPage = () => {

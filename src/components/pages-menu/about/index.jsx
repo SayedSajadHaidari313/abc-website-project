@@ -1,9 +1,9 @@
 import LoginPopup from "../../common/form/login/LoginPopup";
-import FooterDefault from "../../footer/common-footer";
 import DefaulHeader from "../../header/DefaulHeader";
 import MobileMenu from "../../header/MobileMenu";
 import IntroDescriptions from "./IntroDescriptions";
 import Breadcrumb from "../../common/Breadcrumb";
+import Footer from "@/components/home-4/Footer";
 
 const index = () => {
   return (
@@ -30,7 +30,7 @@ const index = () => {
       </section>
       {/* <!-- End About Section Three --> */}
 
-      <FooterDefault />
+      <Footer />
       {/* <!-- End Main Footer --> */}
     </>
   );

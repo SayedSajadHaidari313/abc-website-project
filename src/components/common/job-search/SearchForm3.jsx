@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Select from "react-select";
-import { useGetJobCategoryData } from "@/queries/job.category.query";
+import { useGetAllCategoryData } from "@/queries/website.query/category.query";
 
 const SearchForm3 = () => {
-  const { data } = useGetJobCategoryData();
-  const JobCategory = data || [];
+  const { data } = useGetAllCategoryData();
+  const companyCategory = data?.data || [];
 
-  const options = JobCategory.map((option) => ({
+  const options = companyCategory?.map((option) => ({
     value: option.id,
-    label: option.name,
+    label: option.category_name || "",
   }));
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -40,15 +40,8 @@ const SearchForm3 = () => {
       location: locationInput,
       category: categoryInput,
     };
-    // newParams.category = categoryInput;
-    // if (categoryInput) {
-    //   newParams.category = categoryInput;
-    // }
     setSearchParams(newParams);
-    // Optional: Clear form after search
-    setSearchInput("");
-    setLocationInput("");
-    setCategoryInput("");
+    // Do NOT clear form after search; keep values for user convenience
   };
 
   return (
@@ -60,7 +53,7 @@ const SearchForm3 = () => {
           <input
             style={{ marginTop: "7px" }}
             type="text"
-            placeholder="Job title, keywords, or company"
+            placeholder="company, keywords.."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
@@ -93,6 +86,7 @@ const SearchForm3 = () => {
             menuPortalTarget={document.body}
             filterOption={(option, inputValue) => {
               if (!inputValue) return true;
+              if (!option.label) return false;
               return option.label
                 .toLowerCase()
                 .startsWith(inputValue.toLowerCase());
@@ -126,7 +120,7 @@ const SearchForm3 = () => {
             className="theme-btn btn-style-one"
             style={{ marginTop: "5px" }}
           >
-            <span className="btn-title">Find Jobs</span>
+            <span className="btn-title">Find company</span>
           </button>
         </div>
       </div>

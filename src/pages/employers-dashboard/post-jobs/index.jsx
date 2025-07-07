@@ -3,8 +3,8 @@ import PostJob from "@/components/dashboard-pages/employers-dashboard/post-jobs"
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Post Jobs || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Post Jobs || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const PostJobsEmploeeDBPage = () => {

@@ -7,9 +7,7 @@ function Profile() {
   const { data: userData } = useGetAuthUserData();
   const navigate = useNavigate();
 
-  const fullName = `${userData?.user?.first_name || ""} ${
-    userData?.user?.last_name || ""
-  }`;
+  const fullName = `${userData?.user?.name || "__"}`;
 
   return (
     <>
@@ -19,8 +17,8 @@ function Profile() {
           <div className="d-flex align-items-center gap-3">
             <img
               src={
-                userData?.user?.photo
-                  ? `${BASE_IMAGE_URL}${userData?.user?.photo}`
+                userData?.user?.user_image
+                  ? `${BASE_IMAGE_URL}/${userData?.user?.user_image}`
                   : "/images/default-avatar.png"
               }
               alt="Profile"
@@ -30,7 +28,7 @@ function Profile() {
             <div>
               <h3 className="mb-1">{fullName}</h3>
               <p className="text-muted mb-1">
-                {userData?.user?.phone || "____"}
+                {userData?.user?.user_about || "____"}
               </p>
               <p className="text-muted mb-1">
                 {userData?.user?.email || "____"}
@@ -45,7 +43,6 @@ function Profile() {
               onClick={() => navigate("/candidate/my-profile")}
             >
               <EditOutlined size={16} />
-              Edit Profile
             </button>
           </div>
         </div>

@@ -11,11 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 const mainMenuItems = [
-  { name: "Insights", routePath: "/insights" },
-  { name: "Jobs", routePath: "/jobs" },
-  { name: "For Employers", routePath: "/for-employers" },
-  { name: "Company", routePath: "/company" },
-  { name: "How It Works", routePath: "/how-it-work" },
+  { name: "Home", routePath: "/" },
+  { name: "Listing", routePath: "/listing" },
+  { name: "RFPS/RFQS", routePath: "/rfps" },
   { name: "About", routePath: "/about" },
   { name: "Contact", routePath: "/contact" },
 ];

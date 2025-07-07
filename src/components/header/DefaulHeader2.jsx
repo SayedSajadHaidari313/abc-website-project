@@ -11,7 +11,7 @@ const DefaulHeader2 = () => {
     if (!path) return null;
     return `${BASE_IMAGE_URL}${path.replace(/\\/g, "/")}`;
   };
-  const datas = headerData[0];
+  const datas = headerData;
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = () => {

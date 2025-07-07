@@ -1,19 +1,19 @@
-import JobList from "@/components/job-listing-pages/job-list-v3";
+import CompanyList from "@/components/job-listing-pages/job-list-v3";
 
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Job List || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Job List || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
-const JobListPage3 = () => {
+const CompanyListPage3 = () => {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <JobList />
+      <CompanyList />
     </>
   );
 };
 
-export default JobListPage3;
+export default CompanyListPage3;

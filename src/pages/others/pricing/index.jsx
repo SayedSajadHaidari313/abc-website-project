@@ -3,8 +3,8 @@ import Pricing from "@/components/pages-menu/pricing";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Pricing || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Pricing || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const PricingPage = () => {

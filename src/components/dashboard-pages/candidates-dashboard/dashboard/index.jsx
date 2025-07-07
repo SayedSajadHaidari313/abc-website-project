@@ -7,9 +7,6 @@ import CopyrightFooter from "../../CopyrightFooter";
 import DashboardCandidatesHeader from "../../../header/DashboardCandidatesHeader";
 import MenuToggler from "../../MenuToggler";
 import Profile from "./components/Profile";
-import RecentInsightBox from "./components/recent-insight/RecentInsightBox";
-import { Link } from "react-router-dom";
-import RecentJobsBox from "./components/recent-job/RecentJobsBox";
 
 const Index = () => {
   return (
@@ -48,38 +45,9 @@ const Index = () => {
           {/* End .row top card block */}
 
           {/* recent insight show in db */}
-          <div className="row mb-4">
-            <div className="col-12 d-flex justify-content-between align-items-center mb-3">
-              <h4 className="mb-0">Recent Insights</h4>
-              {/* Optional: Add View All link */}
-              <Link to="/insights" className="text-primary small">
-                View All
-              </Link>
-            </div>
+      
 
-            <div className="col-12">
-              <div className="bg-white p-3 rounded shadow-sm">
-                <RecentInsightBox />
-              </div>
-            </div>
-          </div>
-
-          <div className="row mb-4">
-            <div className="col-12 d-flex justify-content-between align-items-center mb-3">
-              <h4 className="mb-0">Recent Jobs Matched</h4>
-              {/* Optional: Add View All link */}
-              <Link to="/jobs" className="text-primary small">
-                View All
-              </Link>
-            </div>
-
-            <div className="col-12">
-              <div className="bg-white p-3 rounded shadow-sm">
-                <RecentJobsBox />
-              </div>
-            </div>
-          </div>
-
+   
         </div>
         {/* End dashboard-outer */}
       </section>

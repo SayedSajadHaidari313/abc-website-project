@@ -18,7 +18,7 @@ const DashboardCandidatesHeader = () => {
 
   const formatImageUrl = (path) => {
     if (!path) return null;
-    return `${BASE_IMAGE_URL}/user_photos/${path.replace(/\\/g, "/")}`;
+    return `${BASE_IMAGE_URL}/${path.replace(/\\/g, "/")}`;
   };
   const formatPhotoUrl = (path) => {
     if (!path) return null;
@@ -84,7 +84,11 @@ const DashboardCandidatesHeader = () => {
                 <img
                   alt={userData?.user?.name}
                   className="thumb"
-                  src={formatImageUrl(userData?.user?.user_image)}
+                  src={
+                    userData?.user?.user_image
+                      ? formatImageUrl(userData?.user?.user_image)
+                      : null
+                  }
                 />
                 <span className="name">
                   {userData?.user?.name || "My Account"}

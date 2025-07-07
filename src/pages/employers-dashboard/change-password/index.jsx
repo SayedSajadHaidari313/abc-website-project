@@ -3,8 +3,8 @@ import ChangePassword from "@/components/dashboard-pages/employers-dashboard/cha
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Change Password || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Change Password || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const ChangePasswordEmploeeDBPage = () => {

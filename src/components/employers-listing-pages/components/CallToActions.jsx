@@ -3,8 +3,8 @@ const CallToActions = () => {
     <div className="call-to-action-four ">
       <h5>Recruiting?</h5>
       <p>
-        Advertise your jobs to millions of monthly users and search 15.8 million
-        CVs in our database.
+        Advertise your Company to millions of monthly users and search 15.8 million
+        rfps and rfqs in our database.
       </p>
       <a href="#" className="theme-btn btn-style-one bg-blue">
         <span className="btn-title">Start Recruiting Now</span>

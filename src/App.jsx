@@ -13,6 +13,8 @@ import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGetSettingData } from "./queries/settings.query";
 import { BASE_IMAGE_URL } from "./utils/linkActiveChecker";
+import { StagewiseToolbar } from "@stagewise/toolbar-react";
+import { ReactPlugin } from "@stagewise-plugins/react";
 
 if (typeof window !== "undefined") {
   import("bootstrap");
@@ -65,7 +67,7 @@ function App() {
             <Router />
             <ScrollTopBehaviour />
           </BrowserRouter>
-
+          <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
           <ToastContainer
             position="bottom-right"
             autoClose={500}

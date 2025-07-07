@@ -2,11 +2,26 @@ import FooterDefault from "../../../components/footer/common-footer";
 import Breadcrumb from "../../common/Breadcrumb";
 import LoginPopup from "../../common/form/login/LoginPopup";
 import MobileMenu from "../../header/MobileMenu";
-import FilterTopBox from "./FilterTopBox";
+
 import FilterSidebar from "./FilterSidebar";
 import DefaulHeader from "@/components/header/DefaulHeader";
 
-const index = () => {
+import RfpFeatured7 from "@/components/job-featured/RfpFeatured7";
+import { useDispatch } from "react-redux";
+import { addKeyword } from "@/features/filter/employerFilterSlice";
+import { useSelector } from "react-redux";
+import Footer from "@/components/home-4/Footer";
+
+const Index = () => {
+  // Get keyword from Redux and dispatch for updating
+  const keyword = useSelector((state) => state.employerFilter.keyword);
+  const dispatch = useDispatch();
+
+  // Handler to update search keyword from sidebar
+  const handleSearch = (value) => {
+    dispatch(addKeyword(value));
+  };
+
   return (
     <>
       {/* <!-- Header Span --> */}
@@ -21,7 +36,7 @@ const index = () => {
       <MobileMenu />
       {/* End MobileMenu */}
 
-      <Breadcrumb title="Companies" meta="Companies" />
+      <Breadcrumb title="Rfps/Rfqs" meta="rfps" />
       {/* <!--End Breadcrumb Start--> */}
 
       <section className="ls-section">
@@ -34,21 +49,20 @@ const index = () => {
               aria-labelledby="offcanvasLabel"
             >
               <div className="filters-column hide-left">
-                <FilterSidebar />
+                <FilterSidebar onSearch={handleSearch} searchValue={keyword} />
               </div>
             </div>
             {/* End filter column for tablet and mobile devices */}
 
             <div className="filters-column hidden-1023 col-lg-4 col-md-12 col-sm-12">
-              <FilterSidebar />
+              <FilterSidebar onSearch={handleSearch} searchValue={keyword} />
             </div>
             {/* <!-- End Filters Column for destop and laptop --> */}
-
-            <div className="content-column col-lg-8 col-md-12 col-sm-12">
-              <div className="ls-outer">
-                <FilterTopBox />
-                {/* <!-- ls Switcher --> */}
+            <div className="featured-column col-xl-8 col-lg-12 col-md-12 col-sm-12">
+              <div className="outer-box">
+                <RfpFeatured7 />
               </div>
+              {/* En outer box */}
             </div>
             {/* <!-- End Content Column --> */}
           </div>
@@ -56,12 +70,13 @@ const index = () => {
         </div>
         {/* End container */}
       </section>
+
       {/* <!--End Listing Page Section --> */}
 
-      <FooterDefault footerStyle="alternate5" />
+<Footer/>
       {/* <!-- End Main Footer --> */}
     </>
   );
 };
 
-export default index;
+export default Index;

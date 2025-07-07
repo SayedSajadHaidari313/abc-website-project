@@ -2,7 +2,7 @@ import { useGetSettingData } from "@/queries/settings.query";
 
 const Address = () => {
   const { data } = useGetSettingData();
-  const setting = data?.data?.[0]; // چون داده‌ها به صورت آرایه‌ای از آبجکت هستند
+  const setting = data?.data; // چون داده‌ها به صورت آرایه‌ای از آبجکت هستند
 
   if (!setting) return null;
 

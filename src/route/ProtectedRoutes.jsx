@@ -15,7 +15,7 @@ import JobAlertPage from "@/pages/candidates-dashboard/job-alerts";
 import MyProfilePage from "@/pages/candidates-dashboard/my-profile";
 import ShortListedJobsPage from "@/pages/candidates-dashboard/short-listed-jobs";
 import Logout from "@/components/common/logout/Logout";
-import InsightPostPage from "@/pages/candidates-dashboard/insight-posts";
+import RfpPostPage from "@/pages/candidates-dashboard/rfp-posts";
 import InsightRanksPage from "@/pages/candidates-dashboard/insight-ranks";
 import InsightArchivesPage from "@/pages/candidates-dashboard/insight-archives";
 // import InsightHubsPage from "@/pages/candidates-dashboard/insight-hubs";
@@ -56,7 +56,7 @@ export const UserProtectedRoutes = [
   { path: "candidate/applied-jobs", element: <AppliedJobsPage /> },
   { path: "candidate/job-alerts", element: <JobAlertPage /> },
   { path: "candidate/my-profile", element: <MyProfilePage /> },
-  { path: "candidate/post-new-insight", element: <InsightPostPage /> },
+  { path: "candidate/post-new-rfps", element: <RfpPostPage /> },
   { path: "candidate/insight-ranks", element: <InsightRanksPage /> },
   { path: "candidate/insight-archives", element: <InsightArchivesPage /> },
   // { path: "candidate/insight-hub", element: <InsightHubsPage /> },

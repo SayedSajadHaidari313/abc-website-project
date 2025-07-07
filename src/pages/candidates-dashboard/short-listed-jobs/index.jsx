@@ -2,8 +2,8 @@ import MetaComponent from "@/components/common/MetaComponent";
 import ShortListedJob from "@/components/dashboard-pages/candidates-dashboard/short-listed-jobs";
 
 const metadata = {
-  title: "Short ListedJobs || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Short ListedJobs || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const ShortListedJobsPage = () => {

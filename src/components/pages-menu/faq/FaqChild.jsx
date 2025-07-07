@@ -1,8 +1,8 @@
 import { useGetAllFaqsData } from "@/queries/website.query/faqs.query";
 
 const FaqChild = () => {
-  const {data, isLoading} = useGetAllFaqsData();
-  const faqData = data?.data || [];
+  // const {data, isLoading} = useGetAllFaqsData();
+  // const faqData = data?.data || [];
 
   return (
     <>

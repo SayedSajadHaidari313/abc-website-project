@@ -3,8 +3,8 @@ import Cart from "@/components/shop/cart";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Cart || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Cart || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const CartPage = () => {

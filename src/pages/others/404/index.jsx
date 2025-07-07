@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Page Not Found || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Page Not Found || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const NotFoundPage = () => {

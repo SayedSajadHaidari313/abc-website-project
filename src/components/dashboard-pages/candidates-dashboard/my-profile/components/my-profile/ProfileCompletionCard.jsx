@@ -1,56 +1,6 @@
-// import React from "react";
-// import { useGetAuthUserData } from "@/queries/user.query";
-// import { Button, Card, Progress } from "antd";
-
-// const ProfileCompletionCard = () => {
-//   const { data: userData } = useGetAuthUserData();
-//   const user = userData?.user || {};
-
-//   // Function to calculate profile completeness percentage
-//   const calculateCompletion = () => {
-//     let completedFields = 0;
-//     const totalFields = 10; // first_name, last_name, email, password
-
-//     if (user.first_name && user.first_name.trim() !== "") completedFields++;
-//     if (user.last_name && user.last_name.trim() !== "") completedFields++;
-//     if (user.email && user.email.trim() !== "") completedFields++;
-//     if (user?.phone && user?.phone.trim() !== "") completedFields++;
-//     if (user?.photo && user?.photo.trim() !== "") completedFields++;
-//     if (user?.jobseekerprofiles?.experience.trim() !== "") completedFields++;
-//     if (user?.jobseekerprofiles?.gender.trim() !== "") completedFields++;
-//     if (user?.jobseekerprofiles?.about.trim() !== "") completedFields++;
-//     if (user?.jobseekerprofiles?.job_category?.name.trim() !== "")
-//       completedFields++;
-//     if (user?.jobseekerprofiles?.cv?.trim() !== "") completedFields++;
-
-//     return Math.round((completedFields / totalFields) * 100);
-//   };
-
-//   const completion = calculateCompletion();
-
-
-//   return (
-//     <Card style={{ marginBottom: 24 }}>
-//       <Card.Meta
-//         title={`Your Profile is ${completion}% Complete`}
-//         description={
-//           <>
-//             <Progress percent={completion} />
-//             <p style={{ marginTop: 16, fontSize: 14 }}>
-//               Please complete your profile to get the best job matches.
-//             </p>
-//           </>
-//         }
-//       />
-//     </Card>
-//   );
-// };
-
-// export default ProfileCompletionCard;
-
 import React from "react";
-import { useGetAuthUserData } from "@/queries/user.query";
 import { Button, Card, Progress, Tag, Typography } from "antd";
+import { useGetAuthUserData } from "@/queries/auth.query";
 
 const { Text } = Typography;
 
@@ -60,19 +10,10 @@ const ProfileCompletionCard = () => {
 
   // Define fields to check with labels and their values
   const fieldsToCheck = [
-    { label: "First Name", value: user.first_name },
-    { label: "Last Name", value: user.last_name },
+    { label: "Full Name", value: user.name },
+    { label: "Bio", value: user.user_about },
     { label: "Email", value: user.email },
-    { label: "Phone", value: user.phone },
-    { label: "Profile Photo", value: user.photo },
-    { label: "Experience", value: user.jobseekerprofiles?.experience },
-    { label: "Gender", value: user.jobseekerprofiles?.gender },
-    { label: "About Me", value: user.jobseekerprofiles?.about },
-    {
-      label: "Job Category",
-      value: user.jobseekerprofiles?.job_category?.name,
-    },
-    { label: "CV", value: user.jobseekerprofiles?.cv },
+    { label: "Profile Photo", value: user.user_image },
   ];
 
   // Calculate completion percentage and collect missing fields
@@ -123,7 +64,6 @@ const ProfileCompletionCard = () => {
                 </div>
               </>
             )}
-
           </>
         }
       />

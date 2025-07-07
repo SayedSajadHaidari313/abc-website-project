@@ -1,9 +1,10 @@
 import { useGetPostJobsData } from "@/queries/post.jobs.query";
 import { Alert, Skeleton } from "antd";
 import PropTypes from "prop-types";
+import { useGetRfpById } from "@/queries/website.query/rfps.query";
 
-const JobDetailsDescriptions = ({ currentJobId }) => {
-  const { data, isLoading, isError } = useGetPostJobsData();
+const JobDetailsDescriptions = ({ rfpId }) => {
+  const { data, isLoading, isError } = useGetRfpById(rfpId);
 
   if (isLoading) return <Skeleton active paragraph={{ rows: 6 }} />;
 
@@ -17,58 +18,34 @@ const JobDetailsDescriptions = ({ currentJobId }) => {
       />
     );
 
-  const job = data?.data?.filter((job) => job?.id === currentJobId);
+  const rfp = data?.data;
+
+  if (!rfp) return null;
 
   return (
     <div className="job-detail">
-      <h4>About {job[0]?.company?.company_name}</h4>
-      <p>{job[0]?.company?.company_description}</p>
+      <h4>{rfp.title}</h4>
 
-      <h4>Job Description</h4>
-      <p>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: job[0]?.job_description || "---",
-          }}
-        />
-      </p>
-
-      <h4>Job Requirements</h4>
-      <p>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: job[0]?.job_requirement || "---",
-          }}
-        />
-      </p>
-      <h4>Experience</h4>
-      <ul className="list-style-three">
-        <li>
-          <p>{job[0]?.experiance}</p>
-        </li>
-      </ul>
-      <h4>Submission Guideline</h4>
-      <p>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: job[0]?.submission_guideline || "---",
-          }}
-        />
-      </p>
-      <h4>Functional Area</h4>
-      <p>{job[0]?.job_category?.name}</p>
-      <h4>Countries</h4>
-      <p>{job[0]?.countries}</p>
-      <h4>Provinces</h4>
-      <p>{job[0]?.provinces}</p>
-      <h4>Submission Email</h4>
-      <a className="link">{job[0]?.submission_email}</a>
+      <h4>RFP Description</h4>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: rfp.description || "---",
+        }}
+      />
+      {/* {rfp.user.email && (
+        <>
+          <h4>Submission Email</h4>
+          <a className="link" href={`mailto:${rfp.user.email}`}>
+            {rfp.user.email}
+          </a>
+        </>
+      )} */}
     </div>
   );
 };
 
 JobDetailsDescriptions.propTypes = {
-  currentJobId: PropTypes.number.isRequired,
+  rfpId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 export default JobDetailsDescriptions;

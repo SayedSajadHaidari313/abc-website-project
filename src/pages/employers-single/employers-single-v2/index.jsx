@@ -13,8 +13,8 @@ import { useParams } from "react-router-dom";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Employers Single Dyanmic V2 || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Employers Single Dyanmic V2 || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const EmployersSingleV2 = () => {

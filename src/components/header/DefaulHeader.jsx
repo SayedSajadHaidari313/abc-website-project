@@ -16,13 +16,13 @@ const DefaulHeader = () => {
 
   const formatImageUrl = (path) => {
     if (!path) return null;
-    return `${BASE_IMAGE_URL}images/settings/${path.replace(/\\/g, "/")}`;
-  };  
+    return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
+  };
   const formatImageUrlUser = (path) => {
     if (!path) return null;
-    return `${BASE_IMAGE_URL}${path.replace(/\\/g, "/")}`;
+    return `${BASE_IMAGE_URL}/${path.replace(/\\/g, "/")}`;
   };
-  const datas = headerData[0];
+  const datas = headerData;
   const [navbar, setNavbar] = useState(false);
   const changeBackground = () => {
     if (window.scrollY >= 10) {
@@ -79,9 +79,7 @@ const DefaulHeader = () => {
               <Avatar
                 size={50}
                 src={
-                  user?.photo
-                    ? formatImageUrlUser(user?.photo)
-                    : null
+                  user?.user_image ? formatImageUrlUser(user?.user_image) : null
                 }
                 alt="user logo"
               >

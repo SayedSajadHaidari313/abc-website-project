@@ -1,14 +1,16 @@
-// import Categories from "../components/Categories";
-// import DatePosted from "../components/DatePosted";
-// import DestinationRangeSlider from "../components/DestinationRangeSlider";
-// import ExperienceLevel from "../components/ExperienceLevel";
+import Categories from "../components/Categories";
 import JobType from "../components/JobType";
 import LocationBox from "../components/LocationBox";
-// import SalaryRangeSlider from "../components/SalaryRangeSlider";
 import SearchBox from "../components/SearchBox";
-// import Tag from "../components/Tag";
 
-const FilterSidebar = () => {
+const FilterSidebar = ({
+  searchQuery,
+  setSearchQuery,
+  location,
+  setLocation,
+  category,
+  setCategory,
+}) => {
   return (
     <div className="inner-column">
       <div className="filters-outer">
@@ -23,7 +25,10 @@ const FilterSidebar = () => {
         <div className="filter-block">
           <h4>Search by Keywords</h4>
           <div className="form-group">
-            <SearchBox />
+            <SearchBox
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
           </div>
         </div>
         {/* <!-- Filter Block --> */}
@@ -31,46 +36,17 @@ const FilterSidebar = () => {
         <div className="filter-block">
           <h4>Location</h4>
           <div className="form-group">
-            <LocationBox />
+            <LocationBox location={location} setLocation={setLocation} />
           </div>
-
-          {/* <p>Radius around selected destination</p>
-          <DestinationRangeSlider /> */}
         </div>
         {/* <!-- Filter Block --> */}
 
-        {/* <div className="filter-block">
+        <div className="filter-block">
           <h4>Category</h4>
           <div className="form-group">
-            <Categories />
+            <Categories category={category} setCategory={setCategory} />
           </div>
-        </div> */}
-        {/* <!-- Filter Block --> */}
-
-        <div className="switchbox-outer">
-          <h4>Job type</h4>
-          <JobType />
         </div>
-        {/* <!-- Switchbox Outer --> */}
-
-        {/* <div className="checkbox-outer">
-          <h4>Date Posted</h4>
-          <DatePosted />
-        </div> */}
-        {/* <!-- Checkboxes Ouer --> */}
-
-        {/* <div className="checkbox-outer">
-          <h4>Experience Level</h4>
-          <ExperienceLevel />
-        </div> */}
-        {/* <!-- Checkboxes Ouer --> */}
-
-        {/* <!-- Filter Block --> */}
-
-        {/* <div className="filter-block">
-          <h4>Tags</h4>
-          <Tag />
-        </div> */}
         {/* <!-- Filter Block --> */}
       </div>
       {/* Filter Outer */}

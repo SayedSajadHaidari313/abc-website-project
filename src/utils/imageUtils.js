@@ -1,4 +1,3 @@
-import { BASE_IMAGE_URL } from "./linkActiveChecker";
 import { ENV_CONFIG } from "@/configs/EnvironmentConfig";
 
 // Get the correct base URL for images (without /api suffix)
@@ -52,14 +51,14 @@ export const formatImageUrl = (path, type = "item") => {
 export const getFallbackImage = (type = "item") => {
   switch (type) {
     case "user":
-      return "https://via.placeholder.com/100x100?text=User";
+      return "/images/icons/user.svg";
     case "company":
-      return "https://via.placeholder.com/200x100?text=Company";
+      return "/images/icons/placeholder.svg";
     case "logo":
-      return "https://via.placeholder.com/150x50?text=Logo";
+      return "/images/icons/placeholder.svg";
     case "item":
     default:
-      return "https://via.placeholder.com/350x200?text=Listing+Image";
+      return "/images/icons/download.svg";
   }
 };
 
@@ -69,8 +68,25 @@ export const getFallbackImage = (type = "item") => {
  * @param {string} type - The type of image
  */
 export const handleImageError = (e, type = "item") => {
-  e.target.src = getFallbackImage(type);
-  e.target.onerror = null; // Prevent infinite loop
+  const target = e.target;
+
+  // Prevent infinite loops by checking if we've already tried to set a fallback
+  if (target.dataset.fallbackAttempted) {
+    // If fallback also failed, hide the image or set a simple text
+    target.style.display = "none";
+    return;
+  }
+
+  // Mark that we've attempted to set a fallback
+  target.dataset.fallbackAttempted = "true";
+
+  // Set the fallback image
+  target.src = getFallbackImage(type);
+
+  // Add another error handler for the fallback image
+  target.onerror = (fallbackError) => {
+    fallbackError.target.style.display = "none";
+  };
 };
 
 /**

@@ -1,19 +1,19 @@
-import EmployersList from "@/components/employers-listing-pages/employers-list-v1";
+import RfpList from "@/components/employers-listing-pages/employers-list-v1";
 
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Employers List V1 || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Employers List V1 || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
-const EmployerListPage1 = () => {
+const RfpListPage1 = () => {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <EmployersList />
+      <RfpList />
     </>
   );
 };
 
-export default EmployerListPage1;
+export default RfpListPage1;

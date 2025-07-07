@@ -11,7 +11,6 @@ import CandidateListPage5 from "@/pages/candidates-list/candidates-list-v5";
 import CandidateSingleDynamicV1 from "@/pages/candidates-single/candidates-single-v1";
 import CandidateSingleDynamicV2 from "@/pages/candidates-single/candidates-single-v2";
 import CandidateSingleDynamicV3 from "@/pages/candidates-single/candidates-single-v3";
-import EmployerListPage1 from "@/pages/employers-list/employers-list-v1";
 import EmployerListPage2 from "@/pages/employers-list/employers-list-v2";
 import EmployerListPage3 from "@/pages/employers-list/employers-list-v3";
 import EmployerListPage4 from "@/pages/employers-list/employers-list-v4";
@@ -20,7 +19,7 @@ import EmployersSingleV2 from "@/pages/employers-single/employers-single-v2";
 import EmployersSingleV3 from "@/pages/employers-single/employers-single-v3";
 // import InsightListPage from "@/pages/insight-list";
 // import JobListPage1 from "@/pages/job-list/job-list-v1";
-import JobListPage3 from "@/pages/job-list/job-list-v3";
+import CompanyListPage3 from "@/pages/job-list/job-list-v3";
 import CompanySingleDynamicV1 from "@/pages/job-single/company-single-v1";
 import NotFoundPage from "@/pages/not-found";
 import AboutPage from "@/pages/others/about";
@@ -41,19 +40,19 @@ import OrderCompletedPage from "@/pages/shop/order-completed";
 import ShopListPage from "@/pages/shop/shop-list";
 import ShopSingleDyanmic from "@/pages/shop/shop-single";
 import GoogleCallback from "@/components/auth/GoogleCallback";
+import RfpListPage1 from "@/pages/employers-list/employers-list-v1";
+import JobSingleDynamicV2 from "@/pages/job-single/job-single-v2";
 
 export const PublicRoutes = [
   { path: "/", element: <Home /> },
-  // { path: "/insights", element: <BlogListpage1 /> },
-  { path: "/jobs", element: <JobListPage3 /> },
-  // { path: "job-list-v1", element: <JobListPage1 /> },
+  { path: "/listing", element: <CompanyListPage3 /> },
   { path: "/for-employers", element: <ForEmployer /> },
-  { path: "/company", element: <EmployerListPage1 /> },
+  { path: "/rfps", element: <RfpListPage1 /> },
   { path: "/how-it-work", element: <HowItWorkPage /> },
   { path: "/company/:slug", element: <CompanySingleDynamicV1 /> },
+  { path: "/rfps-details/:id", element: <JobSingleDynamicV2 /> },
   { path: "/company-details/:id", element: <EmployersSingleV1 /> },
 
-  // { path: "job-list-v3", element: <JobListPage /> },
 
   // { path: "employers-list-v1", element: <EmployerListPage1 /> },
   { path: "employers-list-v2", element: <EmployerListPage2 /> },

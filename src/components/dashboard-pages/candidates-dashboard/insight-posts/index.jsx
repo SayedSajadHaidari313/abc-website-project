@@ -5,7 +5,7 @@ import DashboardCandidatesSidebar from "../../../header/DashboardCandidatesSideb
 import BreadCrumb from "../../BreadCrumb";
 import CopyrightFooter from "../../CopyrightFooter";
 import MenuToggler from "../../MenuToggler";
-import InsightList from "./components/InsightList";
+import RfpsList from "./components/RfpsList";
 
 const index = () => {
   return (
@@ -28,17 +28,17 @@ const index = () => {
       {/* <!-- Dashboard --> */}
       <section className="user-dashboard">
         <div className="dashboard-outer">
-          <BreadCrumb title="Insight Post!" />
+          <BreadCrumb title="Rfps Post!" />
           {/* breadCrumb */}
 
           <MenuToggler />
           {/* Collapsible sidebar button */}
 
           <div className="row">
-            <div className="col-lg-12"> 
+            <div className="col-lg-12">
               {/* <!-- Ls widget --> */}
               <div className="ls-widget">
-                <InsightList />
+                <RfpsList />
               </div>
             </div>
           </div>

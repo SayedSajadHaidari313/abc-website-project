@@ -11,7 +11,7 @@ const CompanyLocationMap = ({ latitude, longitude, companyName, address }) => {
       // Load Google Maps script if not already loaded
       const script = document.createElement("script");
       script.src = `https://maps.googleapis.com/maps/api/js?key=${
-        // process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 
+        // process.env.REACT_APP_GOOGLE_MAPS_API_KEY ||
         "YOUR_API_KEY"
       }
       &libraries=places`;
@@ -245,6 +245,29 @@ const CompanyLocationMap = ({ latitude, longitude, companyName, address }) => {
           overflow: "hidden",
         }}
       />
+
+      {/* Directions Button */}
+      {latitude && longitude && (
+        <div style={{ textAlign: "center", marginTop: "10px" }}>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              padding: "8px 16px",
+              backgroundColor: "#1967D2",
+              color: "#fff",
+              borderRadius: "4px",
+              textDecoration: "none",
+              fontWeight: "bold",
+              marginTop: "8px",
+            }}
+          >
+            Get Directions
+          </a>
+        </div>
+      )}
 
       <div
         className="map-footer"

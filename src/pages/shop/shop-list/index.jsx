@@ -3,8 +3,8 @@ import ShopList from "@/components/shop/shop-list";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Shop List || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Shop List || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const ShopListPage = () => {

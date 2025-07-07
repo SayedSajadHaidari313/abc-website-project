@@ -17,8 +17,8 @@ import { useParams } from "react-router-dom";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Job Single Dyanmic V4 || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Job Single Dyanmic V4 || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const JobSingleDynamicV4 = () => {

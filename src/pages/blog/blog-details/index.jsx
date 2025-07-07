@@ -9,8 +9,8 @@ import { useParams } from "react-router-dom";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Blog Details Dyanmic V1 || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Blog Details Dyanmic V1 || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const BlogDetailsDynamic = () => {

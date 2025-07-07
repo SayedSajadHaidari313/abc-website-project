@@ -500,6 +500,23 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.14.1.tgz"
   integrity sha512-Qg4DMQsfPNAs88rb2xkdk03N3bjK4jgX5fR24eHCTR9q6PrhZQZ4UJBPzCHJkIpTRN1UKxx2DzjZmnC+7Lj0Ow==
 
+"@stagewise-plugins/react@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.npmjs.org/@stagewise-plugins/react/-/react-0.4.9.tgz"
+  integrity sha512-njlmHe92sAAvEGPeeyZS+a+twuVBNNaEmjFuUGs02WWnG20HquoXMHRgdUFH5Ecr0cxHS2SP/AbKq/kYEFwMjA==
+
+"@stagewise/toolbar-react@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.npmjs.org/@stagewise/toolbar-react/-/toolbar-react-0.4.9.tgz"
+  integrity sha512-K27i8GT20EWQJTmY+XQTvgiZh4EDq83W82zSUdSF7Fo8v9ogypn+wZbyFlLg97F2OYysc0uhILwUlS5eVItpyQ==
+  dependencies:
+    "@stagewise/toolbar" "0.4.9"
+
+"@stagewise/toolbar@0.4.9":
+  version "0.4.9"
+  resolved "https://registry.npmjs.org/@stagewise/toolbar/-/toolbar-0.4.9.tgz"
+  integrity sha512-fBggX+4nLwRDHnevWk32BjpMpc6vjF2k9mdamsPqAUnbsKbJnkTCjm0o8DOKcjRO9M/PGwcED4Ct0AWHQvkR/Q==
+
 "@standard-schema/utils@^0.3.0":
   version "0.3.0"
   resolved "https://registry.npmjs.org/@standard-schema/utils/-/utils-0.3.0.tgz"
@@ -3087,6 +3104,11 @@ react-hook-form@^7.56.4:
   version "7.56.4"
   resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.56.4.tgz"
   integrity sha512-Rob7Ftz2vyZ/ZGsQZPaRdIefkgOSrQSPXfqBdvOPwJfoGnjwRJUs7EM7Kc1mcoDv3NOtqBzPGbcMB8CGn9CKgw==
+
+react-icons@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.npmjs.org/react-icons/-/react-icons-5.5.0.tgz"
+  integrity sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==
 
 react-input-range@^1.3.0:
   version "1.3.0"

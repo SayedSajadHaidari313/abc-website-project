@@ -1,5 +1,4 @@
 import SearchForm3 from "../../common/job-search/SearchForm3";
-import PopularSearch from "../PopularSearch";
 
 const index = () => {
   return (
@@ -25,7 +24,7 @@ const index = () => {
         {/* <!-- Job Search Form --> */}
 
         {/* <!-- Popular Search --> */}
-        <PopularSearch />
+        {/* <PopularSearch /> */}
         {/* <!-- End Popular Search --> */}
       </div>
     </section>

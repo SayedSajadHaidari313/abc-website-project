@@ -1,11 +1,11 @@
-import { deleteRequest, getRequest, postRequest } from "@/auth/FetchInterceptor";
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+} from "@/auth/FetchInterceptor";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const getItemsData = async (
-  current,
-  pageSize,
-  searchQuery,
-) => {
+export const getItemsData = async (current, pageSize, searchQuery) => {
   return await getRequest(`admin/items`, {
     current: current,
     pageSize: pageSize,
@@ -43,7 +43,7 @@ export const deleteItems = async (ids) => {
 };
 
 export const updateItems = async (params) => {
-  return postRequest(`admin/items/${params.get("id")}`, params, {
+  return postRequest(`user/item/${params.get("id")}`, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -108,5 +108,89 @@ export const useGetAllItemsData = () => {
   return useQuery({
     queryKey: ["fetch-Items-all"],
     queryFn: () => getItemsAllData(),
+  });
+};
+
+export const getAllItemsData = async (
+  current,
+  pageSize,
+  searchQuery,
+  location,
+  category
+) => {
+  return await getRequest(`get-all-item`, {
+    current: current,
+    pageSize: pageSize,
+    searchQuery: searchQuery,
+    location: location,
+    category: category,
+  });
+};
+
+export const useGetAllWebsiteItemsData = ({
+  current,
+  pageSize,
+  searchQuery,
+  location,
+  category,
+}) => {
+  return useQuery({
+    queryKey: [
+      "fetch-get-all-item",
+      current,
+      pageSize,
+      searchQuery,
+      location,
+      category,
+    ],
+    queryFn: () =>
+      getAllItemsData(current, pageSize, searchQuery, location, category),
+    enabled: !!current && !!pageSize, // Ensure query runs only when pagination is set
+  });
+};
+
+export const getMyItemsAllData = async () => {
+  return await getRequest(`user/my-items`);
+};
+
+export const useGetAllMyItemsData = () => {
+  return useQuery({
+    queryKey: ["fetch-get-my-items"],
+    queryFn: () => getMyItemsAllData(),
+  });
+};
+
+// Fetch items by categoryId
+export const getItemsByCategoryId = async (
+  categoryId,
+  current,
+  pageSize,
+  searchQuery
+) => {
+  return await getRequest(`category/${categoryId}/items`, {
+    current: current,
+    pageSize: pageSize,
+    searchQuery: searchQuery,
+    categoryId: categoryId,
+  });
+};
+
+export const useGetItemsByCategoryId = ({
+  categoryId,
+  current,
+  pageSize,
+  searchQuery,
+}) => {
+  return useQuery({
+    queryKey: [
+      "fetch-items-by-category",
+      categoryId,
+      current,
+      pageSize,
+      searchQuery,
+    ],
+    queryFn: () =>
+      getItemsByCategoryId(categoryId, current, pageSize, searchQuery),
+    enabled: !!categoryId && !!current && !!pageSize, // Only run if categoryId and pagination are set
   });
 };

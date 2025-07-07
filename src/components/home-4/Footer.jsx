@@ -2,18 +2,10 @@ import CopyrightFooter from "../footer/common-footer/CopyrightFooter";
 import FooterApps from "../footer/FooterApps";
 import FooterContent3 from "../footer/FooterContent3";
 import SearchForm2 from "../footer/SearchForm2";
-import { useGetSettingData } from "@/queries/settings.query";
-import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
 
 const Footer = () => {
-  const { data } = useGetSettingData();
-  const footerData = data?.data || [];
-  const datas = footerData;
 
-  const formatImageUrl = (path) => {
-    if (!path) return null;
-    return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
-  };
+
 
   return (
     <footer
@@ -23,34 +15,29 @@ const Footer = () => {
       <div className="auto-container">
         {/* <!--Widgets Section--> */}
         <div className="widgets-section" data-aos="fade-up">
-          <div className="newsletter-form wow fadeInUp">
+          {/* <div className="newsletter-form wow fadeInUp">
             <div className="sec-title light text-center">
               <h2>Subscribe Our Newsletter</h2>
               <div className="text">We don't send spam so don't worry.</div>
             </div>
             <SearchForm2 />
-          </div>
+          </div> */}
           {/* End .newsletter-form */}
 
           <div className="row">
             <div className="big-column col-xl-3 col-lg-3 col-md-12">
-              <div className="footer-column about-widget">
-                <div className="logo">
-                  <a href="#">
-                    <img src={formatImageUrl(datas?.md_logo)} alt="brand" />
-                  </a>
-                </div>
-                <p className="phone-num">
-                  <span>Call us </span>
-                  <a href={`tel:${datas?.site_phone}`}>{datas?.site_phone}</a>
-                </p>
-                <p className="address">
-                  {datas?.address}
-                  <br />
-                  <a href={`mailto:${datas?.site_email}`} className="email">
-                    {datas?.site_email}
-                  </a>
-                </p>
+                <div className="footer-column about-widget">
+                  <h4 className="widget-title">About</h4>
+                  <p 
+                  style={{ color:"white",  }}
+                  className="about-abcaf">
+                    Afghanistan Business Community is Home For all Businesses
+                    Directory in Afghanistan, The biggest and most updated
+                    (daily) business directory for Afghanistan. Find Business By
+                    category name (a-z) and list your Business for free! Also
+                    providing B2B - Business to Business Services, Publishing
+                    RFQ and RFP.
+                  </p>
               </div>
             </div>
             {/* End footer address left widget */}

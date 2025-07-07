@@ -3,7 +3,7 @@ import { useGetSettingData } from "@/queries/settings.query";
 const SidebarFooter = () => {
       const { data } = useGetSettingData();
     const footerData = data?.data || [];
-    const datas = footerData[0];
+    const datas = footerData;
 
   const socialContent = [
     { id: 1, icon: "fa-facebook-f", link: datas?.facebook },
@@ -18,7 +18,7 @@ const SidebarFooter = () => {
       {/* job post btn */}
 
       <div className="mm-listitem__text">
-        <div className="contact-info">
+        {/* <div className="contact-info">
           <span className="phone-num">
             <span>Call us</span>
             <a ><a href={`tel:${datas?.site_phone}`}>{datas?.site_phone}</a></a>
@@ -29,7 +29,7 @@ const SidebarFooter = () => {
           <a href={`mailto:${datas?.site_email}`} className="email">
           {datas?.site_email}
           </a>
-        </div>
+        </div> */}
         {/* End .contact-info */}
 
         <div className="social-links">

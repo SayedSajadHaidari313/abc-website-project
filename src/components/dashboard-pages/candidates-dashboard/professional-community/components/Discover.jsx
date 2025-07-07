@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined, UserAddOutlined } from "@ant-design/icons";
@@ -11,8 +10,9 @@ function Discover() {
   const navigate = useNavigate();
   const { data: userAuth } = useGetAuthUserData();
   const { mutate } = usePostFollowCreate();
-  const { data, isLoading: usersLoading } = useGetUserData(); 
-  const filteredData = data?.data?.filter((user) => user?.role === 'JOB_SEEKER') || [];
+  const { data, isLoading: usersLoading } = useGetUserData();
+  const filteredData =
+    data?.data?.filter((user) => user?.role === "JOB_SEEKER") || [];
 
   const [followedUsers, setFollowedUsers] = useState([]);
   const [loadingUserId, setLoadingUserId] = useState(null); // برای نمایش لودینگ هر کاربر به صورت مجزا
@@ -20,7 +20,9 @@ function Discover() {
   // دریافت فالو شده‌ها برای فیلتر کردن
   useEffect(() => {
     if (userAuth && userAuth?.user?.followings) {
-      setFollowedUsers(userAuth.user.followings.map((follow) => follow.following_id));
+      setFollowedUsers(
+        userAuth.user.followings.map((follow) => follow.following_id)
+      );
     }
   }, [userAuth]);
 
@@ -55,10 +57,13 @@ function Discover() {
     );
   };
 
-  if (usersLoading) return <p><Skeleton /></p>;
+  if (usersLoading)
+    return (
+      <p>
+        <Skeleton />
+      </p>
+    );
 
- 
-  
   return (
     <div className="row">
       {filteredData

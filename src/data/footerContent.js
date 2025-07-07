@@ -1,40 +1,39 @@
 const footerContent = [
   {
     id: 1,
-    title: "For Candidates",
+    title: "Rfp/Rfq List",
     menuList: [
-      { name: "Browse Jobs", route: "/jobs" },
-      { name: "Candidate Dashboard", route: "/login" },
+      { name: "Browse Rfp", route: "/listing" },
+      { name: "Browse Rfq", route: "/listing" },
     ],
   },
+
   {
     id: 2,
-    title: "For Employers",
-    menuList: [
-      {
-        name: "Employers",
-        route: "/for-employers",
-      },
-      { name: "Employer Dashboard", route: "/login" },
-      { name: "Add Job", route: "/login" },
-    ],
-  },
-  {
-    id: 3,
     title: "About Us",
     menuList: [
       { name: "About Us", route: "/about" },
       { name: "Terms Page", route: "/terms" },
       { name: "Contact", route: "/contact" },
+      { name: "Membership", route: "/register" },
+    ],
+  },
+
+  {
+    id: 3,
+    title: "Other Websites",
+    menuList: [
+      { name: "bast.af", url: "https://bast.af" },
+      { name: "ncp.af", url: "https://ncp.af" },
+      { name: "home.af", url: "https://home.af" },
     ],
   },
   {
     id: 4,
-    title: "Helpful Resources",
+    title: "Contact",
     menuList: [
-      { name: "For Employers", route: "/for-employers" },
-      // { name: "Terms of Use", route: "/terms" },
-      { name: "How It Works", route: "/how-it-work" },
+      { name: "info@abc.af", url: "https://bast.af" },
+      { name: "Contact Us", route: "/contact" },
     ],
   },
 ];

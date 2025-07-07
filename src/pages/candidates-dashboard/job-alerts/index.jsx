@@ -3,8 +3,8 @@ import JobAlerts from "@/components/dashboard-pages/candidates-dashboard/job-ale
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "My Job Alerts || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "My Job Alerts || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const JobAlertPage = () => {

@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
 import MobileSidebar from "./mobile-sidebar";
-
+import { useGetSettingData } from "@/queries/settings.query";
+import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
 
 const MobileMenu = () => {
+  const { data } = useGetSettingData();
+
+  const formatImageUrl = (path) => {
+    if (!path) return null;
+    return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
+  };
+  const datas = data?.data || {};
+
   return (
     // <!-- Main Header-->
     <header className="main-header main-header-mobile">
@@ -13,11 +22,14 @@ const MobileMenu = () => {
             <div className="logo-box">
               <div className="logo">
                 <Link to="/">
-                  <img
-                   
-                    src="/images/logo.svg"
-                    alt="brand"
-                  />
+                  {datas?.md_logo ? (
+                    <img
+                      src={formatImageUrl(datas?.md_logo)}
+                      alt={datas?.site_name}
+                    />
+                  ) : datas?.site_name ? (
+                    <span>{datas?.site_name.charAt(0).toUpperCase()}</span>
+                  ) : null}
                 </Link>
               </div>
             </div>
@@ -30,9 +42,7 @@ const MobileMenu = () => {
 
           <div className="outer-box">
             <div className="login-box">
-              <Link
-                to="/login"
-              >
+              <Link to="/login">
                 <span className="icon icon-user"></span>
               </Link>
             </div>

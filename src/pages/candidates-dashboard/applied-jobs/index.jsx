@@ -2,8 +2,8 @@ import AppliedJobs from "@/components/dashboard-pages/candidates-dashboard/appli
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Applied Jobs || InsightDeed - Job Portal Platform",
-  description: "InsightDeed - Job Portal Platform",
+  title: "Applied Jobs || ABC.AF - Directory Platform",
+  description: "ABC.AF - Directory Platform",
 };
 
 const AppliedJobsPage = () => {

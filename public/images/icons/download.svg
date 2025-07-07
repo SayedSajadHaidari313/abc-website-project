@@ -1,0 +1,10 @@
+<svg width="150" height="150" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#f0f0f0" rx="16"></rect>
+  <g fill="#555">
+    <circle cx="100" cy="70" r="30" fill="#ccc"></circle>
+    <rect x="60" y="110" width="80" height="20" rx="4" fill="#bbb"></rect>
+    <text x="100" y="160" font-size="14" text-anchor="middle" fill="#888" font-family="Arial, sans-serif">
+      Company Logo
+    </text>
+  </g>
+</svg>

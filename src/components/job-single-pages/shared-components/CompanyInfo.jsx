@@ -1,4 +1,3 @@
-import { useGetCompaniesData } from "@/queries/get.companies.data.query";
 import { useGetAllItemsData } from "@/queries/website.query/items.query";
 import { Alert, Skeleton } from "antd";
 import PropTypes from "prop-types";

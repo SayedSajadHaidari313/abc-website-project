@@ -1,17 +1,17 @@
 import LoginPopup from "@/components/common/form/login/LoginPopup";
-import FooterDefault from "@/components/footer/common-footer";
 import DefaulHeader from "@/components/header/DefaulHeader";
 import MobileMenu from "@/components/header/MobileMenu";
-import MapJobFinder from "@/components/job-listing-pages/components/MapJobFinder";
 import SocialTwo from "@/components/job-single-pages/social/SocialTwo";
 import { useParams } from "react-router-dom";
 import { formatImageUrl, getFallbackImage } from "@/utils/imageUtils";
 
 import MetaComponent from "@/components/common/MetaComponent";
-import { useGetAllItemsData } from "@/queries/website.query/items.query";
 import CompanyInfo from "@/components/job-single-pages/shared-components/CompanyInfo";
 import CompanyLocationMap from "@/components/common/CompanyLocationMap";
 import Footer from "@/components/home-4/Footer";
+import { Skeleton } from "antd";
+import { useGetCompanyBySlug } from "@/queries/website.query/company.query";
+import SmartText from "@/components/common/SmartText";
 
 const metadata = {
   title: "Company Details",
@@ -19,25 +19,21 @@ const metadata = {
 };
 
 const CompanySingleDynamicV1 = () => {
-  const { data, isLoading, isError } = useGetAllItemsData();
-  const companyData = data?.data || [];
   let params = useParams();
   const slug = params.slug;
-  console.log("data ", companyData);
 
-  // Find company by slug or by title converted to slug
-  const company = companyData.find((item) => {
-    const itemSlug =
-      item.item_slug || item.item_title?.toLowerCase().replace(/\s+/g, "-");
-    return itemSlug === slug || item.id == slug; // Also check by id as fallback
-  });
+  // Use the dedicated hook to fetch company by slug
+  const { data, isLoading, isError } = useGetCompanyBySlug(slug);
+  const company = data?.data;
 
   // Show loading state
   if (isLoading) {
     return (
       <div className="auto-container">
         <div className="text-center">
-          <h2>Loading...</h2>
+          <h2>
+            <Skeleton />
+          </h2>
         </div>
       </div>
     );
@@ -86,9 +82,9 @@ const CompanySingleDynamicV1 = () => {
           className="upper-box"
           style={{
             position: "relative",
-            backgroundImage: `url(${
-              formatImageUrl(company?.item_image) || getFallbackImage()
-            })`,
+            backgroundImage: `url(${formatImageUrl(
+              company?.user?.user_image
+            )})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -131,12 +127,14 @@ const CompanySingleDynamicV1 = () => {
                   <span className="company-logo">
                     <img
                       src={
-                        formatImageUrl(company?.item_image) ||
-                        getFallbackImage()
+                        company?.user?.user_image
+                          ? formatImageUrl(company?.user?.user_image)
+                          : getFallbackImage("item")
                       }
                       alt="logo"
                       onError={(e) => {
-                        e.target.src = getFallbackImage();
+                        e.target.onerror = null;
+                        e.target.src = getFallbackImage("item");
                       }}
                     />
                   </span>
@@ -201,7 +199,12 @@ const CompanySingleDynamicV1 = () => {
                 <div className="job-detail">
                   <h4>About {company?.item_title}</h4>
                   <p>
-                    {company?.item_description || "No description available."}
+                    <SmartText
+                      text={
+                        company?.item_description || "No description available."
+                      }
+                      // maxLength={150}
+                    />
                   </p>
 
                   <h4>Company Information</h4>
@@ -209,16 +212,10 @@ const CompanySingleDynamicV1 = () => {
                     <strong>Phone:</strong>{" "}
                     {company?.item_phone || "Not provided"}
                     <br />
-                    <strong>Category:</strong>{" "}
-                    {company?.category?.category_name || "Not specified"}
-                    <br />
                     <strong>Location:</strong>{" "}
                     {`${company?.city?.city_name || ""} ${
                       company?.country?.name || ""
                     }`.trim() || "Not specified"}
-                    <br />
-                    <strong>Status:</strong>{" "}
-                    {company?.item_status === 1 ? "Active" : "Inactive"}
                     <br />
                   </p>
                 </div>
@@ -261,14 +258,17 @@ const CompanySingleDynamicV1 = () => {
                           <img
                             className="item brand"
                             src={
-                              formatImageUrl(
-                                company?.user?.user_image,
-                                "user"
-                              ) || getFallbackImage("user")
+                              company?.user?.user_image
+                                ? formatImageUrl(
+                                    company?.user?.user_image,
+                                    "user"
+                                  )
+                                : getFallbackImage("item")
                             }
                             alt="resource"
                             onError={(e) => {
-                              e.target.src = getFallbackImage("user");
+                              e.target.onerror = null;
+                              e.target.src = getFallbackImage("item");
                             }}
                           />
                         </div>
