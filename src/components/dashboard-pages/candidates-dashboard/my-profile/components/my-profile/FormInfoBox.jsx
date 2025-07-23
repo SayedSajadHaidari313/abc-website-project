@@ -137,8 +137,7 @@ const FormInfoBox = () => {
               name="user_image"
               id="photoUpload"
               onChange={handleFileChange}
-              className="form-control"
-              style={{ cursor: "pointer" }}
+              className="form-control file-input-cursor"
             />
             <div className="mt-2 alert alert-info py-2 px-3 small mb-0">
               📷 Upload a clear profile photo (JPG, PNG). <br />

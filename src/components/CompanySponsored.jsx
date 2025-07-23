@@ -3,29 +3,44 @@ import Slider from "react-slick";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Divider, Spin } from "antd";
 import { useGetAllItemsData } from "@/queries/website.query/items.query";
-import {
-  formatImageUrl,
-  getFallbackImage,
-  handleImageError,
-} from "@/utils/imageUtils";
+import { formatImageUrl, getFallbackImage } from "@/utils/imageUtils";
 import { useNavigate } from "react-router-dom";
 import SmartText from "@/components/common/SmartText";
 import { FaRegBuilding } from "react-icons/fa";
+import { truncateText } from "@/utils/PublicTruncat";
 
 // Custom arrow components
 const PrevArrow = (props) => {
-  const { className, onClick } = props;
+  const { className, onClick, style } = props;
   return (
-    <div className={`${className} custom-prev`} onClick={onClick}>
+    <div
+      className={`${className} slick-arrow slick-prev custom-prev`}
+      onClick={onClick}
+      style={{
+        ...style,
+        display: "block",
+        left: -10,
+        zIndex: 10,
+      }}
+    >
       <LeftOutlined />
     </div>
   );
 };
 
 const NextArrow = (props) => {
-  const { className, onClick } = props;
+  const { className, onClick, style } = props;
   return (
-    <div className={`${className} custom-next`} onClick={onClick}>
+    <div
+      className={`${className} slick-arrow slick-next custom-next`}
+      onClick={onClick}
+      style={{
+        ...style,
+        display: "block",
+        right: -10,
+        zIndex: 10,
+      }}
+    >
       <RightOutlined />
     </div>
   );
@@ -122,7 +137,7 @@ const CompanySponsored = ({ jobs = [] }) => {
     dots: true,
     infinite: displayItems.length > 4,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -140,15 +155,17 @@ const CompanySponsored = ({ jobs = [] }) => {
       {
         breakpoint: 992,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
+          arrows: false, // Hide arrows on mobile
+          dots: true,
         },
       },
     ],
@@ -170,16 +187,26 @@ const CompanySponsored = ({ jobs = [] }) => {
             {displayItems.map((job, idx) => (
               <div key={idx} style={{ padding: "0 10px" }}>
                 <div
-                  className="card-company"
+                  className="company-card"
                   style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: "#fff",
                     borderRadius: 16,
                     overflow: "hidden",
                     boxShadow: "0 2px 12px #0001",
-                    margin: "0 auto",
-                    maxWidth: "100%",
+                    border: "1px solid #f0f0f0",
+                    height: "100%", // Ensure equal height
                   }}
                 >
-                  <div style={{ position: "relative" }}>
+                  {/* Photo Section */}
+                  <div
+                    style={{
+                      position: "relative",
+                      paddingTop: "75%", // Responsive aspect ratio
+                      overflow: "hidden",
+                    }}
+                  >
                     {imageLoadingStates[`${idx}-item`] && (
                       <div
                         style={{
@@ -203,8 +230,11 @@ const CompanySponsored = ({ jobs = [] }) => {
                         src={job.image || job.avatar}
                         alt="Listing"
                         style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
                           width: "100%",
-                          height: 200,
+                          height: "100%",
                           objectFit: "cover",
                         }}
                         onError={(e) => {
@@ -224,8 +254,11 @@ const CompanySponsored = ({ jobs = [] }) => {
                     ) : (
                       <div
                         style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
                           width: "100%",
-                          height: 200,
+                          height: "100%",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -235,22 +268,6 @@ const CompanySponsored = ({ jobs = [] }) => {
                         <FaRegBuilding size={64} color="#bbb" />
                       </div>
                     )}
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: 10,
-                        left: 10,
-                        background:
-                          job.status === "OPEN" ? "#27ae60" : "#e74c3c",
-                        color: "#fff",
-                        borderRadius: 6,
-                        padding: "2px 10px",
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {job.status}
-                    </span>
 
                     {job.featured && (
                       <span
@@ -264,13 +281,25 @@ const CompanySponsored = ({ jobs = [] }) => {
                           padding: "2px 10px",
                           fontSize: 12,
                           fontWeight: 600,
+                          zIndex: 2,
                         }}
                       >
                         Promoted
                       </span>
                     )}
                   </div>
-                  <div className="card-body" style={{ padding: 16 }}>
+
+                  {/* Details Section */}
+                  <div
+                    className="card-body"
+                    style={{
+                      padding: "12px",
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 1,
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <div
                       style={{
                         display: "flex",
@@ -283,6 +312,11 @@ const CompanySponsored = ({ jobs = [] }) => {
                           fontWeight: 600,
                           cursor: "pointer",
                           color: "#1890ff",
+                          fontSize: 16,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          flex: 1,
                         }}
                         onClick={() =>
                           navigate(
@@ -294,58 +328,28 @@ const CompanySponsored = ({ jobs = [] }) => {
                           )
                         }
                       >
-                        {job.title}
+                        {truncateText(job.title, 20)}{" "}
                       </span>
                       <i
                         className="fa fa-check-circle"
-                        style={{ color: "#27ae60", marginLeft: 6 }}
+                        style={{
+                          color: "#27ae60",
+                          marginLeft: 6,
+                          fontSize: 14,
+                        }}
                       ></i>
                     </div>
-                    {/* Subtitle */}
-                    <SmartText text={job.subtitle} maxLength={80} />
-                    <div
-                      style={{ fontSize: 13, color: "#888", marginBottom: 8 }}
-                    >
-                      <i className="fa fa-phone" style={{ marginRight: 4 }}></i>{" "}
-                      {job.phone} &nbsp;
-                      <i
-                        className="fa fa-map-marker-alt"
-                        style={{ marginRight: 4 }}
-                      ></i>{" "}
-                      {job.location}
-                    </div>
-                    <Divider></Divider>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 8 }}
-                    >
-                      <span
-                        style={{
-                          background: job.categoryColor,
-                          color: "#fff",
-                          borderRadius: 6,
-                          padding: "2px 10px",
-                          fontSize: 13,
-                        }}
-                      >
-                        <i
-                          className={`fa ${job.categoryIcon}`}
-                          style={{ marginRight: 4 }}
-                        ></i>
-                        {job.category}
-                      </span>
-                      <span
-                        style={{
-                          fontWeight: 600,
-                          color: "#27ae60",
-                          fontSize: 15,
-                        }}
-                      >
-                        {job.rating}
-                      </span>
-                      <span style={{ color: "#888", fontSize: 13 }}>
-                        {job.reviews} Reviews
-                      </span>
-                    </div>
+
+                    <SmartText
+                      text={job.subtitle}
+                      maxLength={60}
+                      style={{
+                        color: "#666",
+                        marginBottom: 0,
+                        fontSize: 12,
+                        flex: 1,
+                      }}
+                    />
                   </div>
                 </div>
               </div>

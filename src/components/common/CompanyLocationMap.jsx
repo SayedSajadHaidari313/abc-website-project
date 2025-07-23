@@ -133,7 +133,7 @@ const CompanyLocationMap = ({ latitude, longitude, companyName, address }) => {
         url:
           "data:image/svg+xml;charset=UTF-8," +
           encodeURIComponent(`
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="https://www.w3.org/2000/svg">
             <circle cx="20" cy="20" r="20" fill="#1967D2"/>
             <circle cx="20" cy="20" r="8" fill="white"/>
             <circle cx="20" cy="20" r="4" fill="#1967D2"/>

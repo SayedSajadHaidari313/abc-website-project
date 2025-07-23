@@ -49,13 +49,10 @@ const RecentJobs = () => {
   };
 
   return (
-    <div
-      className="recent-jobs-slider-container"
-      style={{ position: "relative" }}
-    >
+    <div className="recent-jobs-slider-container">
       <Slider {...settings}>
         {jobs.map((item) => (
-          <div key={item.id} style={{ padding: "0 10px" }}>
+          <div key={item.id} className="recent-jobs-container">
             <div className="job-block-four">
               <div className="inner-box">
                 <ul className="job-other-info">

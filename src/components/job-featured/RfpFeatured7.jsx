@@ -10,7 +10,7 @@ import { MdDownloadForOffline } from "react-icons/md";
 
 const getRequestTypeDisplay = (type) => {
   const types = {
-    RFP: "Request for Proposal",
+    RFP: "Request for Proposal" ,
     RFQ: "Request for Quote",
     ITB: "Invitation to Bidding",
   };

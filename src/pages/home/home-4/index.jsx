@@ -5,14 +5,15 @@ import Home from "@/components/home-4";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Home-4 || Superio - Job Borad ReactJs Template",
-  description: "Superio - Job Borad ReactJs Template",
+  title: "Home - Explore Businesses & Services | ABC.AF Directory Platform",
+  description:
+    "Discover and connect with businesses, services, and professionals across Afghanistan on ABC.AF, the leading directory platform. Find what you need quickly and easily!",
 };
 
 const HomePage4 = () => {
   return (
     <>
-    <MetaComponent meta={metadata} />
+      <MetaComponent meta={metadata} />
       <Home />
     </>
   );

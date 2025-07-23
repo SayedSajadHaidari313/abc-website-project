@@ -1,3 +1,4 @@
+// External dependencies
 import React, { useRef, useState } from "react";
 import {
   Modal,
@@ -14,8 +15,9 @@ import {
 } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import * as Yup from "yup";
-
 import dayjs from "dayjs";
+
+// Internal dependencies
 import CancelButton from "@/components/Button/cancel.button";
 import SubmitButton from "@/components/Button/submit.button";
 import { usePostRfpsCreate } from "@/queries/website.query/rfps.query";
@@ -24,7 +26,13 @@ import { useAuthStore } from "@/auth/auth.store";
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
-const validationSchema = Yup.object().shape({
+// --- Constants ---
+const REQUEST_TYPE_OPTIONS = [
+  { label: "Request for Proposal", value: "RFP" },
+  { label: "Request for Quote", value: "RFQ" },
+];
+
+const VALIDATION_SCHEMA = Yup.object().shape({
   logged_in_user_id: Yup.number().required("Logged in user ID is required!"),
   title: Yup.string()
     .required("Please enter RFP title!")
@@ -39,7 +47,7 @@ const validationSchema = Yup.object().shape({
   user_id: Yup.number(),
 });
 
-const initialValues = {
+const INITIAL_VALUES = {
   logged_in_user_id: undefined,
   title: "",
   description: "",
@@ -50,6 +58,7 @@ const initialValues = {
   user_id: undefined,
 };
 
+// --- Component ---
 function CreateRfps({ open, onCancel }) {
   const formRef = useRef(null);
   const { mutate } = usePostRfpsCreate();
@@ -57,12 +66,14 @@ function CreateRfps({ open, onCancel }) {
   const [fileList, setFileList] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Reset form and file state
   const handleModalCancel = () => {
     onCancel();
     formRef.current?.resetFields();
     setFileList([]);
   };
 
+  // Handle form submission
   const handleFormSubmit = async (values) => {
     setLoading(true);
     try {
@@ -78,7 +89,7 @@ function CreateRfps({ open, onCancel }) {
         user_id: user.id,
       };
 
-      await validationSchema.validate(
+      await VALIDATION_SCHEMA.validate(
         { ...validatedData, file: fileList[0] },
         { abortEarly: false }
       );
@@ -128,11 +139,7 @@ function CreateRfps({ open, onCancel }) {
     }
   };
 
-  const requestTypeOptions = [
-    { label: "Request for Proposal", value: "RFP" },
-    { label: "Request for Quote", value: "RFQ" },
-  ];
-
+  // --- Render ---
   return (
     <Modal
       open={open}
@@ -147,7 +154,7 @@ function CreateRfps({ open, onCancel }) {
         layout="vertical"
         onFinish={handleFormSubmit}
         ref={formRef}
-        initialValues={initialValues}
+        initialValues={INITIAL_VALUES}
       >
         <Row gutter={16}>
           <Col span={12}>
@@ -163,7 +170,7 @@ function CreateRfps({ open, onCancel }) {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item hidden name="user_id"></Form.Item>
+            <Form.Item hidden name="user_id" />
           </Col>
           <Col span={12}>
             <Form.Item
@@ -179,7 +186,7 @@ function CreateRfps({ open, onCancel }) {
             >
               <Select
                 placeholder="Select request type"
-                options={requestTypeOptions}
+                options={REQUEST_TYPE_OPTIONS}
               />
             </Form.Item>
           </Col>
@@ -240,9 +247,6 @@ function CreateRfps({ open, onCancel }) {
                 maxCount={1}
                 onChange={(info) => {
                   const { status } = info.file;
-                  if (status !== "uploading") {
-                    console.log(info.file, info.fileList);
-                  }
                   if (status === "done") {
                     message.success(
                       `${info.file.name} file uploaded successfully.`
@@ -252,7 +256,7 @@ function CreateRfps({ open, onCancel }) {
                   }
                 }}
                 onDrop={(e) => {
-                  console.log("Dropped files", e.dataTransfer.files);
+                  // Optionally handle dropped files
                 }}
               >
                 <p className="ant-upload-drag-icon">

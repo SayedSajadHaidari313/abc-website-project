@@ -12,8 +12,6 @@ const Header = () => {
   const headerData = data || [];
   const { user } = useAuthStore();
 
-  console.log("headerData", headerData);
-
   const formatImageUrl = (path) => {
     if (!path) return null;
     return `${BASE_IMAGE_URL}/images/settings/${path.replace(/\\/g, "/")}`;
@@ -94,8 +92,9 @@ const Header = () => {
                     ? user?.company?.company_name.charAt(0).toUpperCase()
                     : ""}
                 </Avatar>
-                <span
-                style={{ color:"white" }} className="name">{user?.name}</span>
+                <span style={{ color: "white" }} className="name">
+                  {user?.name}
+                </span>
               </a>
               <ul className="dropdown-menu mt-2">
                 <li>

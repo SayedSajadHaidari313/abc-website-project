@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { useGetAllCategoryData } from "@/queries/website.query/category.query";
 
@@ -13,6 +13,7 @@ const SearchForm3 = () => {
   }));
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [searchInput, setSearchInput] = useState(
     searchParams.get("search") || ""
@@ -33,15 +34,13 @@ const SearchForm3 = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const newParams = {
+    const params = new URLSearchParams({
       page: "1",
       search: searchInput,
       location: locationInput,
       category: categoryInput,
-    };
-    setSearchParams(newParams);
-    // Do NOT clear form after search; keep values for user convenience
+    });
+    navigate(`/listing?${params.toString()}`);
   };
 
   return (

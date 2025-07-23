@@ -1,0 +1,135 @@
+// Common styles extracted from inline styles
+
+// Image styles
+.lazy-image {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+// Profile image styles
+.profile-image {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+}
+
+// Card styles
+.card-company {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px #0001;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+// Loading overlay
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  z-index: 1;
+}
+
+// Recent jobs slider
+.recent-jobs-container {
+  position: relative;
+  padding: 0 10px;
+}
+
+// Company card
+.company-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px #0001;
+  border: 1px solid #f0f0f0;
+  height: 100%;
+}
+
+// Form styles
+.form-heading {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: blue;
+}
+
+// Error message
+.error-message {
+  margin-top: 5px;
+  color: #dc3545;
+}
+
+// File input cursor
+.file-input-cursor {
+  cursor: pointer;
+}
+
+// Image container styles
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Status badge
+.status-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+  
+  &.open {
+    background: #27ae60;
+  }
+  
+  &.closed {
+    background: #e74c3c;
+  }
+}
+
+// Featured badge
+.featured-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f1c40f;
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+// Fallback icon container
+.fallback-icon-container {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+} 

@@ -20,7 +20,6 @@ const metadata = {
 const EmployersSingleV1 = () => {
   const { id } = useParams(); // گرفتن id از پارامترهای URL
   const { data: CompanyInfo, isLoading, isError } = useGetCompaniesData(); // استفاده از هوک برای گرفتن داده‌ها
-  // در صورتی که داده‌ها هنوز بارگذاری نشده‌اند یا خطا وجود دارد
   if (isLoading) return <Skeleton active paragraph={{ rows: 6 }} />;
 
   if (isError)

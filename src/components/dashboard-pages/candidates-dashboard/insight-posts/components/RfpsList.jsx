@@ -95,7 +95,6 @@ function Index() {
   );
 
   const RfpsData = (data?.data || []).filter((rfp) => rfp.user_id === user?.id);
-  console.log("data in here", RfpsData);
 
   useEffect(() => {
     localStorage.setItem("searchInput", searchInput);
@@ -482,6 +481,7 @@ function Index() {
         <Row justify="space-between" align="middle" gutter={[16, 16]}>
           <Col xs={24} sm={12} md={8}>
             <Input.Search
+              size="large"
               placeholder="Search RFPs..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -495,6 +495,7 @@ function Index() {
           <Col xs={24} sm={12} md={16}>
             <Space wrap>
               <Button
+                size="large"
                 type="default"
                 icon={<FilterOutlined />}
                 onClick={() => setShowFilters(!showFilters)}
@@ -507,10 +508,11 @@ function Index() {
                 trigger={["click"]}
                 placement="bottomRight"
               >
-                <Button icon={<SettingOutlined />}>Columns</Button>
+                <Button size="large" icon={<SettingOutlined />}>Columns</Button>
               </Dropdown>
 
               <Button
+              size="large"
                 type="default"
                 icon={<DownloadOutlined />}
                 onClick={exportToCSV}
@@ -519,6 +521,7 @@ function Index() {
               </Button>
 
               <Button
+              size="large"
                 type="default"
                 icon={<ReloadOutlined />}
                 onClick={refreshData}
@@ -528,6 +531,7 @@ function Index() {
               </Button>
 
               <Button
+              size="large"
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={openCreateRfps}
@@ -537,6 +541,7 @@ function Index() {
 
               {selectedRowKeys.length > 0 && (
                 <Button
+                  size="large"
                   type="primary"
                   danger
                   icon={<DeleteOutlined />}

@@ -27,6 +27,6 @@ export const isActiveLink = (menuPath, routePath) => {
     return menuPath.replace(/\/\d+/, "") === routePath.replace(/\/\d+/, "");
   }
 };
-
+//
 export const BASE_IMAGE_URL = "http://localhost:8000";
-// export const BASE_IMAGE_URL = "https://api.insightdeed.com/public";
+// export const BASE_IMAGE_URL = "https://db.abc.af/public";

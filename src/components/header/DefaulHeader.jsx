@@ -6,12 +6,12 @@ import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
 import { useAuthStore } from "@/auth/auth.store";
 import { Avatar } from "antd";
 import { UserAddOutlined, LoginOutlined } from "@ant-design/icons";
+import LazyImage from "../common/LazyImage";
 
 const DefaulHeader = () => {
   const { data } = useGetSettingData();
   const headerData = data?.data || [];
   const { user } = useAuthStore();
-  console.log("Header Data:", user);
   // const employer = data?.data;
 
   const formatImageUrl = (path) => {
@@ -50,14 +50,7 @@ const DefaulHeader = () => {
           <div className="logo-box">
             <div className="logo">
               <Link to="/">
-                <img
-                  width={100}
-                  src={datas?.md_logo ? formatImageUrl(datas?.md_logo) : null}
-                  alt={datas?.site_name}
-                />
-                {!datas?.md_logo && datas?.site_name
-                  ? datas?.name.charAt(0).toUpperCase()
-                  : ""}
+                <LazyImage src="/images/logo.svg" alt="brand logo" />
               </Link>
             </div>
           </div>

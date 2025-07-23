@@ -6,6 +6,7 @@ import BreadCrumb from "../../BreadCrumb";
 import CopyrightFooter from "../../CopyrightFooter";
 import MenuToggler from "../../MenuToggler";
 import RfpsList from "./components/RfpsList";
+// import GoogleAd from "@/components/common/GoogleAd";
 
 const index = () => {
   return (
@@ -43,6 +44,25 @@ const index = () => {
             </div>
           </div>
           {/* End .row */}
+
+          {/* Google AdSense ad after RfpsList */}
+          <div
+            style={{
+              margin: "32px 0",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {/* <GoogleAd
+              adSlot="1234567890"
+              style={{
+                display: "block",
+                minHeight: 100,
+                width: "100%",
+                maxWidth: 728,
+              }}
+            /> */}
+          </div>
         </div>
         {/* End dashboard-outer */}
       </section>

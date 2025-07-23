@@ -1,6 +1,6 @@
 import { useGetAuthUserData } from "@/queries/user.query";
 import { useNavigate } from "react-router-dom";
-import { EditOutlined } from "@ant-design/icons"; // Replace with another icon if needed
+import { EditOutlined } from "@ant-design/icons";
 import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
 
 function Profile() {
@@ -22,8 +22,7 @@ function Profile() {
                   : "/images/default-avatar.png"
               }
               alt="Profile"
-              className="rounded-circle border"
-              style={{ width: "90px", height: "90px", objectFit: "cover" }}
+              className="rounded-circle border profile-image"
             />
             <div>
               <h3 className="mb-1">{fullName}</h3>

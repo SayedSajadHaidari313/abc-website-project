@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const mainMenuItems = [
   { name: "Home", routePath: "/" },
-  { name: "Listing", routePath: "/listing" },
+  { name: "Company Listing", routePath: "/listing" },
   { name: "RFPS/RFQS", routePath: "/rfps" },
   { name: "About", routePath: "/about" },
   { name: "Contact", routePath: "/contact" },

@@ -10,6 +10,7 @@ import { TbMoodEmptyFilled } from "react-icons/tb";
 import { FaRegBuilding } from "react-icons/fa";
 import SmartText from "@/components/common/SmartText";
 import { useGetAllCategoryData } from "@/queries/website.query/category.query";
+import LazyImage from "../common/LazyImage";
 
 const CompanyPage1 = ({
   jobs = [],
@@ -75,8 +76,6 @@ const CompanyPage1 = ({
 
   const [imageLoadingStates, setImageLoadingStates] = React.useState({});
   const navigate = useNavigate();
-
-  console.log("itemData", itemData);
 
   // Test image URLs when data changes
   React.useEffect(() => {
@@ -229,47 +228,20 @@ const CompanyPage1 = ({
           {displayItems.map((job, idx) => (
             <div
               key={idx}
-              className="col-xl-3 col-lg-3 col-md-6 col-sm-12"
-              style={{ padding: "0 10px", marginBottom: "20px" }}
+              className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4 px-2"
             >
-              <div
-                className="card-company"
-                style={{
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  boxShadow: "0 2px 12px #0001",
-                  margin: "0 auto",
-                  maxWidth: "100%",
-                }}
-              >
-                <div style={{ position: "relative" }}>
+              <div className="card-company">
+                <div className="image-container">
                   {imageLoadingStates[`${idx}-item`] && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "#f5f5f5",
-                        zIndex: 1,
-                      }}
-                    >
+                    <div className="loading-overlay">
                       <Spin size="small" />
                     </div>
                   )}
                   {job.image || job.avatar ? (
-                    <img
+                    <LazyImage
                       src={job.image || job.avatar}
                       alt="Listing"
-                      style={{
-                        width: "100%",
-                        height: 200,
-                        objectFit: "cover",
-                      }}
+                      onLoad={() => handleImageLoad(idx, "item")}
                       onError={(e) => {
                         if (e.target.src !== job.avatar && job.avatar) {
                           e.target.src = job.avatar;
@@ -281,55 +253,21 @@ const CompanyPage1 = ({
                           e.target.parentNode.appendChild(icon);
                         }
                       }}
-                      onLoad={() => handleImageLoad(idx, "item")}
-                      onLoadStart={() => handleImageLoadStart(idx, "item")}
                     />
                   ) : (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: 200,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "#f5f5f5",
-                      }}
-                    >
+                    <div className="fallback-icon-container">
                       <FaRegBuilding size={64} color="#bbb" />
                     </div>
                   )}
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      left: 10,
-                      background: job.status === "OPEN" ? "#27ae60" : "#e74c3c",
-                      color: "#fff",
-                      borderRadius: 6,
-                      padding: "2px 10px",
-                      fontSize: 12,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {job.status}
-                  </span>
-
-                  {job.featured && (
+                  {job.status && (
                     <span
-                      style={{
-                        position: "absolute",
-                        top: 10,
-                        right: 10,
-                        background: "#fff",
-                        color: "#ff9800",
-                        borderRadius: 6,
-                        padding: "2px 10px",
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
+                      className={`status-badge ${job.status.toLowerCase()}`}
                     >
-                      Promoted
+                      {job.status}
                     </span>
+                  )}
+                  {job.featured && (
+                    <span className="featured-badge">Featured</span>
                   )}
                 </div>
                 <div className="card-body" style={{ padding: 16 }}>

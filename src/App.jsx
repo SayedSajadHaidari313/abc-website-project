@@ -1,27 +1,60 @@
 import Aos from "aos";
 import "aos/dist/aos.css";
 import "./styles/index.scss";
-import { useEffect } from "react";
+import { Suspense, useEffect, lazy } from "react";
 import ScrollToTop from "./components/common/ScrollTop";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter } from "react-router-dom";
-import Router from "./route/router";
+import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGetSettingData } from "./queries/settings.query";
 import { BASE_IMAGE_URL } from "./utils/linkActiveChecker";
-import { StagewiseToolbar } from "@stagewise/toolbar-react";
-import { ReactPlugin } from "@stagewise-plugins/react";
+import FontLoader from "./components/common/FontLoader";
 
+// Lazy load Router
+const Router = lazy(() => import("./route/router"));
+
+// Loading component
+const LoadingSpinner = () => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      backgroundColor: "#fff",
+    }}
+  >
+    <div
+      style={{
+        width: "50px",
+        height: "50px",
+        border: "5px solid #f3f3f3",
+        borderTop: "5px solid #3498db",
+        borderRadius: "50%",
+        animation: "spin 1s linear infinite",
+      }}
+    />
+    <style>{`
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `}</style>
+  </div>
+);
+
+// Lazy load Bootstrap
 if (typeof window !== "undefined") {
-  import("bootstrap");
+  import("bootstrap").catch(console.error);
 }
 
 function SetFaviconFromSetting() {
-  const { data } = useGetSettingData();
+  const { data, isLoading, error } = useGetSettingData();
   const headerData = data?.data || [];
 
   const formatImageUrl = (path) => {
@@ -30,8 +63,8 @@ function SetFaviconFromSetting() {
   };
 
   useEffect(() => {
-    if (headerData.length > 0) {
-      const faviconPath = formatImageUrl(headerData[0]?.fav_icon);
+    if (headerData && headerData.fav_icon) {
+      const faviconPath = formatImageUrl(headerData.fav_icon);
       if (faviconPath) {
         let link =
           document.querySelector("link[rel*='icon']") ||
@@ -44,6 +77,8 @@ function SetFaviconFromSetting() {
     }
   }, [headerData]);
 
+  if (isLoading) return null;
+  if (error) console.error("Error loading favicon:", error);
   return null;
 }
 
@@ -55,35 +90,45 @@ function App() {
     });
   }, []);
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <div className="page-wrapper">
-          <BrowserRouter>
-            {/* ✅ Inject dynamic favicon */}
-            <SetFaviconFromSetting />
-            <Router />
-            <ScrollTopBehaviour />
-          </BrowserRouter>
-          <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
-          <ToastContainer
-            position="bottom-right"
-            autoClose={500}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
-          <ScrollToTop />
-        </div>
-      </Provider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <FontLoader />
+        <SetFaviconFromSetting />
+        <Provider store={store}>
+          <div className="page-wrapper">
+            <BrowserRouter>
+              <Suspense fallback={<LoadingSpinner />}>
+                <Router />
+              </Suspense>
+              <ScrollTopBehaviour />
+            </BrowserRouter>
+            <ToastContainer
+              position="bottom-right"
+              autoClose={500}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
+            <ScrollToTop />
+          </div>
+        </Provider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

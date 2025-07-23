@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { message, notification } from "antd";
 import Select from "react-select";
-import { usePostCompanyCreate } from "@/queries/website.query/company.query";
 import { useGetAllCategoryData } from "@/queries/website.query/category.query";
 import { usePostUserCreate } from "@/queries/website.query/register.user.query";
 import { useGetAllCitiesData } from "@/queries/website.query/cities.query";
@@ -30,8 +29,6 @@ const BusinessRegistrationForm = () => {
     city_id: "",
     item_description: "",
     item_phone: "",
-    item_social_facebook: "https://",
-    item_website: "https://",
   });
   const [errors, setErrors] = useState({});
   const { mutate } = usePostUserCreate();
@@ -78,17 +75,6 @@ const BusinessRegistrationForm = () => {
 
     if (name === "confirm_password" && errors.confirm_password) {
       setErrors((prev) => ({ ...prev, confirm_password: "" }));
-    }
-
-    if (name === "item_social_facebook") {
-      if (!newValue.startsWith("https://")) {
-        newValue = "https://" + newValue.replace(/^https?:\/\//, "");
-      }
-    }
-    if (name === "item_website") {
-      if (!newValue.startsWith("https://")) {
-        newValue = "https://" + newValue.replace(/^https?:\/\//, "");
-      }
     }
 
     if (files) {
@@ -168,8 +154,8 @@ const BusinessRegistrationForm = () => {
     data.append("country_id", formData.country_id);
     data.append("item_description", formData.item_description);
     data.append("item_phone", formData.item_phone);
-    data.append("item_social_facebook", formData.item_social_facebook);
-    data.append("item_website", formData.item_website);
+    // data.append("item_social_facebook", formData.item_social_facebook);
+    // data.append("item_website", formData.item_website);
 
     if (formData.user_image && formData.user_image.length > 0) {
       data.append("user_image", formData.user_image[0]);
@@ -193,8 +179,8 @@ const BusinessRegistrationForm = () => {
           city_id: "",
           item_description: "",
           item_phone: "",
-          item_website: "https://",
-          item_social_facebook: "https://",
+          // item_website: "https://",
+          // item_social_facebook: "https://",
         });
         setStep(1);
       },
@@ -221,9 +207,7 @@ const BusinessRegistrationForm = () => {
     <form onSubmit={step === 1 ? handleNext : handleSubmit}>
       {step === 1 && (
         <>
-          <h4 style={{ fontSize: "20px", marginBottom: "10px", color: "blue" }}>
-            Step 1: Personal Information
-          </h4>
+          <h4 className="form-heading">Step 1: Personal Information</h4>
 
           <div className="form-group">
             <label>Full Name</label>
@@ -253,9 +237,7 @@ const BusinessRegistrationForm = () => {
               pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
             />
             {errors.email && (
-              <div className="text-danger" style={{ marginTop: "5px" }}>
-                {errors.email}
-              </div>
+              <div className="error-message">{errors.email}</div>
             )}
           </div>
 
@@ -392,7 +374,7 @@ const BusinessRegistrationForm = () => {
           </div>
 
           <div className="mb-3 form-group">
-            <label htmlFor="category" className="form-label fw-bold">
+            <label htmlFor="category" className="form-label">
               Category
             </label>
             <Select
@@ -415,7 +397,7 @@ const BusinessRegistrationForm = () => {
                   ...base,
                   borderRadius: "6px",
                   color: "#696969",
-                  backgroundColor: "#f0f5f7",
+                  backgroundColor: "#fff",
                   fontSize: "16px",
                   minHeight: "38px",
                   boxShadow: "none",
@@ -430,7 +412,7 @@ const BusinessRegistrationForm = () => {
           </div>
 
           <div className="mb-3 form-group">
-            <label htmlFor="country" className="form-label fw-bold">
+            <label htmlFor="country" className="form-label">
               Country
             </label>
             <Select
@@ -453,7 +435,7 @@ const BusinessRegistrationForm = () => {
                   ...base,
                   borderRadius: "6px",
                   color: "#696969",
-                  backgroundColor: "#f0f5f7",
+                  backgroundColor: "#fff",
                   fontSize: "16px",
                   minHeight: "38px",
                   boxShadow: "none",
@@ -468,7 +450,7 @@ const BusinessRegistrationForm = () => {
           </div>
 
           <div className="mb-3 form-group">
-            <label htmlFor="city" className="form-label fw-bold">
+            <label htmlFor="city" className="">
               City
             </label>
             <Select
@@ -491,7 +473,7 @@ const BusinessRegistrationForm = () => {
                   ...base,
                   borderRadius: "6px",
                   color: "#696969",
-                  backgroundColor: "#f0f5f7",
+                  backgroundColor: "#fff",
                   fontSize: "16px",
                   minHeight: "38px",
                   boxShadow: "none",
@@ -512,8 +494,9 @@ const BusinessRegistrationForm = () => {
               placeholder="Brief item_description of your business"
               value={formData.item_description}
               onChange={handleChange}
-              className="form-control"
+              // className="form-control"
               maxLength={1000}
+              style={{ backgroundColor: "#fff" }}
               required
             />
           </div>
@@ -530,7 +513,7 @@ const BusinessRegistrationForm = () => {
               pattern="^\+?[0-9]{7,15}$"
             />
           </div>
-
+          {/* 
           <div className="form-group">
             <label>Business / Company Website</label>
             <input
@@ -554,7 +537,7 @@ const BusinessRegistrationForm = () => {
               placeholder="https://example.com"
               required
             />
-          </div>
+          </div> */}
 
           <div
             className="form-group d-flex align-items-center"

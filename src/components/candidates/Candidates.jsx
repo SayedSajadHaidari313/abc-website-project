@@ -1,12 +1,7 @@
-
-
-
-
-
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import candidates from "../../data/candidates";
-
+import LazyImage from "../common/LazyImage";
 
 const Candidates = () => {
   const settings = {
@@ -50,10 +45,9 @@ const Candidates = () => {
           <div className="candidate-block" key={candidate.id}>
             <div className="inner-box">
               <figure className="image">
-                <img
-                  
+                <LazyImage
                   src={candidate.avatar}
-                  alt="avatar"
+                  alt={`${candidate.name}'s avatar`}
                 />
               </figure>
               <h4 className="name">{candidate.name}</h4>

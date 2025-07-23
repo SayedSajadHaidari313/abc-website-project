@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // Get create_User Query
 
 export const getUserData = async (current, pageSize, searchQuery) => {
-  return await getRequest(`user/users`, {
+  return await getRequest(`user/user`, {
     current: current,
     pageSize: pageSize,
     searchQuery: searchQuery,
@@ -17,7 +17,7 @@ export const getUserData = async (current, pageSize, searchQuery) => {
 
 export const useGetUserData = (current, pageSize, searchQuery) => {
   return useQuery({
-    queryKey: ["fetch-users", current, pageSize, searchQuery],
+    queryKey: ["fetch-user", current, pageSize, searchQuery],
     queryFn: () => getUserData(current, pageSize, searchQuery),
   });
 };
@@ -41,7 +41,7 @@ export const usePostUserCreate = () => {
 
 // Update create_User Query
 export const updateUser = async (params) => {
-  return postRequest(`user/users/${params.get("id")}`, params, {
+  return postRequest(`user/user/${params.get("id")}`, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -79,7 +79,7 @@ export const useDeleteUser = (ids) => {
 };
 
 export const singleDelete = async (id) => {
-  return deleteRequest(`user/users/${id}`, {
+  return deleteRequest(`user/user/${id}`, {
     params: {
       id,
     },

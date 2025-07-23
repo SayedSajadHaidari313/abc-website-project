@@ -4,11 +4,10 @@ import Hero4 from "../hero/hero-4";
 import Partner from "../common/partner/Partner";
 import LoginPopup from "../common/form/login/LoginPopup";
 import MobileMenu from "../header/MobileMenu";
-import CompanyCategorie2 from "../job-categories/CompanyCategorie2";
-import FaqChild from "../pages-menu/faq/FaqChild";
+import CompanyCategorie2 from "../company-categories/CompanyCategorie2";
 import CompanySponsored from "../CompanySponsored";
-import CompanyHero from "../company-listing/CompanyHero";
-import CompanyPage1 from "../company/CompanyPage1";
+import AdBlockDisplay from "../common/AdBlockDisplay";
+import CompanyListHp from "../company-listing/CompanyListHp";
 
 const index = () => {
   return (
@@ -23,22 +22,26 @@ const index = () => {
       {/* End MobileMenu */}
 
       <Hero4 />
-
       {/* <!-- End Banner Section--> */}
-
-      {/* <section className="top-companies style-two">
-        <CompanyPage1 />
-      </section> */}
 
       <section className="top-companies style-two">
         <CompanySponsored />
       </section>
 
+      {/* Google AdSense ad after sponsored companies */}
+      <div
+        style={{ margin: "32px 0", display: "flex", justifyContent: "center" }}
+      >
+        <AdBlockDisplay position="after_sponsored_company" />
+      </div>
+
       <section className="job-categories">
         <div className="auto-container">
           <div className="sec-title text-center">
-            <h2>Popular Categories</h2>
-            <div className="text">2020 company live - 293 added today.</div>
+            <h2>Popular Business Categories</h2>
+            <div className="text">
+              Discover Top Companies Across Afghanistan
+            </div>
           </div>
 
           <div className="row" data-aos="fade-up">
@@ -46,8 +49,28 @@ const index = () => {
           </div>
         </div>
       </section>
+      <section className="job-categories">
+        <div className="auto-container">
+          <div className="sec-title text-center">
+            <h2>All Companies</h2>
+            <div className="text">
+              Discover 2,020 Verified Afghan Businesses - 293 New Listings This
+              Week
+            </div>
+          </div>
 
-      {/* <!-- End Job Section --> */}
+          <div className="row" data-aos="fade-up">
+            <CompanyListHp />
+          </div>
+        </div>
+      </section>
+
+      {/* Google AdSense ad after categories */}
+      <div
+        style={{ margin: "32px 0", display: "flex", justifyContent: "center" }}
+      >
+        <AdBlockDisplay position="after_category" className="home-page-ad" />
+      </div>
 
       <section className="clients-section alternate">
         <div className="sponsors-outer" data-aos="fade">
@@ -59,24 +82,6 @@ const index = () => {
       </section>
       {/* <!-- End Clients Section--> */}
 
-      {/* <section className="faqs-section">
-        <div className="auto-container">
-          <div className="sec-title text-center">
-            <h2>Frequently Asked Questions</h2>
-            <div className="text">Home / Faq</div>
-          </div>
-
-          <h3>Payments</h3>
-          <ul className="accordion-box">
-            <FaqChild />
-          </ul>
-
-          <h3>Suggestions</h3>
-          <ul className="accordion-box mb-0">
-            <FaqChild />
-          </ul>
-        </div>
-      </section> */}
       <Footer />
       {/* <!-- End Main Footer --> */}
     </>

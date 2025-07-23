@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Spin, Pagination, Input, Alert } from "antd";
+import { Divider, Spin, Pagination, Alert } from "antd";
 import {
   useGetAllWebsiteItemsData,
   useGetItemsByCategoryId,
@@ -9,25 +9,19 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { TbMoodEmptyFilled } from "react-icons/tb";
 import { FaRegBuilding } from "react-icons/fa";
 import SmartText from "@/components/common/SmartText";
+import { truncateText } from "@/utils/PublicTruncat";
 
-const CompanyHero = ({
-  jobs = [],
-  searchQuery = "",
-  location = "",
-  // category = "",
-}) => {
+const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
   const [pagination, setPagination] = React.useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 9,
   });
 
-  // Use categoryId if category is selected, otherwise use default fetch
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "";
   const isCategorySelected = !!category;
   const categoryId = category ? Number(category) : undefined;
 
-  // const categoryId = category ? Number(category) : undefined;
   const { data, isLoading, isError, refetch } = isCategorySelected
     ? useGetItemsByCategoryId({
         categoryId,
@@ -40,7 +34,6 @@ const CompanyHero = ({
         pageSize: pagination.pageSize,
         searchQuery: searchQuery,
         location: location,
-        // Do NOT pass category here!
       });
 
   const itemData = data?.data || data?.items || [];
@@ -48,14 +41,11 @@ const CompanyHero = ({
   const [imageLoadingStates, setImageLoadingStates] = React.useState({});
   const navigate = useNavigate();
 
-  console.log("itemData", itemData);
-
   const handlePageChange = (page, pageSize) => {
     setPagination({ current: page, pageSize: pageSize });
     window.scrollTo(0, 0);
   };
 
-  // Handle image loading state
   const handleImageLoad = (index, type) => {
     setImageLoadingStates((prev) => ({
       ...prev,
@@ -70,7 +60,6 @@ const CompanyHero = ({
     }));
   };
 
-  // Transform API data to match the expected format
   const transformedItem = itemData?.map((item, index) => {
     const itemImageUrl = formatImageUrl(item.item_image);
     const userImageUrl = formatImageUrl(item.user?.user_image, "user");
@@ -96,11 +85,6 @@ const CompanyHero = ({
 
   const displayItems = jobs.length > 0 ? jobs : transformedItem;
 
-  // Helper function to detect Farsi (Persian) text
-  function isFarsi(text) {
-    return /[\u0600-\u06FF]/.test(text);
-  }
-
   // Show loading state
   if (isLoading) {
     return (
@@ -109,6 +93,7 @@ const CompanyHero = ({
       </div>
     );
   }
+
   // Show error state
   if (isError) {
     return (
@@ -157,6 +142,7 @@ const CompanyHero = ({
     );
   }
 
+  // Main render
   return (
     <div className="auto-container">
       <div className="col-lg-12">
@@ -164,20 +150,17 @@ const CompanyHero = ({
           {displayItems.map((job, idx) => (
             <div
               key={idx}
-              className="col-xl-4 col-lg-6 col-md-6 col-sm-12"
-              style={{ padding: "0 10px", marginBottom: "20px" }}
+              className="col-xl-2-6 col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4"
             >
-              <div
-                className="card-company"
-                style={{
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  boxShadow: "0 2px 12px #0001",
-                  margin: "0 auto",
-                  maxWidth: "100%",
-                }}
-              >
-                <div style={{ position: "relative" }}>
+              <div className="company-card">
+                {/* Photo Section */}
+                <div
+                  style={{
+                    position: "relative",
+                    paddingTop: "75%", // Responsive aspect ratio
+                    overflow: "hidden",
+                  }}
+                >
                   {imageLoadingStates[`${idx}-item`] && (
                     <div
                       style={{
@@ -201,8 +184,11 @@ const CompanyHero = ({
                       src={job.image || job.avatar}
                       alt="Listing"
                       style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
                         width: "100%",
-                        height: 200,
+                        height: "100%",
                         objectFit: "cover",
                       }}
                       onError={(e) => {
@@ -222,8 +208,11 @@ const CompanyHero = ({
                   ) : (
                     <div
                       style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
                         width: "100%",
-                        height: 200,
+                        height: "100%",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -233,21 +222,27 @@ const CompanyHero = ({
                       <FaRegBuilding size={64} color="#bbb" />
                     </div>
                   )}
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      left: 10,
-                      background: job.status === "OPEN" ? "#27ae60" : "#e74c3c",
-                      color: "#fff",
-                      borderRadius: 6,
-                      padding: "2px 10px",
-                      fontSize: 12,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {job.status}
-                  </span>
+
+                  {/* Status and Featured Badges */}
+                  {/* {job.status && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 10,
+                        left: 10,
+                        background:
+                          job.status === "OPEN" ? "#27ae60" : "#e74c3c",
+                        color: "#fff",
+                        borderRadius: 6,
+                        padding: "2px 10px",
+                        fontSize: 12,
+                        fontWeight: 600,
+                        zIndex: 2,
+                      }}
+                    >
+                      {job.status}
+                    </span>
+                  )} */}
 
                   {job.featured && (
                     <span
@@ -261,13 +256,25 @@ const CompanyHero = ({
                         padding: "2px 10px",
                         fontSize: 12,
                         fontWeight: 600,
+                        zIndex: 2,
                       }}
                     >
                       Promoted
                     </span>
                   )}
                 </div>
-                <div className="card-body" style={{ padding: 16 }}>
+
+                {/* Details Section */}
+                <div
+                  className="card-body"
+                  style={{
+                    padding: "12px",
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                    justifyContent: "space-between",
+                  }}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -280,6 +287,11 @@ const CompanyHero = ({
                         fontWeight: 600,
                         cursor: "pointer",
                         color: "#1890ff",
+                        fontSize: 16,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        flex: 1,
                       }}
                       onClick={() =>
                         navigate(
@@ -291,63 +303,37 @@ const CompanyHero = ({
                         )
                       }
                     >
-                      {job.title}
+                      {truncateText(job.title, 20)}{" "}
                     </span>
                     <i
                       className="fa fa-check-circle"
-                      style={{ color: "#27ae60", marginLeft: 6 }}
+                      style={{ color: "#27ae60", marginLeft: 6, fontSize: 14 }}
                     ></i>
                   </div>
-                  <SmartText text={job.subtitle} maxLength={80} />
 
-                  <div
+                  <SmartText
+                    text={job.subtitle}
+                    maxLength={60}
                     style={{
-                      fontSize: 13,
-                      color: "#888",
-                      marginBottom: 8,
+                      color: "#666",
+                      marginBottom: 0,
+                      fontSize: 12,
+                      flex: 1,
                     }}
-                  >
-                    <i className="fa fa-phone" style={{ marginRight: 4 }}></i>{" "}
-                    {job.phone} &nbsp;
-                    <i
-                      className="fa fa-map-marker-alt"
-                      style={{ marginRight: 4 }}
-                    ></i>{" "}
-                    {job.location}
-                  </div>
-                  <Divider></Divider>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                    }}
-                  >
-                    <span
-                      style={{
-                        background: job.categoryColor,
-                        color: "#fff",
-                        borderRadius: 6,
-                        padding: "2px 10px",
-                        fontSize: 13,
-                      }}
-                    >
-                      <i
-                        className={`fa ${job.categoryIcon}`}
-                        style={{ marginRight: 4 }}
-                      ></i>
-                      {job.category}
-                    </span>
-                  </div>
-                  {/* Subtitle */}
+                  />
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Pagination */}
         <div
           className="pagination-container"
-          style={{ textAlign: "center", marginTop: "20px" }}
+          style={{
+            textAlign: "center",
+            marginTop: "30px",
+          }}
         >
           <Pagination
             current={pagination.current}
