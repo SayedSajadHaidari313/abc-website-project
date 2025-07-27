@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-const LazyImage = ({ src, alt, className = "", onLoad, onError, ...props }) => {
+const LazyImage = ({
+  src,
+  alt,
+  className = "",
+  priority = false,
+  onLoad,
+  onError,
+  ...props
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(null);
 
@@ -33,7 +41,8 @@ const LazyImage = ({ src, alt, className = "", onLoad, onError, ...props }) => {
       src={currentSrc || src}
       alt={alt}
       className={`lazy-image ${isLoaded ? "loaded" : ""} ${className}`}
-      loading="lazy"
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : "auto"}
       {...props}
     />
   );

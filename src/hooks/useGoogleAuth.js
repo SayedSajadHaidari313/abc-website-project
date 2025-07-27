@@ -58,7 +58,7 @@ export const useGoogleAuth = () => {
       // Here you would typically send the user info to your backend
       // and get your app's JWT token
       const API_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+        import.meta.env.VITE_API_URL || "https://localhost:8000/api";
       const response = await fetch(`${API_URL}/auth/google`, {
         method: "POST",
         headers: {

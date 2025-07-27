@@ -7,7 +7,7 @@
 //   const { data } = useGetPostJobsData();
 //   const formatImageUrl = (path) => {
 //     if (!path) return null;
-//     return `http://localhost:8000/${path.replace(/\\/g, "/")}`;
+//     return `https://localhost:8000/${path.replace(/\\/g, "/")}`;
 //   };
 //   const getStyleClass = (jobType) => {
 //     switch (jobType) {

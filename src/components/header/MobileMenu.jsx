@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import MobileSidebar from "./mobile-sidebar";
 import { useGetSettingData } from "@/queries/settings.query";
 import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
+import LazyImage from "../common/LazyImage";
 
 const MobileMenu = () => {
   const { data } = useGetSettingData();
@@ -13,19 +14,19 @@ const MobileMenu = () => {
   const datas = data?.data || {};
 
   return (
-    // <!-- Main Header-->
     <header className="main-header main-header-mobile">
       <div className="auto-container">
-        {/* <!-- Main box --> */}
         <div className="inner-box">
           <div className="nav-outer">
             <div className="logo-box">
               <div className="logo">
                 <Link to="/">
                   {datas?.md_logo ? (
-                    <img
+                    <LazyImage
                       src={formatImageUrl(datas?.md_logo)}
                       alt={datas?.site_name}
+                      priority={true}
+                      style={{ maxHeight: "50px", width: "auto" }}
                     />
                   ) : datas?.site_name ? (
                     <span>{datas?.site_name.charAt(0).toUpperCase()}</span>

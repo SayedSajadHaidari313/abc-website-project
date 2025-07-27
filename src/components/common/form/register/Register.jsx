@@ -1,9 +1,6 @@
-
-
-
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 // import LoginWithSocial from "./LoginWithSocial";
-import Form from "./FormContent";
+// import Form from "./FormContent";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -11,16 +8,10 @@ const Register = () => {
     <div className="form-inner">
       <h3>Create a Free InsightDeed Account</h3>
 
+      {/* End .form-group */}
 
-
-        {/* End .form-group */}
-
-        <TabPanel>
-          <Form />
-        </TabPanel>
-        {/* End user Form */}
-
-   
+      <TabPanel>{/* <Form /> */}</TabPanel>
+      {/* End user Form */}
 
       {/* End form-group */}
 

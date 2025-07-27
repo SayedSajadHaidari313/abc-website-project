@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import HeaderNavContent from "./HeaderNavContent";
 import { useGetSettingData } from "@/queries/settings.query";
 import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
+import LazyImage from "../common/LazyImage";
 
 const DefaulHeader2 = () => {
   const { data } = useGetSettingData();
@@ -40,7 +41,7 @@ const DefaulHeader2 = () => {
           <div className="logo-box">
             <div className="logo">
               <Link to="/">
-                <img
+                <LazyImage
                   src={datas?.md_logo ? formatImageUrl(datas?.md_logo) : null}
                   alt={datas?.site_name}
                 />

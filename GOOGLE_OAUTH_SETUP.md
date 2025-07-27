@@ -41,10 +41,10 @@ This guide will help you set up Google OAuth authentication for your React job p
 3. Choose "Web application"
 4. Name: "Job Portal Web Client"
 5. Authorized JavaScript origins:
-   - `http://localhost:5173` (for development)
+   - `https://localhost:5173` (for development)
    - `https://yourdomain.com` (for production)
 6. Authorized redirect URIs:
-   - `http://localhost:5173/auth/google/callback` (for development)
+   - `https://localhost:5173/auth/google/callback` (for development)
    - `https://yourdomain.com/auth/google/callback` (for production)
 7. Click "Create"
 8. **Copy the Client ID and Client Secret**
@@ -60,7 +60,7 @@ VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
 VITE_GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 
 # Backend API URL
-VITE_API_URL=http://localhost:8000/api
+VITE_API_URL=https://localhost:8000/api
 ```
 
 ### 2.2 Update Configuration

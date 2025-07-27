@@ -237,17 +237,7 @@ const CompanySponsored = ({ jobs = [] }) => {
                           height: "100%",
                           objectFit: "cover",
                         }}
-                        onError={(e) => {
-                          if (e.target.src !== job.avatar && job.avatar) {
-                            e.target.src = job.avatar;
-                          } else {
-                            e.target.onerror = null;
-                            e.target.style.display = "none";
-                            const icon = document.createElement("span");
-                            icon.className = "fallback-icon";
-                            e.target.parentNode.appendChild(icon);
-                          }
-                        }}
+                    
                         onLoad={() => handleImageLoad(idx, "item")}
                         onLoadStart={() => handleImageLoadStart(idx, "item")}
                       />

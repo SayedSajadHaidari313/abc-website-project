@@ -6,6 +6,7 @@ import { useAuthStore } from "@/auth/auth.store";
 import { Avatar } from "antd";
 import { UserAddOutlined, LoginOutlined } from "@ant-design/icons";
 import HeaderNavContent from "../header/HeaderNavContent";
+import LazyImage from "../common/LazyImage";
 
 const Header = () => {
   const { data } = useGetSettingData();
@@ -51,14 +52,13 @@ const Header = () => {
             <div className="logo-box">
               <div className="logo">
                 <Link to="/">
-                  {datas?.md_logo ? (
-                    <img
-                      src={formatImageUrl(datas?.md_logo)}
-                      alt={datas?.site_name}
-                    />
-                  ) : datas?.site_name ? (
-                    <span>{datas?.site_name.charAt(0).toUpperCase()}</span>
-                  ) : null}
+                  <LazyImage
+                    src={datas?.md_logo ? formatImageUrl(datas?.md_logo) : null}
+                    alt={datas?.site_name}
+                  />
+                  {!datas?.md_logo && datas?.site_name
+                    ? datas?.name.charAt(0).toUpperCase()
+                    : ""}
                 </Link>
               </div>
             </div>

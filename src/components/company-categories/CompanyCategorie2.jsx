@@ -1,43 +1,50 @@
 import { Link } from "react-router-dom";
 import { useGetAllCategoryData } from "@/queries/website.query/category.query";
-import * as FaIcons from "react-icons/fa";
-import * as BsIcons from "react-icons/bs";
-import * as MdIcons from "react-icons/md";
-import * as IoIcons from "react-icons/io5";
-import * as GiIcons from "react-icons/gi";
-import * as BiIcons from "react-icons/bi";
-import * as AiIcons from "react-icons/ai";
-import * as FiIcons from "react-icons/fi";
-import * as TbIcons from "react-icons/tb";
-import * as HiIcons from "react-icons/hi";
-import * as SiIcons from "react-icons/si";
+import { FaCode } from "react-icons/fa";
 import { Spin } from "antd";
 import { truncateText } from "@/utils/PublicTruncat";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { lazy, Suspense } from "react";
 
 const CompanyCategorie2 = () => {
   const { data, isLoading } = useGetAllCategoryData();
   const [visibleCategories, setVisibleCategories] = useState(18);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  // Function to get the icon component dynamically
-  const getIconComponent = (iconName) => {
-    // Combine all icon libraries
-    const allIcons = {
-      ...FaIcons,
-      ...BsIcons,
-      ...MdIcons,
-      ...IoIcons,
-      ...GiIcons,
-      ...BiIcons,
-      ...AiIcons,
-      ...FiIcons,
-      ...TbIcons,
-      ...HiIcons,
-      ...SiIcons,
-    };
+  // Function to get the icon component dynamically using dynamic imports
+  const getIconComponent = async (iconName) => {
+    if (!iconName) return FaCode;
 
-    return allIcons[iconName] || FaIcons.FaCode; // Default fallback
+    const [library, iconComponentName] = iconName.split("/");
+    if (!library || !iconComponentName) return FaCode;
+
+    try {
+      const module = await import(`react-icons/${library}`);
+      return module[iconComponentName] || FaCode;
+    } catch (error) {
+      console.error("Error loading icon:", error);
+      return FaCode;
+    }
+  };
+
+  // Memoize icon components
+  const IconCache = useMemo(() => new Map(), []);
+
+  const LoadableIcon = ({ iconName, size }) => {
+    const [Icon, setIcon] = useState(() => FaCode);
+
+    useMemo(() => {
+      if (IconCache.has(iconName)) {
+        setIcon(() => IconCache.get(iconName));
+      } else {
+        getIconComponent(iconName).then((IconComponent) => {
+          IconCache.set(iconName, IconComponent);
+          setIcon(() => IconComponent);
+        });
+      }
+    }, [iconName]);
+
+    return <Icon size={size} />;
   };
 
   if (isLoading) {
@@ -71,29 +78,27 @@ const CompanyCategorie2 = () => {
   return (
     <>
       <div className="row">
-        {parentCategories.slice(0, visibleCategories).map((item) => {
-          const IconComponent = getIconComponent(item.category_icon);
-
-          return (
-            <div
-              className="category-block-two col-xl-2 col-lg-2 col-md-2 col-sm-12"
-              key={item.id}
-            >
-              <div className="inner-box">
-                <div className="content">
-                  <span className="icon">
-                    <IconComponent size={24} />
-                  </span>
-                  <h4>
-                    <Link to={`/listing?category=${item.id}`}>
-                      {truncateText(item.category_name, 13)}
-                    </Link>
-                  </h4>
-                </div>
+        {parentCategories.slice(0, visibleCategories).map((item) => (
+          <div
+            className="category-block-two col-xl-2 col-lg-2 col-md-2 col-sm-12"
+            key={item.id}
+          >
+            <div className="inner-box">
+              <div className="content">
+                <span className="icon">
+                  <Suspense fallback={<FaCode size={24} />}>
+                    <LoadableIcon iconName={item.category_icon} size={24} />
+                  </Suspense>
+                </span>
+                <h4>
+                  <Link to={`/listing?category=${item.id}`}>
+                    {truncateText(item.category_name, 13)}
+                  </Link>
+                </h4>
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
       {visibleCategories < parentCategories.length && (

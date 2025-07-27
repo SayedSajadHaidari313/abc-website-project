@@ -1,15 +1,18 @@
 import { useGetSettingData } from "@/queries/settings.query";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import { BsTelephoneFill } from "react-icons/bs";
 
 const Address = () => {
   const { data } = useGetSettingData();
-  const setting = data?.data; // چون داده‌ها به صورت آرایه‌ای از آبجکت هستند
+  const setting = data?.data;
 
   if (!setting) return null;
 
   const addressContent = [
     {
       id: 1,
-      iconName: "placeholder",
+      icon: FaMapMarkerAlt,
       title: "Address",
       text: (
         <>
@@ -21,7 +24,7 @@ const Address = () => {
     },
     {
       id: 2,
-      iconName: "smartphone",
+      icon: BsTelephoneFill,
       title: "Call Us",
       text: (
         <a href={`tel:${setting.site_phone}`} className="phone">
@@ -31,7 +34,7 @@ const Address = () => {
     },
     {
       id: 3,
-      iconName: "letter",
+      icon: MdEmail,
       title: "Email",
       text: (
         <a href={`mailto:${setting.site_email}`} className="email">
@@ -43,23 +46,23 @@ const Address = () => {
 
   return (
     <>
-      {addressContent.map((item) => (
-        <div
-          className="contact-block col-lg-4 col-md-6 col-sm-12"
-          key={item.id}
-        >
-          <div className="inner-box">
-            <span className="icon">
-              <img
-                src={`/images/icons/${item.iconName}.svg`}
-                alt={`${item.title} icon`}
-              />
-            </span>
-            <h4>{item.title}</h4>
-            <p>{item.text}</p>
+      {addressContent.map((item) => {
+        const IconComponent = item.icon;
+        return (
+          <div
+            className="contact-block col-lg-4 col-md-6 col-sm-12"
+            key={item.id}
+          >
+            <div className="inner-box">
+              <span className="icon">
+                <IconComponent size={24} />
+              </span>
+              <h4>{item.title}</h4>
+              <p>{item.text}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </>
   );
 };

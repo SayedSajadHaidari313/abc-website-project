@@ -50,7 +50,15 @@ const DefaulHeader = () => {
           <div className="logo-box">
             <div className="logo">
               <Link to="/">
-                <LazyImage src="/images/logo.svg" alt="brand logo" />
+                <LazyImage
+                  src={datas?.md_logo ? formatImageUrl(datas?.md_logo) : null}
+                  alt={datas?.site_name}
+                  priority={true}
+                  style={{ maxHeight: "60px", width: "auto" }}
+                />
+                {!datas?.md_logo && datas?.site_name
+                  ? datas?.name.charAt(0).toUpperCase()
+                  : ""}
               </Link>
             </div>
           </div>
@@ -69,17 +77,20 @@ const DefaulHeader = () => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <Avatar
-                size={50}
-                src={
-                  user?.user_image ? formatImageUrlUser(user?.user_image) : null
-                }
-                alt="user logo"
-              >
-                {!user?.company?.company_photo && user?.company?.company_name
-                  ? user?.company?.company_name.charAt(0).toUpperCase()
-                  : ""}
-              </Avatar>
+              {user?.user_image ? (
+                <LazyImage
+                  className="avatar-img"
+                  src={formatImageUrlUser(user?.user_image)}
+                  alt="user logo"
+                  style={{ width: 50, height: 50, borderRadius: "50%" }}
+                />
+              ) : (
+                <Avatar size={50}>
+                  {!user?.company?.company_photo && user?.company?.company_name
+                    ? user?.company?.company_name.charAt(0).toUpperCase()
+                    : ""}
+                </Avatar>
+              )}
               <span className="name">{user?.first_name}</span>
             </a>
 

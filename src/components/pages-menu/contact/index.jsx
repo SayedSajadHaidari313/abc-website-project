@@ -1,4 +1,3 @@
-import { Divider } from "antd";
 import LoginPopup from "../../common/form/login/LoginPopup";
 import FooterDefault from "../../footer/common-footer";
 import DefaulHeader from "../../header/DefaulHeader";
@@ -6,8 +5,6 @@ import MobileMenu from "../../header/MobileMenu";
 import Address from "./Address";
 import ContactForm from "./ContactForm";
 import MapBox from "./MapBox";
-import Breadcrumb from "@/components/common/Breadcrumb";
-import Footer from "@/components/home-4/Footer";
 
 const index = () => {
   return (
@@ -23,31 +20,39 @@ const index = () => {
 
       <MobileMenu />
       {/* End MobileMenu */}
-      <Breadcrumb title="Contact" meta="Contact" />
+
+      <section className="map-section">
+        <div className="map-outer">
+          <MapBox />
+        </div>
+      </section>
+      {/* <!-- End Map Section --> */}
+
+      {/* <!-- End Help Section --> */}
 
       <section className="contact-section">
         <div className="auto-container">
+          <div className="upper-box">
+            <div className="row">
+              
+              <Address />
+            </div>
+            {/* End .row */}
+          </div>
           {/* End upperbox */}
 
           {/* <!-- Contact Form --> */}
           <div className="contact-form default-form">
-            <h3 className="mb-20 text-left">Leave A Message</h3>
+            <h3>Leave A Message</h3>
             <ContactForm />
-
             {/* <!--Contact Form--> */}
-            <div style={{ marginTop: "30px" }} className="row ">
-              <Divider />
-              <Address />
-              <Divider />
-            </div>
           </div>
           {/* <!--End Contact Form --> */}
-          <div className="">{/* End .row */}</div>
         </div>
       </section>
       {/* <!-- Contact Section --> */}
 
-<Footer/>
+      <FooterDefault footerStyle="alternate5" />
       {/* <!-- End Main Footer --> */}
     </>
   );

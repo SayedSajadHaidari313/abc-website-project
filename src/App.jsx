@@ -6,7 +6,6 @@ import ScrollToTop from "./components/common/ScrollTop";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
@@ -20,31 +19,8 @@ const Router = lazy(() => import("./route/router"));
 
 // Loading component
 const LoadingSpinner = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      backgroundColor: "#fff",
-    }}
-  >
-    <div
-      style={{
-        width: "50px",
-        height: "50px",
-        border: "5px solid #f3f3f3",
-        borderTop: "5px solid #3498db",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-      }}
-    />
-    <style>{`
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `}</style>
+  <div className="route-loading-spinner route-loading-spinner--app">
+    <div className="route-loading-spinner__spinner" />
   </div>
 );
 
@@ -112,18 +88,6 @@ function App() {
               </Suspense>
               <ScrollTopBehaviour />
             </BrowserRouter>
-            <ToastContainer
-              position="bottom-right"
-              autoClose={500}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="colored"
-            />
             <ScrollToTop />
           </div>
         </Provider>

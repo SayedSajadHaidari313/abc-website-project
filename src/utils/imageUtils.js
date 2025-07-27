@@ -1,8 +1,9 @@
-import { ENV_CONFIG } from "@/configs/EnvironmentConfig";
+// import { ENV_CONFIG } from "@/configs/EnvironmentConfig";
+import { BASE_IMAGE_URL } from "./linkActiveChecker";
 
 // Get the correct base URL for images (without /api suffix)
 const getImageBaseUrl = () => {
-  const apiUrl = ENV_CONFIG.API_BASE_URL;
+  const apiUrl = BASE_IMAGE_URL;
   // Remove /api suffix if present to get the base server URL
   return apiUrl.replace(/\/api$/, "");
 };
@@ -51,14 +52,14 @@ export const formatImageUrl = (path, type = "item") => {
 export const getFallbackImage = (type = "item") => {
   switch (type) {
     case "user":
-      return "/images/icons/user.svg";
+      // return "/images/icons/user.svg";
     case "company":
-      return "/images/icons/placeholder.svg";
+      // return "/images/icons/placeholder.svg";
     case "logo":
-      return "/images/icons/placeholder.svg";
+      // return "/images/icons/placeholdesr.svg";
     case "item":
     default:
-      return "/images/icons/download.svg";
+    // return "/images/icons/download.svg";
   }
 };
 

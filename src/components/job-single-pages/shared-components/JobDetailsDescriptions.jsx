@@ -1,4 +1,3 @@
-import { useGetPostJobsData } from "@/queries/post.jobs.query";
 import { Alert, Skeleton } from "antd";
 import PropTypes from "prop-types";
 import { useGetRfpById } from "@/queries/website.query/rfps.query";
