@@ -71,6 +71,11 @@ function App() {
       queries: {
         retry: 1,
         refetchOnWindowFocus: false,
+        suspense: false,
+        useErrorBoundary: false,
+      },
+      mutations: {
+        useErrorBoundary: false,
       },
     },
   });

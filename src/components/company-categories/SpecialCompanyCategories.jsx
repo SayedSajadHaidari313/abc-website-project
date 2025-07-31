@@ -7,10 +7,17 @@ import { truncateText } from "@/utils/PublicTruncat";
 import { useState, useMemo } from "react";
 import { Suspense } from "react";
 
-const CompanyCategorie2 = () => {
+const SpecialCompanyCategories = () => {
   const { data, isLoading } = useGetAllCategoryData();
-  const [visibleCategories, setVisibleCategories] = useState(12);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // Define the special categories we want to show
+  const specialCategories = [
+    "Government School",
+    "Government",
+    "Government Hospital",
+    "Government University",
+    "Independent Presidency",
+  ];
 
   // Memoize icon components
   const IconCache = useMemo(() => new Map(), []);
@@ -50,25 +57,16 @@ const CompanyCategorie2 = () => {
   }
 
   const categories = data?.data || [];
-  const parentCategories = categories.filter(
-    (item) => item.category_parent_id === null
+  // Filter only the special government categories
+  const specialGovernmentCategories = categories.filter((item) =>
+    specialCategories.includes(item.category_name)
   );
-
-  const handleLoadMore = () => {
-    setIsLoadingMore(true);
-    // Simulate a small delay to show loading state
-    setTimeout(() => {
-      setVisibleCategories((prevVisible) =>
-        Math.min(prevVisible + 8, parentCategories.length)
-      );
-      setIsLoadingMore(false);
-    }, 300);
-  };
+  console.log(specialGovernmentCategories);
 
   return (
     <>
       <div className="row">
-        {parentCategories.slice(0, visibleCategories).map((item) => (
+        {specialGovernmentCategories.map((item) => (
           <div
             className="category-block-two col-xl-2 col-lg-2 col-md-2 col-sm-12"
             key={item.id}
@@ -82,7 +80,7 @@ const CompanyCategorie2 = () => {
                 </span>
                 <h4>
                   <Link to={`/listing?category=${item.id}`}>
-                    {truncateText(item.category_name, 13)}
+                    {truncateText(item.category_name, 20)}
                   </Link>
                 </h4>
               </div>
@@ -90,27 +88,8 @@ const CompanyCategorie2 = () => {
           </div>
         ))}
       </div>
-
-      {visibleCategories < parentCategories.length && (
-        <div className="text-center mt-4">
-          <button
-            className="theme-btn btn-style-one"
-            onClick={handleLoadMore}
-            disabled={isLoadingMore}
-          >
-            {isLoadingMore ? (
-              <>
-                <Spin size="small" style={{ marginRight: "8px" }} />
-                Loading...
-              </>
-            ) : (
-              "Load More Categories"
-            )}
-          </button>
-        </div>
-      )}
     </>
   );
 };
 
-export default CompanyCategorie2;
+export default SpecialCompanyCategories;

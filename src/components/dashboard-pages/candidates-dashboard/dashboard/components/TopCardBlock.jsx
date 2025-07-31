@@ -8,23 +8,17 @@ const TopCardBlock = () => {
   const { user } = useAuthStore();
   // Fetch all RFPs for this user (first page, large pageSize to get all)
   const { data: rfpsData } = useGetMyRfpsData(1, 1000, null);
-  const userRfps = (rfpsData?.data || []).filter(
+  const userRfps = (rfpsData?.data || [])?.filter(
     (rfp) => rfp.user_id === user?.id
   );
 
   // Profile completion logic (from ProfileCompletionCard)
   const userProfile = userData?.user || {};
   const fieldsToCheck = [
-    userProfile.first_name,
-    userProfile.last_name,
+    userProfile.name,
     userProfile.email,
-    userProfile.phone,
-    userProfile.photo,
-    userProfile.jobseekerprofiles?.experience,
-    userProfile.jobseekerprofiles?.gender,
-    userProfile.jobseekerprofiles?.about,
-    userProfile.jobseekerprofiles?.job_category?.name,
-    userProfile.jobseekerprofiles?.cv,
+    userProfile.user_about,
+    userProfile.user_image,
   ];
   const completedFields = fieldsToCheck.filter(
     (v) => v && v.trim() !== ""

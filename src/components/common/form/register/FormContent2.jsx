@@ -34,8 +34,10 @@ const BusinessRegistrationForm = () => {
   const { mutate } = usePostUserCreate();
   const { data: categoryData } = useGetAllCategoryData();
   const category = categoryData?.data || [];
-
-  const options = category?.map((option) => ({
+  const parentCategories = category?.filter(
+    (item) => item.category_parent_id === null
+  );
+  const options = parentCategories?.map((option) => ({
     value: option.id,
     label: option.category_name,
   }));

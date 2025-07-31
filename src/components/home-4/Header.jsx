@@ -10,7 +10,6 @@ import LazyImage from "../common/LazyImage";
 
 const Header = () => {
   const { data } = useGetSettingData();
-  const headerData = data || [];
   const { user } = useAuthStore();
 
   const formatImageUrl = (path) => {

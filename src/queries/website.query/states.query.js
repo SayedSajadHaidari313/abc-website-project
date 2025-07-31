@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteRequest, getRequest, postRequest } from "auth/FetchInterceptor";
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+} from "@/auth/FetchInterceptor";
 
 export const getStatesData = async (
   current,

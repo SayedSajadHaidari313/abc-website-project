@@ -2,6 +2,7 @@
 @import "slick-carousel/slick/slick-theme.scss";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "public/scss/main.scss";
+@import "./profile-cards.scss";
 @font-face {
   font-family: 'Vazir';
   src: url('/fonts/Vazir-Medium.woff2') format('woff2'),
@@ -9,4 +10,184 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+// Loading Spinner Styles
+.route-loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  
+  &__spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #00989a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  &--app {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// QR Code Component Styles
+.company-qr-card {
+  .ant-card-body {
+    padding: 20px;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .ant-btn {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  // Benefits section styling
+  .ant-space {
+    .ant-typography {
+      line-height: 1.4;
+    }
+  }
+  
+  // Usage instructions styling
+  .ant-typography {
+    strong {
+      font-weight: 600;
+    }
+  }
+}
+
+.company-info-card {
+  .ant-card-body {
+    padding: 20px;
+  }
+  
+  .ant-typography {
+    margin-bottom: 0;
+  }
+  
+  .ant-divider {
+    margin: 16px 0;
+  }
+  
+  .ant-space {
+    width: 100%;
+  }
+  
+  &:hover {
+    transform: translateY(-1px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  // Section styling
+  .ant-typography {
+    strong {
+      font-weight: 600;
+    }
+  }
+  
+  // Benefits list styling
+  ul {
+    li {
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+  }
+}
+
+// QR Code specific styles
+.qr-code-container {
+  canvas {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  // Style for QR code with icon
+  .ant-qrcode {
+    border-radius: 8px;
+    overflow: hidden;
+    
+    canvas {
+      border-radius: 8px;
+    }
+  }
+}
+
+// Widget title styling
+.widget-title {
+  color: #262626;
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 16px;
+  
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    background: #1890ff;
+    margin-right: 8px;
+    border-radius: 2px;
+  }
+}
+
+// Responsive adjustments for QR code
+@media (max-width: 768px) {
+  .company-qr-card {
+    .ant-card-body {
+      padding: 16px;
+    }
+    
+    .ant-btn {
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+  }
+  
+  .company-info-card {
+    .ant-card-body {
+      padding: 16px;
+    }
+  }
+  
+  .widget-title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-qr-card {
+    .ant-card-body {
+      padding: 12px;
+    }
+    
+    .ant-typography {
+      font-size: 14px;
+    }
+  }
+  
+  .widget-title {
+    font-size: 13px;
+  }
 }

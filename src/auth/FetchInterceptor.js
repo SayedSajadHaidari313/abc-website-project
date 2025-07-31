@@ -28,6 +28,13 @@ service.interceptors.request.use((request) => {
 service.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Check if it's a network error (no response from server)
+    if (!error.response) {
+      // Don't show notification for network errors to avoid empty/bad notifications
+      console.warn("Network error detected:", error.message);
+      return Promise.reject(error);
+    }
+
     let notificationParam = {
       message: "",
       description: "",
@@ -58,6 +65,7 @@ service.interceptors.response.use(
               if (errors[key].includes("The phone has already been taken.")) {
                 return "This phone number has already been registered.";
               }
+              
             })
             .filter(Boolean)
             .join("\n");
@@ -85,7 +93,11 @@ service.interceptors.response.use(
       }
     }
 
-    notification.error(notificationParam);
+    // Only show notification if we have a meaningful message
+    if (notificationParam.message) {
+      notification.error(notificationParam);
+    }
+
     return Promise.reject(error?.response);
   }
 );

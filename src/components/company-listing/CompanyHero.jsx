@@ -1,49 +1,93 @@
-import React from "react";
-import { Divider, Spin, Pagination, Alert } from "antd";
+// company hero
+import React, { useState } from "react";
+import { Spin, Pagination, Alert } from "antd";
 import {
   useGetAllWebsiteItemsData,
   useGetItemsByCategoryId,
 } from "@/queries/website.query/items.query";
-import { formatImageUrl, getFallbackImage } from "@/utils/imageUtils";
+import {
+  getFallbackImage,
+  createSafeImageErrorHandler,
+} from "@/utils/imageUtils";
+import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { TbMoodEmptyFilled } from "react-icons/tb";
 import { FaRegBuilding } from "react-icons/fa";
 import SmartText from "@/components/common/SmartText";
 import { truncateText } from "@/utils/PublicTruncat";
+import { BankOutlined } from "@ant-design/icons";
 
 const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
-  const [pagination, setPagination] = React.useState({
-    current: 1,
-    pageSize: 9,
-  });
+  const [pageSize] = useState(12);
+  const [displayedItems, setDisplayedItems] = useState([]);
+  const [imageLoadingStates, setImageLoadingStates] = React.useState({});
+  const [isPageChanging, setIsPageChanging] = useState(false);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category") || "";
+  const currentPage = parseInt(searchParams.get("page") || "1");
   const isCategorySelected = !!category;
   const categoryId = category ? Number(category) : undefined;
 
   const { data, isLoading, isError, refetch } = isCategorySelected
     ? useGetItemsByCategoryId({
         categoryId,
-        current: pagination.current,
-        pageSize: pagination.pageSize,
+        current: currentPage,
+        pageSize: pageSize,
         searchQuery: searchQuery,
       })
     : useGetAllWebsiteItemsData({
-        current: pagination.current,
-        pageSize: pagination.pageSize,
+        current: currentPage,
+        pageSize: pageSize,
         searchQuery: searchQuery,
         location: location,
       });
 
   const itemData = data?.data || data?.items || [];
   const totalItems = data?.total || 0;
-  const [imageLoadingStates, setImageLoadingStates] = React.useState({});
   const navigate = useNavigate();
 
-  const handlePageChange = (page, pageSize) => {
-    setPagination({ current: page, pageSize: pageSize });
-    window.scrollTo(0, 0);
+  React.useEffect(() => {
+    if (itemData.length > 0) {
+      const transformedItems = itemData?.map((item, index) => {
+        return {
+          status: item.item_status === 1 ? "OPEN" : "CLOSED",
+          featured: item.item_featured_by_admin === 1,
+          image: item.item_image
+            ? `${BASE_IMAGE_URL}/${item.item_image}`
+            : getFallbackImage("item"),
+          avatar: item.user?.user_image
+            ? `${BASE_IMAGE_URL}/${item.user.user_image}`
+            : getFallbackImage("item"),
+          title: item.item_title,
+          subtitle: item.item_description,
+          phone: item.item_phone,
+          location: `${item.city?.city_name || ""} ${
+            item.country?.name || ""
+          }`.trim(),
+          category: item.category?.category_name,
+          categoryColor: "#ff6f61",
+          categoryIcon: "fa-warehouse",
+          item_slug: item.item_slug,
+          id: item.id,
+        };
+      });
+
+      setDisplayedItems(transformedItems);
+      // Hide loading state when new data is loaded
+      setIsPageChanging(false);
+    }
+  }, [itemData]);
+
+  const handlePageChange = (page) => {
+    // Show loading state
+    setIsPageChanging(true);
+
+    // Update URL search parameters to persist page state
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("page", page.toString());
+    setSearchParams(newSearchParams);
+    // No scroll - stays in same position
   };
 
   const handleImageLoad = (index, type) => {
@@ -60,41 +104,16 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
     }));
   };
 
-  const transformedItem = itemData?.map((item, index) => {
-    const itemImageUrl = formatImageUrl(item.item_image);
-    const userImageUrl = formatImageUrl(item.user?.user_image, "user");
+  const displayItems = jobs.length > 0 ? jobs : displayedItems;
 
-    return {
-      status: item.item_status === 1 ? "OPEN" : "CLOSED",
-      featured: item.item_featured_by_admin === 1,
-      image: itemImageUrl || getFallbackImage("item"),
-      avatar: userImageUrl || getFallbackImage("item"),
-      title: item.item_title,
-      subtitle: item.item_description,
-      phone: item.item_phone,
-      location: `${item.city?.city_name || ""} ${
-        item.country?.name || ""
-      }`.trim(),
-      category: item.category?.category_name,
-      categoryColor: "#ff6f61", // Default color
-      categoryIcon: "fa-warehouse", // Default icon
-      item_slug: item.item_slug,
-      id: item.id,
-    };
-  });
-
-  const displayItems = jobs.length > 0 ? jobs : transformedItem;
-
-  // Show loading state
-  if (isLoading) {
+  if (isLoading && currentPage === 1) {
     return (
-      <div style={{ textAlign: "center", padding: 40 }}>
+      <div className="company-hero__loading">
         <Spin size="large" />
       </div>
     );
   }
 
-  // Show error state
   if (isError) {
     return (
       <Alert
@@ -106,35 +125,19 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
     );
   }
 
-  // Show empty state
   if (displayItems.length === 0) {
     return (
-      <section
-        className="job-section alternate"
-        style={{
-          minHeight: 300,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{ textAlign: "center" }}>
+      <section className="job-section alternate company-hero__empty-state">
+        <div className="company-hero__empty-state-content">
           <TbMoodEmptyFilled
             size={80}
             color="#bbb"
-            style={{ marginBottom: 20, opacity: 0.7 }}
+            className="company-hero__empty-state-icon"
           />
-          <div
-            style={{
-              fontSize: 20,
-              color: "#888",
-              fontWeight: 500,
-              marginBottom: 8,
-            }}
-          >
+          <div className="company-hero__empty-state-title">
             No items found in this category.
           </div>
-          <div style={{ fontSize: 14, color: "#bbb" }}>
+          <div className="company-hero__empty-state-subtitle">
             Try adjusting your filters or check back later.
           </div>
         </div>
@@ -142,10 +145,21 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
     );
   }
 
-  // Main render
   return (
     <div className="auto-container">
       <div className="col-lg-12">
+        {/* Loading overlay when page is changing */}
+        {isPageChanging && (
+          <div className="company-hero__page-loading-overlay">
+            <div className="company-hero__page-loading-content">
+              <Spin size="large" />
+              <div className="company-hero__page-loading-text">
+                Loading companies...
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="row">
           {displayItems.map((job, idx) => (
             <div
@@ -153,146 +167,54 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
               className="col-xl-2-6 col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4"
             >
               <div className="company-card">
-                {/* Photo Section */}
-                <div
-                  style={{
-                    position: "relative",
-                    paddingTop: "75%", // Responsive aspect ratio
-                    overflow: "hidden",
-                  }}
-                >
+                <div className="company-hero__card-image-container">
                   {imageLoadingStates[`${idx}-item`] && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "#f5f5f5",
-                        zIndex: 1,
-                      }}
-                    >
+                    <div className="company-hero__card-loading">
                       <Spin size="small" />
                     </div>
                   )}
                   {job.image || job.avatar ? (
                     <img
-                      src={job.image || job.avatar}
+                      src={
+                        job.image ? (
+                          `${BASE_IMAGE_URL}/${job.avatar}`
+                        ) : (
+                          <BankOutlined />
+                        )
+                      }
+                      // src={job.image || job.avatar}
                       alt="Listing"
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      onError={(e) => {
-                        if (e.target.src !== job.avatar && job.avatar) {
-                          e.target.src = job.avatar;
-                        } else {
-                          e.target.onerror = null;
-                          e.target.style.display = "none";
+                      className="company-hero__card-image"
+                      onError={createSafeImageErrorHandler(
+                        job.avatar,
+                        "item",
+                        (e) => {
+                          // Show fallback icon when both main image and avatar fail
                           const icon = document.createElement("span");
                           icon.className = "fallback-icon";
                           e.target.parentNode.appendChild(icon);
                         }
-                      }}
+                      )}
                       onLoad={() => handleImageLoad(idx, "item")}
                       onLoadStart={() => handleImageLoadStart(idx, "item")}
                     />
                   ) : (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "#f5f5f5",
-                      }}
-                    >
+                    <div className="company-hero__card-fallback">
                       <FaRegBuilding size={64} color="#bbb" />
                     </div>
                   )}
 
-                  {/* Status and Featured Badges */}
-                  {/* {job.status && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: 10,
-                        left: 10,
-                        background:
-                          job.status === "OPEN" ? "#27ae60" : "#e74c3c",
-                        color: "#fff",
-                        borderRadius: 6,
-                        padding: "2px 10px",
-                        fontSize: 12,
-                        fontWeight: 600,
-                        zIndex: 2,
-                      }}
-                    >
-                      {job.status}
-                    </span>
-                  )} */}
-
                   {job.featured && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: 10,
-                        right: 10,
-                        background: "#fff",
-                        color: "#ff9800",
-                        borderRadius: 6,
-                        padding: "2px 10px",
-                        fontSize: 12,
-                        fontWeight: 600,
-                        zIndex: 2,
-                      }}
-                    >
+                    <span className="company-hero__card-featured">
                       Promoted
                     </span>
                   )}
                 </div>
 
-                {/* Details Section */}
-                <div
-                  className="card-body"
-                  style={{
-                    padding: "12px",
-                    display: "flex",
-                    flexDirection: "column",
-                    flex: 1,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 8,
-                    }}
-                  >
+                <div className="company-hero__card-body">
+                  <div className="company-hero__card-title-container">
                     <span
-                      style={{
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        color: "#1890ff",
-                        fontSize: 16,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        flex: 1,
-                      }}
+                      className="company-hero__card-title"
                       onClick={() =>
                         navigate(
                           `/company/${
@@ -303,46 +225,51 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
                         )
                       }
                     >
-                      {truncateText(job.title, 20)}{" "}
+                      {truncateText(job.title, 20)}
                     </span>
-                    <i
-                      className="fa fa-check-circle"
-                      style={{ color: "#27ae60", marginLeft: 6, fontSize: 14 }}
-                    ></i>
+                    <i className="fa fa-check-circle company-hero__card-verified"></i>
                   </div>
 
                   <SmartText
                     text={job.subtitle}
                     maxLength={60}
-                    style={{
-                      color: "#666",
-                      marginBottom: 0,
-                      fontSize: 12,
-                      flex: 1,
-                    }}
+                    className="company-hero__card-description"
                   />
+                  <button
+                    className="theme-btn btn-style-one"
+                    onClick={() =>
+                      navigate(
+                        `/company/${
+                          job.item_slug ||
+                          job.id ||
+                          job.title.toLowerCase().replace(/\s+/g, "-")
+                        }`
+                      )
+                    }
+                  >
+                    Read More
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Pagination */}
-        <div
-          className="pagination-container"
-          style={{
-            textAlign: "center",
-            marginTop: "30px",
-          }}
-        >
-          <Pagination
-            current={pagination.current}
-            pageSize={pagination.pageSize}
-            total={totalItems}
-            onChange={handlePageChange}
-            showSizeChanger
-          />
-        </div>
+        {/* Pagination Component */}
+        {totalItems > pageSize && (
+          <div className="company-hero__pagination">
+            <Pagination
+              current={currentPage}
+              total={totalItems}
+              pageSize={pageSize}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+              showQuickJumper
+              responsive={true}
+              size="default"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

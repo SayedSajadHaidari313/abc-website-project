@@ -5,13 +5,12 @@ const index = () => {
   return (
     <>
       <div className="widget-content">
-        {/* <LogoUpload /> */}
-        {/* End logo and cover photo components */}
+        {/* Profile Completion Card */}
         <ProfileCompletionCard />
+
+        {/* User and Company Information */}
         <FormInfoBox />
-        {/* compnay info box */}
       </div>
-   
     </>
   );
 };

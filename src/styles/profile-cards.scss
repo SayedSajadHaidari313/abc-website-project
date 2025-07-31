@@ -1,0 +1,90 @@
+// Profile Cards Custom Styling
+.profile-card {
+  .ant-card-head {
+    border-bottom: 1px solid #f0f0f0;
+    
+    .ant-card-head-title {
+      font-weight: 600;
+      color: #262626;
+    }
+  }
+  
+  .ant-card-body {
+    padding: 24px;
+  }
+  
+  // Avatar styling
+  .ant-avatar {
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: #1890ff;
+    }
+  }
+  
+  // Form styling
+  .ant-form-item {
+    margin-bottom: 16px;
+    
+    .ant-form-item-label {
+      font-weight: 500;
+      
+      label {
+        color: #262626;
+      }
+    }
+  }
+  
+  // Button styling
+  .ant-btn {
+    border-radius: 6px;
+    font-weight: 500;
+    
+    &.ant-btn-primary {
+      background: #1890ff;
+      border-color: #1890ff;
+      
+      &:hover {
+        background: #40a9ff;
+        border-color: #40a9ff;
+      }
+    }
+  }
+  
+  // Text styling
+  .ant-typography {
+    .ant-typography-title {
+      color: #262626;
+    }
+    
+    .ant-typography-text {
+      color: #595959;
+    }
+  }
+  
+  // Responsive improvements
+  @media (max-width: 768px) {
+    .ant-card-body {
+      padding: 16px;
+    }
+    
+    .ant-avatar {
+      size: 60px;
+    }
+  }
+}
+
+// Profile completion card
+.ant-card {
+  &.profile-completion-card {
+    .ant-progress {
+      margin-bottom: 16px;
+    }
+    
+    .ant-tag {
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+  }
+} 

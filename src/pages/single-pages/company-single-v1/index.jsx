@@ -3,16 +3,20 @@ import DefaulHeader from "@/components/header/DefaulHeader";
 import MobileMenu from "@/components/header/MobileMenu";
 import SocialTwo from "@/components/job-single-pages/social/SocialTwo";
 import { useParams } from "react-router-dom";
-import { formatImageUrl, getFallbackImage } from "@/utils/imageUtils";
+import {
+  formatImageUrl,
+  getFallbackImage,
+  createSafeImageErrorHandler,
+} from "@/utils/imageUtils";
 import AdBlockDisplay from "@/components/common/AdBlockDisplay";
 import MetaComponent from "@/components/common/MetaComponent";
-import CompanyInfo from "@/components/job-single-pages/shared-components/CompanyInfo";
 import CompanyLocationMap from "@/components/common/CompanyLocationMap";
 import Footer from "@/components/home-4/Footer";
 import { Skeleton } from "antd";
 import { useGetCompanyBySlug } from "@/queries/website.query/company.query";
 import SmartText from "@/components/common/SmartText";
 import Advertisement from "@/components/advertisement/Advertisement";
+import CompanyQRCode from "@/components/common/CompanyQRCode";
 // import GoogleAd from "@/components/common/GoogleAd";
 
 const metadata = {
@@ -84,12 +88,13 @@ const CompanySingleDynamicV1 = () => {
           className="upper-box"
           style={{
             position: "relative",
-            backgroundImage: `url(${formatImageUrl(
-              company?.user?.user_image
-            )})`,
+            backgroundImage: company?.item_image
+              ? `url(${formatImageUrl(company?.item_image)})`
+              : "none",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
+            backgroundColor: company?.item_image ? "transparent" : "#f5f5f5",
             "&::before": {
               content: '""',
               position: "absolute",
@@ -129,15 +134,12 @@ const CompanySingleDynamicV1 = () => {
                   <span className="company-logo">
                     <img
                       src={
-                        company?.user?.user_image
-                          ? formatImageUrl(company?.user?.user_image)
+                        company?.item_image
+                          ? formatImageUrl(company?.item_image)
                           : getFallbackImage("item")
                       }
                       alt="logo"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = getFallbackImage("item");
-                      }}
+                      onError={createSafeImageErrorHandler(null, "item")}
                     />
                   </span>
                   <h4 style={{ color: "#ffffff" }}>{company?.item_title}</h4>
@@ -262,49 +264,15 @@ const CompanySingleDynamicV1 = () => {
 
               <div className="sidebar-column col-lg-4 col-md-12 col-sm-12">
                 <aside className="sidebar">
-                  <div className="sidebar-widget company-widget">
+                  {/* QR Code Widget */}
+                  <div className="sidebar-widget">
+                    <h4 className="widget-title">Quick Share</h4>
                     <div className="widget-content">
-                      <div className="company-title">
-                        <div className="company-logo">
-                          <img
-                            className="item brand"
-                            src={
-                              company?.user?.user_image
-                                ? formatImageUrl(
-                                    company?.user?.user_image,
-                                    "user"
-                                  )
-                                : getFallbackImage("item")
-                            }
-                            alt="resource"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = getFallbackImage("item");
-                            }}
-                          />
-                        </div>
-                        <h5 className="company-name">{company?.user?.name}</h5>
-                        <a href="#" className="profile-link">
-                          View User profile
-                        </a>
-                      </div>
-                      <CompanyInfo currentCompanyId={company?.id} />
-                      {/* End company title */}
-                      <div className="btn-box">
-                        <a
-                          href={
-                            company?.item_phone
-                              ? `tel:${company.item_phone}`
-                              : "#"
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="theme-btn btn-style-three"
-                        >
-                          {company?.item_phone || "Contact"}
-                        </a>
-                      </div>
-                      {/* End btn-box */}
+                      <CompanyQRCode
+                        companyUrl={window.location.href}
+                        companyName={company?.item_title}
+                        companyLogo={company?.item_image}
+                      />
                     </div>
                   </div>
 

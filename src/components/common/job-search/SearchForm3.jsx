@@ -5,9 +5,14 @@ import { useGetAllCategoryData } from "@/queries/website.query/category.query";
 
 const SearchForm3 = () => {
   const { data } = useGetAllCategoryData();
-  const companyCategory = data?.data || [];
+  // const companyCategory = data?.data || [];
 
-  const options = companyCategory?.map((option) => ({
+  const companyCategory = data?.data || [];
+  const parentCategories = companyCategory.filter(
+    (item) => item.category_parent_id === null
+  );
+
+  const options = parentCategories?.map((option) => ({
     value: option.id,
     label: option.category_name || "",
   }));
@@ -80,7 +85,7 @@ const SearchForm3 = () => {
             onChange={(selected) =>
               setCategoryInput(selected ? selected.value : null)
             }
-            placeholder="Job Category"
+            placeholder="Category"
             isClearable
             menuPortalTarget={document.body}
             filterOption={(option, inputValue) => {

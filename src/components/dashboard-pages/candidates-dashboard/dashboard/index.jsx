@@ -45,9 +45,6 @@ const Index = () => {
           {/* End .row top card block */}
 
           {/* recent insight show in db */}
-      
-
-   
         </div>
         {/* End dashboard-outer */}
       </section>

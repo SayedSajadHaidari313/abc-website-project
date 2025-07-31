@@ -52,14 +52,14 @@ export const formatImageUrl = (path, type = "item") => {
 export const getFallbackImage = (type = "item") => {
   switch (type) {
     case "user":
-      // return "/images/icons/user.svg";
+      return "/images/icons/user.svg";
     case "company":
-      // return "/images/icons/placeholder.svg";
+      return "/images/icons/placeholder.svg";
     case "logo":
-      // return "/images/icons/placeholdesr.svg";
+      return "/images/icons/placeholder.svg";
     case "item":
     default:
-    // return "/images/icons/download.svg";
+      return "/images/icons/download.svg";
   }
 };
 
@@ -82,12 +82,18 @@ export const handleImageError = (e, type = "item") => {
   target.dataset.fallbackAttempted = "true";
 
   // Set the fallback image
-  target.src = getFallbackImage(type);
+  const fallbackSrc = getFallbackImage(type);
+  if (fallbackSrc) {
+    target.src = fallbackSrc;
 
-  // Add another error handler for the fallback image
-  target.onerror = (fallbackError) => {
-    fallbackError.target.style.display = "none";
-  };
+    // Add another error handler for the fallback image
+    target.onerror = (fallbackError) => {
+      fallbackError.target.style.display = "none";
+    };
+  } else {
+    // If no fallback image available, hide the element
+    target.style.display = "none";
+  }
 };
 
 /**
@@ -130,4 +136,48 @@ export const getOptimizedImageUrl = (
   }
 
   return baseUrl;
+};
+
+/**
+ * Creates a safe image error handler that prevents infinite loops
+ * @param {string} fallbackSrc - The fallback image source
+ * @param {string} type - The type of image for fallback
+ * @param {Function} onFallbackError - Optional callback when fallback also fails
+ * @returns {Function} - The error handler function
+ */
+export const createSafeImageErrorHandler = (
+  fallbackSrc = null,
+  type = "item",
+  onFallbackError = null
+) => {
+  return (e) => {
+    const target = e.target;
+
+    // Prevent infinite loops by checking if we've already attempted fallback
+    if (target.dataset.fallbackAttempted) {
+      target.style.display = "none";
+      if (onFallbackError) onFallbackError(e);
+      return;
+    }
+
+    // Mark that we've attempted fallback
+    target.dataset.fallbackAttempted = "true";
+
+    // Use provided fallback or get default fallback
+    const finalFallbackSrc = fallbackSrc || getFallbackImage(type);
+
+    if (finalFallbackSrc) {
+      target.src = finalFallbackSrc;
+
+      // Add another error handler for the fallback image
+      target.onerror = (fallbackError) => {
+        fallbackError.target.style.display = "none";
+        if (onFallbackError) onFallbackError(fallbackError);
+      };
+    } else {
+      // If no fallback image available, hide the element
+      target.style.display = "none";
+      if (onFallbackError) onFallbackError(e);
+    }
+  };
 };

@@ -4,7 +4,11 @@ import {
   useGetAllWebsiteItemsData,
   useGetItemsByCategoryId,
 } from "@/queries/website.query/items.query";
-import { formatImageUrl, getFallbackImage } from "@/utils/imageUtils";
+import {
+  formatImageUrl,
+  getFallbackImage,
+  createSafeImageErrorHandler,
+} from "@/utils/imageUtils";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { TbMoodEmptyFilled } from "react-icons/tb";
 import { FaRegBuilding } from "react-icons/fa";
@@ -242,17 +246,16 @@ const CompanyPage1 = ({
                       src={job.image || job.avatar}
                       alt="Listing"
                       onLoad={() => handleImageLoad(idx, "item")}
-                      onError={(e) => {
-                        if (e.target.src !== job.avatar && job.avatar) {
-                          e.target.src = job.avatar;
-                        } else {
-                          e.target.onerror = null;
-                          e.target.style.display = "none";
+                      onError={createSafeImageErrorHandler(
+                        job.avatar,
+                        "item",
+                        (e) => {
+                          // Show fallback icon when both main image and avatar fail
                           const icon = document.createElement("span");
                           icon.className = "fallback-icon";
                           e.target.parentNode.appendChild(icon);
                         }
-                      }}
+                      )}
                     />
                   ) : (
                     <div className="fallback-icon-container">
