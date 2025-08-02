@@ -53,7 +53,7 @@ const index = () => {
       <section className="job-categories">
         <div className="auto-container">
           <div className="sec-title text-center">
-            <h2>Recent Company Registered Companies</h2>
+            <h2>Recent Company Register</h2>
             <div className="text">
               Explore Newly Added Afghan Businesses - Fresh Listings Updated Daily
             </div>

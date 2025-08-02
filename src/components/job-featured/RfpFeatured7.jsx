@@ -5,13 +5,16 @@ import { useGetRfpsData } from "@/queries/website.query/rfps.query";
 import { formatImageUrl } from "@/utils/imageUtils";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { Pagination, Spin, Alert } from "antd";
-
-import { MdDownloadForOffline } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
+import React from "react";
 
 const getRequestTypeDisplay = (type) => {
   const types = {
-    RFP: "Request for Proposal" ,
+    RFP: "Request for Proposal",
+    rfp: "Request for Proposal",
+    rfq: "Request for Quote",
     RFQ: "Request for Quote",
+    tib: "Invitation to Bidding",
     ITB: "Invitation to Bidding",
   };
   const name = types[type] || type;
@@ -21,17 +24,40 @@ const getRequestTypeDisplay = (type) => {
 const RfpFeatured7 = () => {
   // Get search keyword from Redux filter state
   const keyword = useSelector((state) => state.employerFilter.keyword);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pageSize] = useState(10);
+  const [isPageChanging, setIsPageChanging] = useState(false);
+
+  // URL search params for page persistence
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get("page") || "1");
 
   const { data, isLoading, isError } = useGetRfpsData(
-    pagination.current,
-    pagination.pageSize,
+    currentPage,
+    pageSize,
     keyword
   );
   const rfpsData = data?.data || [];
   const total = data?.total || 0;
 
-  if (isLoading) {
+  // Hide loading state when new data is loaded
+  React.useEffect(() => {
+    if (rfpsData.length > 0) {
+      setIsPageChanging(false);
+    }
+  }, [rfpsData]);
+
+  const handlePageChange = (page) => {
+    // Show loading state
+    setIsPageChanging(true);
+
+    // Update URL search parameters to persist page state
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("page", page.toString());
+    setSearchParams(newSearchParams);
+    // No scroll - stays in same position
+  };
+
+  if (isLoading && currentPage === 1) {
     return (
       <div style={{ textAlign: "center", padding: 40 }}>
         <Spin size="large" />
@@ -49,6 +75,18 @@ const RfpFeatured7 = () => {
 
   return (
     <>
+      {/* Loading overlay when page is changing */}
+      {isPageChanging && (
+        <div className="company-list-hp__page-loading-overlay">
+          <div className="company-list-hp__page-loading-content">
+            <Spin size="large" />
+            <div className="company-list-hp__page-loading-text">
+              Loading RFPs...
+            </div>
+          </div>
+        </div>
+      )}
+
       {rfpsData.map((item) => (
         <div className="job-block-five regular" key={item.id}>
           <div className="inner-box">
@@ -98,31 +136,25 @@ const RfpFeatured7 = () => {
                 </ul>
               </div>
             </div>
-            {item.file && (
-              <a
-                href={formatImageUrl(item.file)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <a className="theme-btn btn-style-three">
-                  <MdDownloadForOffline style={{ fontSize: "20px" }} />
-                </a>
-              </a>
-            )}
           </div>
         </div>
       ))}
-      <div style={{ textAlign: "center", marginTop: 24 }}>
-        <Pagination
-          current={pagination.current}
-          pageSize={pagination.pageSize}
-          total={total}
-          onChange={(page, pageSize) =>
-            setPagination({ current: page, pageSize })
-          }
-          showSizeChanger
-        />
-      </div>
+
+      {/* Pagination Component with CompanyListHp styling */}
+      {total > pageSize && (
+        <div className="company-list-hp__pagination">
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={total}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+            showQuickJumper
+            responsive={true}
+            size="default"
+          />
+        </div>
+      )}
     </>
   );
 };

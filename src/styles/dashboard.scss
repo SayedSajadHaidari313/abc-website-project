@@ -1,0 +1,308 @@
+// Modern Dashboard Styles
+.dashboard {
+  .user-dashboard {
+    padding: 24px;
+    background: #f8f9fa;
+    min-height: 100vh;
+
+    .dashboard-outer {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+  }
+
+  // Welcome Card Styles
+  .welcome-card {
+    .ant-card-body {
+      padding: 32px;
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+  }
+
+  // Quick Stats Card
+  .quick-stats-card {
+    .ant-card-body {
+      padding: 24px;
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+  }
+
+  // Profile Section Card
+  .profile-section-card {
+    .ant-card-head {
+      border-bottom: 2px solid #f0f0f0;
+      padding: 0 24px;
+    }
+    
+    .ant-card-body {
+      padding: 24px;
+    }
+  }
+
+  // Statistics Cards
+  .stat-card {
+    .ant-card-body {
+      padding: 24px;
+    }
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    }
+  }
+
+  // QR Code Card
+  .qr-code-card {
+    .ant-card-head {
+      border-bottom: 2px solid #f0f0f0;
+      padding: 0 24px;
+    }
+    
+    .ant-card-body {
+      padding: 24px;
+    }
+    
+    .qr-code-content {
+      .quick-share-info {
+        ul {
+          list-style: none;
+          padding-left: 0;
+          
+          li {
+            padding: 4px 0;
+            position: relative;
+            padding-left: 20px;
+            
+            &:before {
+              content: "✓";
+              position: absolute;
+              left: 0;
+              color: #52c41a;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Activity Card
+  .activity-card {
+    .ant-card-head {
+      border-bottom: 2px solid #f0f0f0;
+      padding: 0 24px;
+    }
+    
+    .ant-card-body {
+      padding: 24px;
+    }
+  }
+
+  // Profile Completion Card
+  .profile-completion-card {
+    .ant-card-body {
+      padding: 24px;
+    }
+    
+    .ant-progress-text {
+      font-weight: 600;
+    }
+    
+    .ant-tag {
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 12px;
+      
+      &.ant-tag-red {
+        background: #fff2f0;
+        border-color: #ffccc7;
+        color: #cf1322;
+      }
+      
+      &.ant-tag-green {
+        background: #f6ffed;
+        border-color: #b7eb8f;
+        color: #389e0d;
+      }
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    .user-dashboard {
+      padding: 16px;
+    }
+    
+    .welcome-card,
+    .quick-stats-card,
+    .profile-section-card,
+    .stat-card,
+    .qr-code-card,
+    .activity-card,
+    .profile-completion-card {
+      .ant-card-body {
+        padding: 16px;
+      }
+    }
+    
+    .welcome-card {
+      .ant-card-body {
+        padding: 20px;
+      }
+    }
+  }
+
+  // Loading Animation
+  .route-loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1890ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  // Hover Effects
+  .ant-card {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  }
+
+  // Custom Scrollbar
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    
+    &:hover {
+      background: #a8a8a8;
+    }
+  }
+
+  // Typography Enhancements
+  .ant-typography {
+    &.ant-typography-h1,
+    &.ant-typography-h2,
+    &.ant-typography-h3,
+    &.ant-typography-h4,
+    &.ant-typography-h5 {
+      font-weight: 600;
+    }
+  }
+
+  // Button Enhancements
+  .ant-btn {
+    border-radius: 8px;
+    font-weight: 500;
+    
+    &.ant-btn-primary {
+      background: linear-gradient(135deg, #00989a 0%, #007a7c 100%);
+      border: none;
+      
+      &:hover {
+        background: linear-gradient(135deg, #008a8c 0%, #006b6d 100%);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  // Form Enhancements
+  .ant-form-item {
+    margin-bottom: 24px;
+  }
+
+  .ant-input,
+  .ant-input-password,
+  .ant-select-selector {
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    
+    &:hover {
+      border-color: #1890ff;
+    }
+    
+    &:focus {
+      border-color: #1890ff;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
+  }
+
+  // Alert Enhancements
+  .ant-alert {
+    border-radius: 8px;
+    border: none;
+    
+    &.ant-alert-error {
+      background: #fff2f0;
+      border: 1px solid #ffccc7;
+    }
+    
+    &.ant-alert-success {
+      background: #f6ffed;
+      border: 1px solid #b7eb8f;
+    }
+  }
+
+  // Profile Header Card
+  .profile-header-card {
+    .ant-card-body {
+      padding: 32px;
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+  }
+
+  // Profile Settings Card
+  .profile-settings-card {
+    .ant-card-head {
+      border-bottom: 2px solid #f0f0f0;
+      padding: 0 24px;
+    }
+    
+    .ant-card-body {
+      padding: 24px;
+    }
+  }
+
+  // Widget Content Enhancements
+  .widget-content {
+    .ant-card {
+      margin-bottom: 24px;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+} 

@@ -61,11 +61,10 @@ const SpecialCompanyCategories = () => {
   const specialGovernmentCategories = categories.filter((item) =>
     specialCategories.includes(item.category_name)
   );
-  console.log(specialGovernmentCategories);
 
   return (
     <>
-      <div className="row">
+      <div className="row justify-content-center">
         {specialGovernmentCategories.map((item) => (
           <div
             className="category-block-two col-xl-2 col-lg-2 col-md-2 col-sm-12"

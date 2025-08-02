@@ -16,19 +16,19 @@ const SocialTwo = () => {
     },
     {
       id: 3,
-      name: "Linkedin",
-      icon: "fa-likedin",
+      name: "LinkedIn",
+      icon: "fa-linkedin-in",
       iconClass: "linkedin",
       link: "https://www.linkedin.com/",
     },
   ];
 
   return (
-    <>
+    <div className="social-buttons-container">
       {socialContent.map((item) => (
         <a
           href={item.link}
-          className={item.iconClass}
+          className={`social-button ${item.iconClass}`}
           target="_blank"
           rel="noopener noreferrer"
           key={item.id}
@@ -36,7 +36,7 @@ const SocialTwo = () => {
           <i className={`fab ${item.icon}`}></i> {item.name}
         </a>
       ))}
-    </>
+    </div>
   );
 };
 

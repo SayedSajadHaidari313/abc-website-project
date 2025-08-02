@@ -167,7 +167,7 @@ const CompanySponsored = ({ jobs = [] }) => {
         <div className="company-sponsored__slider-container">
           <Slider {...settings}>
             {displayItems.map((job, idx) => (
-              <div key={idx} className="company-sponsored__slide">
+              <div key={idx} className="company-sponsored__slide" >
                 <div className="company-sponsored__card">
                   <div className="company-sponsored__card-image-container">
                     {imageLoadingStates[`${idx}-item`] && (

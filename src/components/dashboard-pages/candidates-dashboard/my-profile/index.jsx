@@ -6,57 +6,91 @@ import MyProfile from "./components/my-profile";
 import CopyrightFooter from "../../CopyrightFooter";
 import DashboardCandidatesHeader from "../../../header/DashboardCandidatesHeader";
 import MenuToggler from "../../MenuToggler";
+import { Card, Row, Col, Typography, Space } from "antd";
+import { UserOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
+
+const { Title, Text } = Typography;
 
 const index = () => {
   return (
     <div className="page-wrapper dashboard">
       <span className="header-span"></span>
-      {/* <!-- Header Span for hight --> */}
 
       <LoginPopup />
-      {/* End Login Popup Modal */}
-
       <DashboardCandidatesHeader />
-      {/* End Header */}
-
       <MobileMenu />
-      {/* End MobileMenu */}
-
       <DashboardCandidatesSidebar />
-      {/* <!-- End Candidates Sidebar Menu --> */}
 
-      {/* <!-- Dashboard --> */}
+      {/* Modern Profile Section */}
       <section className="user-dashboard">
         <div className="dashboard-outer">
-          <BreadCrumb title="My Profile!" />
-          {/* breadCrumb */}
-
+          <BreadCrumb title="My Profile" />
           <MenuToggler />
-          {/* Collapsible sidebar button */}
 
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="ls-widget">
-                <div className="tabs-box">
-                  <div className="widget-title">
-                    <h4>My Profile</h4>
-                  </div>
-                  <MyProfile />
-                </div>
-              </div>
-              {/* <!-- Ls widget --> */}
-            </div>
-          </div>
-          {/* End .row */}
+          {/* Profile Header */}
+          <Row gutter={[24, 24]} style={{ marginBottom: 32 }}>
+            <Col xs={24}>
+              <Card
+                className="profile-header-card"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #00989a 0%, #007a7c 100%)",
+                  color: "white",
+                  borderRadius: 16,
+                  border: "none",
+                }}
+              >
+                <Row align="middle" gutter={24}>
+                  <Col xs={24} sm={8}>
+                    <div style={{ textAlign: "center" }}>
+                      <UserOutlined style={{ fontSize: 48, color: "white" }} />
+                    </div>
+                  </Col>
+                  <Col xs={24} sm={16}>
+                    <Title level={3} style={{ color: "white", margin: 0 }}>
+                      My Profile
+                    </Title>
+                    <Text
+                      style={{ color: "rgba(255,255,255,0.9)", fontSize: 16 }}
+                    >
+                      Manage your personal information and professional details
+                    </Text>
+                    <Space style={{ marginTop: 16 }}>
+                      <EditOutlined style={{ color: "white" }} />
+                      <Text style={{ color: "white" }}>Edit Profile</Text>
+                    </Space>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* Profile Content */}
+          <Row gutter={[24, 24]}>
+            <Col xs={24}>
+              <Card
+                title={
+                  <Space>
+                    <SettingOutlined style={{ color: "#1890ff" }} />
+                    <span>Profile Settings</span>
+                  </Space>
+                }
+                className="profile-settings-card"
+                style={{
+                  borderRadius: 16,
+                  border: "none",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                }}
+              >
+                <MyProfile />
+              </Card>
+            </Col>
+          </Row>
         </div>
-        {/* End dashboard-outer */}
       </section>
-      {/* <!-- End Dashboard --> */}
 
       <CopyrightFooter />
-      {/* <!-- End Copyright --> */}
     </div>
-    // End page-wrapper
   );
 };
 

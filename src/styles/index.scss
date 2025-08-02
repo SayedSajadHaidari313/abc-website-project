@@ -3,6 +3,7 @@
 @import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "public/scss/main.scss";
 @import "./profile-cards.scss";
+@import "./dashboard.scss";
 @font-face {
   font-family: 'Vazir';
   src: url('/fonts/Vazir-Medium.woff2') format('woff2'),
@@ -39,6 +40,62 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+// Dashboard Company QR Code Section Styles
+.dashboard-company-qr-section {
+  .ant-card {
+    .ant-card-head-title {
+      .ant-card-head-title {
+        span {
+          font-weight: 600;
+          color: #262626;
+        }
+      }
+    }
+    
+    .ant-card-body {
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      margin: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+  
+  .qr-code-content {
+    text-align: center;
+    
+    .quick-share-info {
+      margin-bottom: 16px;
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 500;
+      }
+    }
+    
+    .usage-info {
+      margin-top: 16px;
+      padding: 12px;
+      background-color: #e3f2fd;
+      border-radius: 8px;
+      border: 1px solid #bbdefb;
+      
+      p {
+        margin: 0;
+        font-size: 12px;
+        color: #1976d2;
+        font-weight: 500;
+      }
+    }
+  }
 }
 
 // QR Code Component Styles
@@ -154,6 +211,25 @@
 
 // Responsive adjustments for QR code
 @media (max-width: 768px) {
+  .dashboard-company-qr-section {
+    .ant-card {
+      .ant-card-body {
+        padding: 16px;
+      }
+    }
+    
+    .qr-code-content {
+      .quick-share-info,
+      .usage-info {
+        padding: 10px;
+        
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  
   .company-qr-card {
     .ant-card-body {
       padding: 16px;
@@ -177,6 +253,25 @@
 }
 
 @media (max-width: 480px) {
+  .dashboard-company-qr-section {
+    .ant-card {
+      .ant-card-body {
+        padding: 12px;
+      }
+    }
+    
+    .qr-code-content {
+      .quick-share-info,
+      .usage-info {
+        padding: 8px;
+        
+        p {
+          font-size: 11px;
+        }
+      }
+    }
+  }
+  
   .company-qr-card {
     .ant-card-body {
       padding: 12px;

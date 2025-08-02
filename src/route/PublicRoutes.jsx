@@ -2,9 +2,6 @@ import { lazy } from "react";
 
 // Lazy load all components
 const Home = lazy(() => import("@/pages"));
-const EmployersSingleV1 = lazy(() =>
-  import("@/pages/employers-single/employers-single-v1")
-);
 const CompanyListPage3 = lazy(() => import("@/pages/job-list/company-list-v3"));
 const CompanySingleDynamicV1 = lazy(() =>
   import("@/pages/single-pages/company-single-v1")
@@ -32,7 +29,6 @@ export const PublicRoutes = [
   { path: "/rfps", element: <RfpListPage1 /> },
   { path: "/company/:slug", element: <CompanySingleDynamicV1 /> },
   { path: "/rfps-details/:id", element: <RfpSingleDynamicV2 /> },
-  { path: "/company-details/:id", element: <EmployersSingleV1 /> },
 
   {
     /* 404 */

@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
-import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGetSettingData } from "./queries/settings.query";
@@ -16,13 +15,6 @@ import FontLoader from "./components/common/FontLoader";
 
 // Lazy load Router
 const Router = lazy(() => import("./route/router"));
-
-// Loading component
-const LoadingSpinner = () => (
-  <div className="route-loading-spinner route-loading-spinner--app">
-    <div className="route-loading-spinner__spinner" />
-  </div>
-);
 
 // Lazy load Bootstrap
 if (typeof window !== "undefined") {
@@ -81,23 +73,21 @@ function App() {
   });
 
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <FontLoader />
-        <SetFaviconFromSetting />
-        <Provider store={store}>
-          <div className="page-wrapper">
-            <BrowserRouter>
-              <Suspense fallback={<LoadingSpinner />}>
-                <Router />
-              </Suspense>
-              <ScrollTopBehaviour />
-            </BrowserRouter>
-            <ScrollToTop />
-          </div>
-        </Provider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <FontLoader />
+      <SetFaviconFromSetting />
+      <Provider store={store}>
+        <div className="page-wrapper">
+          <BrowserRouter>
+            {/* <Suspense fallback={<div>Loading...</div>}> */}
+            <Router />
+            {/* </Suspense> */}
+            <ScrollTopBehaviour />
+          </BrowserRouter>
+          <ScrollToTop />
+        </div>
+      </Provider>
+    </QueryClientProvider>
   );
 }
 

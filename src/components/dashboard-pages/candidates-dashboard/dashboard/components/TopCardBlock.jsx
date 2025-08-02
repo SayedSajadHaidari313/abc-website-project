@@ -1,7 +1,16 @@
 import { useGetAuthUserData } from "@/queries/user.query";
-import { Tag, Progress } from "antd";
+import { Tag, Progress, Card, Row, Col, Typography, Space } from "antd";
 import { useGetMyRfpsData } from "@/queries/website.query/rfps.query";
 import { useAuthStore } from "@/auth/auth.store";
+import {
+  FileTextOutlined,
+  UserOutlined,
+  TrophyOutlined,
+  RiseOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
+
+const { Title, Text } = Typography;
 
 const TopCardBlock = () => {
   const { data: userData } = useGetAuthUserData();
@@ -30,46 +39,103 @@ const TopCardBlock = () => {
   const cardData = [
     {
       id: 1,
-      icon: "la-file-archive-o",
+      icon: <FileTextOutlined style={{ fontSize: 24, color: "#1890ff" }} />,
       countNumber: userRfps.length,
       metaName: "RFPs Shared",
+      description: "Your shared opportunities",
+      color: "#1890ff",
+      bgColor: "#e6f7ff",
     },
     {
       id: 2,
-      icon: "la-user",
+      icon: <UserOutlined style={{ fontSize: 24, color: "#52c41a" }} />,
       countNumber: `${profileCompletion}%`,
       metaName: "Profile Complete",
+      description: "Your profile completion",
+      color: "#52c41a",
+      bgColor: "#f6ffed",
       extra: (
         <Progress
           percent={profileCompletion}
           status={profileCompletion === 100 ? "success" : "active"}
           strokeColor="#52c41a"
           size="small"
+          style={{ marginTop: 8 }}
         />
       ),
+    },
+    {
+      id: 3,
+      icon: <TrophyOutlined style={{ fontSize: 24, color: "#fa8c16" }} />,
+      countNumber: "0",
+      metaName: "Achievements",
+      description: "Your earned badges",
+      color: "#fa8c16",
+      bgColor: "#fff7e6",
+    },
+    {
+      id: 4,
+      icon: <RiseOutlined style={{ fontSize: 24, color: "#722ed1" }} />,
+      countNumber: "0",
+      metaName: "Connections",
+      description: "Your network growth",
+      color: "#722ed1",
+      bgColor: "#f9f0ff",
     },
   ];
 
   return (
-    <>
+    <Row gutter={[24, 24]}>
       {cardData.map((item) => (
-        <div
-          className="ui-block col-xl-6 col-lg-6 col-md-6 col-sm-12"
-          key={item.id}
-        >
-          <div className="ui-item">
-            <div className="left">
-              <i className={`icon la ${item.icon}`}></i>
+        <Col xs={24} sm={12} lg={6} key={item.id}>
+          <Card
+            className="stat-card"
+            style={{
+              borderRadius: 16,
+              border: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              transition: "all 0.3s ease",
+              cursor: "pointer",
+            }}
+            hoverable
+          >
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: item.bgColor,
+                  marginBottom: 16,
+                }}
+              >
+                {item.icon}
+              </div>
+
+              <Title level={2} style={{ margin: "8px 0", color: item.color }}>
+                {item.countNumber}
+              </Title>
+
+              <Text
+                strong
+                style={{ fontSize: 16, display: "block", marginBottom: 4 }}
+              >
+                {item.metaName}
+              </Text>
+
+              <Text type="secondary" style={{ fontSize: 12 }}>
+                {item.description}
+              </Text>
+
+              {item.extra && <div style={{ marginTop: 12 }}>{item.extra}</div>}
             </div>
-            <div className="right">
-              <h4>{item.countNumber}</h4>
-              <p>{item.metaName}</p>
-              {item.extra && <div className="mt-2">{item.extra}</div>}
-            </div>
-          </div>
-        </div>
+          </Card>
+        </Col>
       ))}
-    </>
+    </Row>
   );
 };
 

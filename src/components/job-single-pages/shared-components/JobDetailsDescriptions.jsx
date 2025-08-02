@@ -1,6 +1,9 @@
-import { Alert, Skeleton } from "antd";
+import { Alert, Skeleton, Typography, Card } from "antd";
 import PropTypes from "prop-types";
 import { useGetRfpById } from "@/queries/website.query/rfps.query";
+import { HiDocumentText } from "react-icons/hi2";
+
+const { Title, Paragraph } = Typography;
 
 const JobDetailsDescriptions = ({ rfpId }) => {
   const { data, isLoading, isError } = useGetRfpById(rfpId);
@@ -14,6 +17,7 @@ const JobDetailsDescriptions = ({ rfpId }) => {
         description="Please try again later."
         type="error"
         showIcon
+        style={{ borderRadius: "8px" }}
       />
     );
 
@@ -22,23 +26,31 @@ const JobDetailsDescriptions = ({ rfpId }) => {
   if (!rfp) return null;
 
   return (
-    <div className="job-detail">
-      <h4>{rfp.title}</h4>
+    <div style={{ marginBottom: "32px" }}>
+      <Title level={4} style={{ marginBottom: "16px", color: "#1a1a1a" }}>
+        <HiDocumentText style={{ marginRight: "8px" }} />
+        RFP Description
+      </Title>
 
-      <h4>RFP Description</h4>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: rfp.description || "---",
+      <Card
+        style={{
+          borderRadius: "12px",
+          border: "1px solid #f0f0f0",
+          backgroundColor: "#fafafa",
         }}
-      />
-      {/* {rfp.user.email && (
-        <>
-          <h4>Submission Email</h4>
-          <a className="link" href={`mailto:${rfp.user.email}`}>
-            {rfp.user.email}
-          </a>
-        </>
-      )} */}
+        bodyStyle={{ padding: "24px" }}
+      >
+        <div
+          style={{
+            lineHeight: "1.6",
+            color: "#333",
+            fontSize: "16px",
+          }}
+          dangerouslySetInnerHTML={{
+            __html: rfp.description || "No description available.",
+          }}
+        />
+      </Card>
     </div>
   );
 };

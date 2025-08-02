@@ -17,7 +17,7 @@ import SmartText from "@/components/common/SmartText";
 import { truncateText } from "@/utils/PublicTruncat";
 
 const CompanyListHp = ({ jobs = [], searchQuery = "", location = "" }) => {
-  const [pageSize] = useState(8);
+  const [pageSize] = useState(12);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [imageLoadingStates, setImageLoadingStates] = React.useState({});
   const [isPageChanging, setIsPageChanging] = useState(false);
