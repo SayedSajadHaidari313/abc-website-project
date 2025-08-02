@@ -23,7 +23,7 @@ if [ $? -eq 0 ]; then
     # lftp -c "open -u username,password ftp.yourdomain.com; mirror --reverse dist/ public_html/"
     
     echo "✅ Deployment completed!"
-    echo "🌐 Your site should be live at: https://yourdomain.com"
+    echo "🌐 Your site should be live at: https://abc.af"
 else
     echo "❌ Build failed! Please check the errors above."
     exit 1
