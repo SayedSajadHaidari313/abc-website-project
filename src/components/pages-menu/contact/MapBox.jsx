@@ -1,8 +1,33 @@
-const MapBox = () => {
+const MapBox = ({ lat, lng, zoom = 15, address }) => {
+  const envLat = import.meta?.env?.VITE_COMPANY_LAT;
+  const envLng = import.meta?.env?.VITE_COMPANY_LNG;
+  const envAddress = import.meta?.env?.VITE_COMPANY_ADDRESS;
+
+  const finalLat = lat ?? (envLat ? parseFloat(envLat) : undefined);
+  const finalLng = lng ?? (envLng ? parseFloat(envLng) : undefined);
+  const finalAddress = address ?? envAddress;
+
+  let src;
+  if (
+    finalLat != null &&
+    finalLng != null &&
+    !Number.isNaN(finalLat) &&
+    !Number.isNaN(finalLng)
+  ) {
+    src = `https://www.google.com/maps?q=${finalLat},${finalLng}&z=${zoom}&output=embed`;
+  } else if (finalAddress) {
+    src = `https://www.google.com/maps?q=${encodeURIComponent(
+      finalAddress
+    )}&z=${zoom}&output=embed`;
+  } else {
+    // Fallback: Naikbeen Control Panel company coordinates
+    src = `https://www.google.com/maps?q=34.509805706407334,69.2254999279976&z=${zoom}&output=embed`;
+  }
+
   return (
     <div className="map-canvas">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25910.13423554086!2d69.13220305000001!3d34.5553495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38d16eb7eaa04be1%3A0xf3b27dc764f5db4e!2sKabul%2C%20Afghanistan!5e0!3m2!1sen!2saf!4v1715609352005!5m2!1sen!2saf"
+        src={src}
         width="100%"
         height="450"
         style={{ border: 0 }}

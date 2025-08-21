@@ -1,8 +1,7 @@
 import React from "react";
-import { Divider, Spin, Pagination, Input, Alert } from "antd";
+import { Divider, Spin, Pagination, Alert } from "antd";
 import {
   useGetAllWebsiteItemsData,
-  useGetItemsByCategoryId,
 } from "@/queries/website.query/items.query";
 import {
   formatImageUrl,
@@ -59,7 +58,7 @@ const CompanyPage1 = ({
     categoryIdsParam = allCategoryIds.join(",");
   }
 
-  const { data, isLoading, isError, refetch } = isCategorySelected
+  const { data, isLoading, isError } = isCategorySelected
     ? useGetAllWebsiteItemsData({
         current: pagination.current,
         pageSize: pagination.pageSize,
@@ -124,13 +123,6 @@ const CompanyPage1 = ({
     }));
   };
 
-  const handleImageLoadStart = (index, type) => {
-    setImageLoadingStates((prev) => ({
-      ...prev,
-      [`${index}-${type}`]: true,
-    }));
-  };
-
   // Test image URL accessibility
   const testImageUrl = async (url) => {
     if (!url) return false;
@@ -144,7 +136,7 @@ const CompanyPage1 = ({
   };
 
   // Transform API data to match the expected format
-  const transformedItem = itemData?.map((item, index) => {
+  const transformedItem = itemData?.map((item) => {
     const itemImageUrl = formatImageUrl(item.item_image);
     const userImageUrl = formatImageUrl(item.user?.user_image, "item");
 

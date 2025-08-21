@@ -100,17 +100,20 @@ const PersonalInfoBox = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("id", formValues.id);
-      formData.append("name", formValues.name);
-      formData.append("email", formValues.email);
-      formData.append("user_about", formValues.user_about);
-      formData.append("role_id", formValues.role_id);
-      formData.append(
-        "user_prefer_country_id",
-        formValues.user_prefer_country_id
-      );
-      if (formValues.user_image)
-        formData.append("user_image", formValues.user_image);
+      // Append all form values to formData
+      Object.keys(formValues).forEach((key) => {
+        const value = formValues[key];
+        if (key === "user_image" && fileList.length > 0) {
+          formData.append("user_image", fileList[0].originFileObj);
+        } else if (
+          key !== "user_image" &&
+          value !== null &&
+          value !== undefined &&
+          value !== ""
+        ) {
+          formData.append(key, value);
+        }
+      });
       formData.append("_method", "PUT");
 
       mutate(formData, {

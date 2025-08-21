@@ -2,7 +2,7 @@ import { postRequest } from "@/auth/FetchInterceptor";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const UserPostCreate = (params) => {
-  return postRequest(`register-user`, params);
+  return postRequest(`user-register`, params);
 };
 
 export const usePostUserCreate = () => {

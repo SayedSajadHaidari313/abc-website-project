@@ -63,9 +63,9 @@ Listing Section  (Ls Section)
   transition: all 300ms ease;
 }
 
-.ls-section .filters-column.hide-left .inner-column {
-  min-height: 100%;
-}
+// .ls-section .filters-column.hide-left .inner-column {
+//   min-height: 100%;
+// }
 
 .ls-section .filters-column::-webkit-scrollbar {
   width: 5px;
@@ -688,16 +688,12 @@ Listing Section / style Two
 }
 
 .ls-section.style-two .filters-outer {
-  padding: 50px 60px;
+  padding: 30px 30px;
   margin-bottom: 0;
   height: 100%;
   @media (max-width: 1023px) {
     padding: 30px 30px 10px;
   }
-}
-
-.ls-section.style-two .filters-column .inner-column {
-  height: 100%;
 }
 
 /***

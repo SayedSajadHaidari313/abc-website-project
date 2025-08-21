@@ -21,7 +21,7 @@ const NotFoundPage = () => {
         <div className="content">
           <div className="logo">
             <Link to="/">
-              <img src="/images/logo.svg" alt="brand" />
+              <img src="/logo.svg" alt="brand" />
             </Link>
           </div>
           {/* End logo */}

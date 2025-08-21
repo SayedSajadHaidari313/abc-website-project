@@ -1,10 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGetAdBlockData } from "@/queries/website.query/ad.block.query";
+import {
+  loadGoogleAdsScript,
+  initializeAdsInContainer,
+  validateAdCode,
+  debugGoogleAds,
+} from "@/utils/googleAdsUtils";
 
 const AdBlockDisplay = ({ position = "after_sponsored_company" }) => {
   const adContainerRef = useRef();
   const [isVisible, setIsVisible] = useState(false);
   const [isAdLoaded, setIsAdLoaded] = useState(false);
+  const [adError, setAdError] = useState(null);
 
   const { data, isLoading, error } = useGetAdBlockData();
 
@@ -24,7 +31,7 @@ const AdBlockDisplay = ({ position = "after_sponsored_company" }) => {
         });
       },
       {
-        rootMargin: "50px 0px", // Load ads when they're 50px from viewport
+        rootMargin: "50px 0px",
         threshold: 0.1,
       }
     );
@@ -48,31 +55,70 @@ const AdBlockDisplay = ({ position = "after_sponsored_company" }) => {
       adContainerRef.current &&
       !isAdLoaded
     ) {
-      // Clear previous content
-      adContainerRef.current.innerHTML = "";
+      const loadAd = async () => {
+        try {
+          setAdError(null);
 
-      // Create a wrapper div with a min-height to prevent CLS
-      const wrapper = document.createElement("div");
-      wrapper.style.minHeight = "100px"; // Adjust based on your ad size
-      wrapper.style.display = "flex";
-      wrapper.style.justifyContent = "center";
-      wrapper.style.alignItems = "center";
-      wrapper.innerHTML = ad.ad_code;
+          // Validate ad code first
+          const validation = validateAdCode(ad.ad_code);
+          if (!validation.isValid) {
+            throw new Error(validation.error);
+          }
 
-      // Replace scripts
-      const scripts = wrapper.getElementsByTagName("script");
-      Array.from(scripts).forEach((oldScript) => {
-        const newScript = document.createElement("script");
-        Array.from(oldScript.attributes).forEach((attr) => {
-          newScript.setAttribute(attr.name, attr.value);
-        });
-        newScript.innerHTML = oldScript.innerHTML;
-        oldScript.parentNode.replaceChild(newScript, oldScript);
-      });
+          // Clear previous content
+          adContainerRef.current.innerHTML = "";
 
-      // Add the wrapper to the container
-      adContainerRef.current.appendChild(wrapper);
-      setIsAdLoaded(true);
+          // Load Google Ads script
+          await loadGoogleAdsScript();
+
+          // Create wrapper div
+          const wrapper = document.createElement("div");
+          wrapper.style.minHeight = "100px";
+          wrapper.style.display = "flex";
+          wrapper.style.justifyContent = "center";
+          wrapper.style.alignItems = "center";
+          wrapper.className = "ad-block-wrapper";
+
+          // Set the ad HTML content
+          wrapper.innerHTML = ad.ad_code;
+
+          // Handle script tags properly
+          const scripts = wrapper.getElementsByTagName("script");
+          Array.from(scripts).forEach((oldScript) => {
+            const newScript = document.createElement("script");
+
+            // Copy all attributes
+            Array.from(oldScript.attributes).forEach((attr) => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+
+            // Copy inner HTML
+            newScript.innerHTML = oldScript.innerHTML;
+
+            // Replace the old script
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+          });
+
+          // Add the wrapper to the container
+          adContainerRef.current.appendChild(wrapper);
+
+          // Wait a bit for DOM to be ready, then initialize ads
+          setTimeout(async () => {
+            await initializeAdsInContainer(wrapper);
+            setIsAdLoaded(true);
+
+            // Debug info
+            if (process.env.NODE_ENV === "development") {
+              debugGoogleAds();
+            }
+          }, 200);
+        } catch (error) {
+          console.error("Error loading ad:", error);
+          setAdError(error.message);
+        }
+      };
+
+      loadAd();
     }
   }, [isVisible, ad, isAdLoaded]);
 
@@ -93,11 +139,31 @@ const AdBlockDisplay = ({ position = "after_sponsored_company" }) => {
   }
 
   if (error) {
+    console.error("Ad loading error:", error);
     return null;
   }
 
   if (!ad) {
     return null;
+  }
+
+  if (adError) {
+    console.error("Ad error:", adError);
+    return (
+      <div
+        style={{
+          minHeight: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "#f5f5f5",
+          color: "#666",
+          fontSize: "14px",
+        }}
+      >
+        Ad loading failed: {adError}
+      </div>
+    );
   }
 
   return (

@@ -8,7 +8,7 @@ import MenuToggler from "../../MenuToggler";
 import RfpsList from "./components/RfpsList";
 // import GoogleAd from "@/components/common/GoogleAd";
 
-const index = () => {
+const index = () => { 
   return (
     <div className="page-wrapper dashboard">
       <span className="header-span"></span>

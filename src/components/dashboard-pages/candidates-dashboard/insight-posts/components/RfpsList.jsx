@@ -38,12 +38,13 @@ import dayjs from "dayjs";
 import CreateRfps from "./CreateRfps";
 import UpdateRfps from "./UpdateRfps";
 import CustomPagination from "@/components/pagination/CustomPagination";
+
 import {
-  useGetMyRfpsData,
-  useGetRfpsData,
+  useGetAuthUserRfp,
   useSingleDelete,
 } from "@/queries/website.query/rfps.query";
 import { useAuthStore } from "@/auth/auth.store";
+import { downloadFile } from "@/utils/imageUtils";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -88,13 +89,14 @@ function Index() {
   const [loading, setLoading] = useState(false);
   const { user } = useAuthStore();
 
-  const { data, isLoading, isError, refetch } = useGetMyRfpsData(
+  const { data, isLoading, isError, refetch } = useGetAuthUserRfp(
     pagination.current,
     pagination.pageSize,
     pagination.searchQuery
   );
 
-  const RfpsData = (data?.data || []).filter((rfp) => rfp.user_id === user?.id);
+  const RfpsData = data?.data || [];
+  console.log("data in here rfps", RfpsData);
 
   useEffect(() => {
     localStorage.setItem("searchInput", searchInput);
@@ -211,20 +213,22 @@ function Index() {
 
         return (
           <Space size="small">
-            <Tooltip title={fileName}>
+            {/* <Tooltip title={fileName}>
               <span className="font-medium">
                 {fileName?.length > 20
                   ? fileName.substring(0, 20) + "..."
                   : fileName}
               </span>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Download file">
               <Button
                 type="primary"
                 size="small"
                 icon={<DownloadOutlined />}
-                onClick={() => downloadFile(file)}
-              />
+                onClick={() => handleDownload(file)}
+              >
+                Download File
+              </Button>
             </Tooltip>
           </Space>
         );
@@ -438,31 +442,9 @@ function Index() {
       </Checkbox>
     ),
   }));
-
-  const downloadFile = (file) => {
-    if (!file) {
-      notification.warning({
-        message: "No file available for download",
-      });
-      return;
-    }
-
-    // Create a temporary link element to trigger download
-    const link = document.createElement("a");
-    link.href = file; // Assuming the file path is a valid URL
-    link.download = file.split("/").pop(); // Extract filename from path
-    link.target = "_blank";
-
-    // Append to body, click, and remove
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    notification.success({
-      message: "File download started",
-    });
+  const handleDownload = async (file) => {
+    await downloadFile(file, "download");
   };
-
   return (
     <div>
       <UpdateRfps
@@ -508,11 +490,13 @@ function Index() {
                 trigger={["click"]}
                 placement="bottomRight"
               >
-                <Button size="large" icon={<SettingOutlined />}>Columns</Button>
+                <Button size="large" icon={<SettingOutlined />}>
+                  Columns
+                </Button>
               </Dropdown>
 
               <Button
-              size="large"
+                size="large"
                 type="default"
                 icon={<DownloadOutlined />}
                 onClick={exportToCSV}
@@ -521,7 +505,7 @@ function Index() {
               </Button>
 
               <Button
-              size="large"
+                size="large"
                 type="default"
                 icon={<ReloadOutlined />}
                 onClick={refreshData}
@@ -531,7 +515,7 @@ function Index() {
               </Button>
 
               <Button
-              size="large"
+                size="large"
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={openCreateRfps}

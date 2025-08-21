@@ -38,10 +38,11 @@ function Profile() {
           {/* Edit Button */}
           <div>
             <button
-              className="btn btn-outline-primary d-flex align-items-center gap-2"
+              className="btn btn-outline-primary d-flex align-items-center gap-2 mt-10"
               onClick={() => navigate("/candidate/my-profile")}
             >
               <EditOutlined size={16} />
+              Edit Profile
             </button>
           </div>
         </div>

@@ -9,6 +9,7 @@ import CompanySponsored from "../CompanySponsored";
 import AdBlockDisplay from "../common/AdBlockDisplay";
 import CompanyListHp from "../company-listing/CompanyListHp";
 import SpecialCompanyCategories from "../company-categories/SpecialCompanyCategories";
+import Advertisement from "../advertisement/Advertisement";
 
 const index = () => {
   return (
@@ -27,7 +28,11 @@ const index = () => {
 
       <section className="top-companies style-two">
         <CompanySponsored />
+        {/* Only show Advertisement if location is 'home-page' and status is 'enabled' */}
       </section>
+      <div className="auto-container" style={{ marginTop: "32px" }}>
+        {<Advertisement location="banner-home-page" status="enabled" />}
+      </div>
 
       {/* Google AdSense ad after sponsored companies */}
       <div
@@ -55,7 +60,8 @@ const index = () => {
           <div className="sec-title text-center">
             <h2>Recent Company Register</h2>
             <div className="text">
-              Explore Newly Added Afghan Businesses - Fresh Listings Updated Daily
+              Explore Newly Added Afghan Businesses - Fresh Listings Updated
+              Daily
             </div>
           </div>
 
@@ -93,6 +99,9 @@ const index = () => {
           </div>
         </div>
       </section>
+      <div className="auto-container" style={{ marginTop: "32px" }}>
+        {<Advertisement location="banner-home-bottom" status="enabled" />}
+      </div>
       {/* <!-- End Clients Section--> */}
 
       <Footer />

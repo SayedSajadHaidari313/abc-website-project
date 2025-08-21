@@ -8,24 +8,14 @@ import AdBlockDisplay from "@/components/common/AdBlockDisplay";
 import MetaComponent from "@/components/common/MetaComponent";
 import CompanyLocationMap from "@/components/common/CompanyLocationMap";
 import Footer from "@/components/home-4/Footer";
-import {
-  Skeleton,
-  Spin,
-  Alert,
-  Tag,
-  Card,
-  Avatar,
-  Space,
-  Typography,
-  Divider,
-} from "antd";
+import { Spin, Alert, Tag, Card, Avatar, Space, Typography, Grid } from "antd";
 import { useGetCompanyBySlug } from "@/queries/website.query/company.query";
 import SmartText from "@/components/common/SmartText";
 import Advertisement from "@/components/advertisement/Advertisement";
 import CompanyQRCode from "@/components/common/CompanyQRCode";
 import { HiBuildingOffice2, HiMapPin, HiGlobeAlt } from "react-icons/hi2";
 import { MdLocationOn, MdPhone, MdShare, MdBusiness } from "react-icons/md";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaAdversal, FaRegCalendarAlt } from "react-icons/fa";
 import RelatedCompany from "@/components/employer-single-pages/related-company/RelatedCompany";
 
 const { Title, Text, Paragraph } = Typography;
@@ -43,6 +33,8 @@ const CompanySingleDynamicV1 = () => {
   // Use the dedicated hook to fetch company by slug
   const { data, isLoading, isError } = useGetCompanyBySlug(slug);
   const company = data?.data;
+  const screens = Grid.useBreakpoint();
+  const isMobile = !screens.md;
 
   // Show loading state
   if (isLoading) {
@@ -98,6 +90,29 @@ const CompanySingleDynamicV1 = () => {
       month: "long",
       day: "numeric",
     });
+  };
+
+  const getYoutubeId = (input) => {
+    if (!input) return null;
+    try {
+      const url = new URL(input);
+      if (url.hostname.includes("youtu.be")) {
+        return url.pathname.replace("/", "");
+      }
+      if (url.hostname.includes("youtube.com")) {
+        const v = url.searchParams.get("v");
+        if (v) return v;
+        const parts = url.pathname.split("/").filter(Boolean);
+        const idx = parts.findIndex((p) =>
+          ["embed", "shorts", "v"].includes(p)
+        );
+        if (idx !== -1 && parts[idx + 1]) return parts[idx + 1];
+      }
+    } catch (_) {
+      // Not a URL; assume raw ID
+      return String(input).trim();
+    }
+    return String(input).trim();
   };
 
   return (
@@ -533,6 +548,50 @@ const CompanySingleDynamicV1 = () => {
                     </Paragraph>
                   </div>
                 </div>
+                {company?.item_youtube_id && (
+                  <div style={{ marginBottom: "32px" }}>
+                    <Title
+                      level={4}
+                      style={{ marginBottom: "16px", color: "#1a1a1a" }}
+                    >
+                      Company Video
+                    </Title>
+                    <Card
+                      style={{
+                        borderRadius: "12px",
+                        border: "1px solid #f0f0f0",
+                        overflow: "hidden",
+                        backgroundColor: "#000",
+                      }}
+                      bodyStyle={{ padding: 0 }}
+                    >
+                      <div
+                        style={{
+                          position: "relative",
+                          paddingBottom: "56.25%",
+                          height: 0,
+                        }}
+                      >
+                        <iframe
+                          title="Company video"
+                          src={`https://www.youtube.com/embed/${getYoutubeId(
+                            company.item_youtube_id
+                          )}?rel=0&modestbranding=1`}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                          }}
+                        />
+                      </div>
+                    </Card>
+                  </div>
+                )}
                 {/* Company Location Map */}
                 <div style={{ marginBottom: "32px" }}>
                   <Title
@@ -586,8 +645,33 @@ const CompanySingleDynamicV1 = () => {
                   </div>
                 </div>
               </Card>
+              {isMobile && (
+                <Card
+                  title={
+                    <span style={{ fontSize: "18px", fontWeight: "600" }}>
+                      <MdShare style={{ marginRight: "8px" }} />
+                      Quick Share
+                    </span>
+                  }
+                  style={{
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                    marginTop: "16px",
+                    marginBottom: "16px",
+                    border: "none",
+                  }}
+                  bodyStyle={{ padding: "20px" }}
+                >
+                  <div style={{ textAlign: "center" }}>
+                    <CompanyQRCode
+                      companyUrl={window.location.href}
+                      companyName={company?.item_title}
+                      companyLogo={company?.item_image}
+                    />
+                  </div>
+                </Card>
+              )}
               <RelatedCompany currentCompany={company} />
-
               {/* Advertisement Section */}
               <div
                 style={{
@@ -603,30 +687,32 @@ const CompanySingleDynamicV1 = () => {
 
             <div className="sidebar-column col-lg-4 col-md-12 col-sm-12">
               <div style={{ position: "sticky", top: "20px" }}>
-                {/* QR Code Widget */}
-                <Card
-                  title={
-                    <span style={{ fontSize: "18px", fontWeight: "600" }}>
-                      <MdShare style={{ marginRight: "8px" }} />
-                      Quick Share
-                    </span>
-                  }
-                  style={{
-                    borderRadius: "12px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    marginBottom: "24px",
-                    border: "none",
-                  }}
-                  bodyStyle={{ padding: "20px" }}
-                >
-                  <div style={{ textAlign: "center" }}>
-                    <CompanyQRCode
-                      companyUrl={window.location.href}
-                      companyName={company?.item_title}
-                      companyLogo={company?.item_image}
-                    />
-                  </div>
-                </Card>
+                {/* QR Code Widget (desktop and tablet only) */}
+                {!isMobile && (
+                  <Card
+                    title={
+                      <span style={{ fontSize: "18px", fontWeight: "600" }}>
+                        <MdShare style={{ marginRight: "8px" }} />
+                        Quick Share
+                      </span>
+                    }
+                    style={{
+                      borderRadius: "12px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      marginBottom: "24px",
+                      border: "none",
+                    }}
+                    bodyStyle={{ padding: "20px" }}
+                  >
+                    <div style={{ textAlign: "center" }}>
+                      <CompanyQRCode
+                        companyUrl={window.location.href}
+                        companyName={company?.item_title}
+                        companyLogo={company?.item_image}
+                      />
+                    </div>
+                  </Card>
+                )}
 
                 {/* Advertisement */}
                 <Card
@@ -637,6 +723,14 @@ const CompanySingleDynamicV1 = () => {
                     border: "none",
                   }}
                   bodyStyle={{ padding: "20px" }}
+                  title={
+                    <span style={{ fontSize: "18px", fontWeight: "600" }}>
+                      <FaAdversal
+                        style={{ marginRight: "8px", color: "#e28642" }}
+                      />
+                      Advertisement
+                    </span>
+                  }
                 >
                   <Advertisement />
                 </Card>
@@ -647,6 +741,7 @@ const CompanySingleDynamicV1 = () => {
                 </div>
               </div>
             </div>
+
             {/* End .sidebar-column */}
           </div>
         </div>

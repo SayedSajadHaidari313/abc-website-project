@@ -6,7 +6,7 @@ import {
 } from "@/auth/FetchInterceptor";
 
 export const getRfpsData = async (current, pageSize, searchQuery, category) => {
-  return await getRequest(`get-all-rfp`, {
+  return await getRequest(`my-rfp-user`, {
     current: current,
     pageSize: pageSize,
     searchQuery: searchQuery,
@@ -36,7 +36,7 @@ export const usePostRfpsCreate = () => {
 };
 
 export const deleteRfps = async (ids) => {
-  return deleteRequest(`delete`, {
+  return deleteRequest(`rfp-user`, {
     params: {
       ids: ids.join(","),
     },
@@ -102,7 +102,7 @@ export const useSingleDelete = () => {
 // get Rfps data without Pagination and Search
 
 export const getRfpsAllData = async () => {
-  return await getRequest(`get-all-rfp`);
+  return await getRequest(`my-rfp-user`);
 };
 
 export const useGetAllRfpsData = () => {
@@ -131,7 +131,7 @@ export const getMyRfpsData = async (
   searchQuery,
   category
 ) => {
-  return await getRequest(`my-rfps`, {
+  return await getRequest(`user/my-rfps`, {
     current: current,
     pageSize: pageSize,
     searchQuery: searchQuery,
@@ -139,9 +139,9 @@ export const getMyRfpsData = async (
   });
 };
 
-export const useGetAuthUserRfp = (current, pageSize, searchQuery, category) => {
+export const useGetMyRfpsData = (current, pageSize, searchQuery, category) => {
   return useQuery({
-    queryKey: ["fetch-my-rfp", current, pageSize, searchQuery, category],
-    queryFn: () => getMyRfpsData(current, pageSize, searchQuery, category),
+    queryKey: ["fetch-get-my-rfps", current, pageSize, searchQuery, category],
+    queryFn: () => getRfpsData(current, pageSize, searchQuery, category),
   });
 };

@@ -3,7 +3,6 @@ import { notification } from "antd";
 import { useLoginUsers } from "@/queries/auth.query";
 import { useAuthStore } from "@/auth/auth.store";
 import { useState } from "react";
-import LoginWithSocial from "../register/LoginWithSocial";
 
 const FormContent2 = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +13,7 @@ const FormContent2 = () => {
   const { login } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const { mutate, isLoading } = useLoginUsers();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -33,7 +33,6 @@ const FormContent2 = () => {
           message: "Success",
           description: "You have successfully logged in!",
         });
-        
       },
       onError: () => {
         notification.error({
@@ -66,14 +65,45 @@ const FormContent2 = () => {
 
         <div className="form-group">
           <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              style={{ paddingRight: "2.75rem" }}
+            />
+            <button
+              type="button"
+              title={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+              onClick={() => setShowPassword((prev) => !prev)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                width: "32px",
+                height: "32px",
+                color: "#6c757d",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <i
+                className={showPassword ? "la la-eye-slash" : "la la-eye"}
+                style={{ fontSize: 18 }}
+              />
+            </button>
+          </div>
         </div>
 
         <div className="form-group">
@@ -113,11 +143,11 @@ const FormContent2 = () => {
           Don&apos;t have an account? <Link to="/register">Signup</Link>
         </div>
 
-        <div className="divider">
+        {/* <div className="divider">
           <span>or</span>
-        </div>
+        </div> */}
 
-        <LoginWithSocial />
+        {/* <LoginWithSocial /> */}
       </div>
     </div>
   );

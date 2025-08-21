@@ -17,17 +17,23 @@ import SmartText from "@/components/common/SmartText";
 import { truncateText } from "@/utils/PublicTruncat";
 import { BankOutlined } from "@ant-design/icons";
 
-const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
+const CompanyHero = ({
+  jobs = [],
+  searchQuery = "",
+  location = "",
+  category = "",
+}) => {
   const [pageSize] = useState(12);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [imageLoadingStates, setImageLoadingStates] = React.useState({});
   const [isPageChanging, setIsPageChanging] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const category = searchParams.get("category") || "";
+  const urlCategory = searchParams.get("category") || "";
   const currentPage = parseInt(searchParams.get("page") || "1");
-  const isCategorySelected = !!category;
-  const categoryId = category ? Number(category) : undefined;
+  const activeCategory = category || urlCategory;
+  const isCategorySelected = !!activeCategory;
+  const categoryId = activeCategory ? Number(activeCategory) : undefined;
 
   const { data, isLoading, isError, refetch } = isCategorySelected
     ? useGetItemsByCategoryId({
@@ -41,6 +47,7 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
         pageSize: pageSize,
         searchQuery: searchQuery,
         location: location,
+        category: activeCategory,
       });
 
   const itemData = data?.data || data?.items || [];
@@ -159,6 +166,23 @@ const CompanyHero = ({ jobs = [], searchQuery = "", location = "" }) => {
             </div>
           </div>
         )}
+
+        {/* Mobile filter toggle placed above the companies grid */}
+        <div
+          className="show-1023"
+          style={{ padding: "0 15px", marginBottom: 15 }}
+        >
+          <button
+            type="button"
+            className="theme-btn btn-style-one w-100"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filter-sidebar"
+            aria-controls="filter-sidebar"
+          >
+            <span className="la la-filter" style={{ marginRight: 8 }}></span>
+            Filters
+          </button>
+        </div>
 
         <div className="row">
           {displayItems.map((job, idx) => (

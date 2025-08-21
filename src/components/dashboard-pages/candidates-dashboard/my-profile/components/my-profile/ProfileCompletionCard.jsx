@@ -97,13 +97,18 @@ const ProfileCompletionCard = () => {
         icon: <UserOutlined />,
       },
       {
-        label: "Company Address",
-        value: company.item_address,
+        label: "Company Logo",
+        value: company.item_image,
         icon: <UserOutlined />,
       },
       {
-        label: "Company Logo",
-        value: company.item_image,
+        label: "Longitude",
+        value: company.item_lng,
+        icon: <UserOutlined />,
+      },
+      {
+        label: "Latitude",
+        value: company.item_lat,
         icon: <UserOutlined />,
       }
     );
@@ -223,10 +228,10 @@ const ProfileCompletionCard = () => {
               style={{ marginBottom: 16 }}
             />
 
-                          <Text type="secondary" style={{ fontSize: 14 }}>
-                Complete your profile to get better directory listings and increase
-                your visibility to potential clients and partners.
-              </Text>
+            <Text type="secondary" style={{ fontSize: 14 }}>
+              Complete your profile to get better directory listings and
+              increase your visibility to potential clients and partners.
+            </Text>
 
             {missingFields?.length > 0 && (
               <div style={{ marginTop: 16 }}>

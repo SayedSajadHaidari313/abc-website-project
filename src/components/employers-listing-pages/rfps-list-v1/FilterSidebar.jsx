@@ -29,7 +29,7 @@ const FilterSidebar = () => {
 
       <CallToActions />
 
-      <Advertisement />
+      {<Advertisement location="all-pages" status="enabled" />}
       <div
         style={{
           margin: "32px 0",

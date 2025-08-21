@@ -11,13 +11,16 @@ const Logout = lazy(() => import("@/components/common/logout/Logout"));
 const RfpPostPage = lazy(() =>
   import("@/pages/candidates-dashboard/rfp-posts")
 );
-
+const VisitCardPage = lazy(() =>
+  import("@/pages/candidates-dashboard/visit-card")
+);
 
 // User Protected Routes
 export const UserProtectedRoutes = [
   { path: "candidate/dashboard", element: <DashboardPage /> },
   { path: "candidate/post-new-rfps", element: <RfpPostPage /> },
   { path: "candidate/my-profile", element: <MyProfilePage /> },
+  { path: "candidate/visit-card", element: <VisitCardPage /> },
   { path: "candidate/logout", element: <Logout /> },
 ];
 

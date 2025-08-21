@@ -43,7 +43,7 @@ export const deleteItems = async (ids) => {
 };
 
 export const updateItems = async (params) => {
-  return postRequest(`user/item/${params.get("id")}`, params, {
+  return postRequest(`items-user/${params.get("id")}`, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

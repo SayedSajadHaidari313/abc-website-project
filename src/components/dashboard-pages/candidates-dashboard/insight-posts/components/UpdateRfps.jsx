@@ -18,8 +18,9 @@ import dayjs from "dayjs";
 import CancelButton from "@/components/Button/cancel.button";
 import SubmitButton from "@/components/Button/submit.button";
 import { useUpdateRfps } from "@/queries/website.query/rfps.query";
-import { useGetUserData } from "@/queries/user.query";
 import { BASE_IMAGE_URL } from "@/utils/linkActiveChecker";
+import * as Yup from "yup";
+import { useAuthStore } from "@/auth/auth.store";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -36,11 +37,32 @@ const REQUEST_TYPE_RULES = [
   { max: 255, message: "Request type must not exceed 255 characters" },
 ];
 
+const REQUEST_TYPE_OPTIONS = [
+  { label: "Request for Proposal", value: "RFP" },
+  { label: "Request for Quote", value: "RFQ" },
+];
+
+const VALIDATION_SCHEMA = Yup.object().shape({
+  id: Yup.mixed().required("RFP ID is required!"),
+  logged_in_user_id: Yup.number().required("Logged in user ID is required!"),
+  title: Yup.string()
+    .required("Please enter RFP title!")
+    .max(255, "Title must not exceed 255 characters"),
+  description: Yup.string().required("Please enter description!"),
+  post_date: Yup.date().required("Please select post date!"),
+  close_date: Yup.date().required("Please select close date!"),
+  request_type: Yup.string()
+    .required("Please select request type!")
+    .max(255, "Request type must not exceed 255 characters"),
+  user_id: Yup.number(),
+  file: Yup.mixed(), // Not required for update, but validated if present
+});
+
 const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
   const { mutate } = useUpdateRfps();
+  const { user } = useAuthStore();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const { data: users } = useGetUserData();
   const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
@@ -58,7 +80,6 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
         request_type: selectedRfps.request_type,
         user_id: selectedRfps.user_id,
       });
-
       // preload file
       if (selectedRfps.file) {
         setFileList([
@@ -69,6 +90,8 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
             url: `${BASE_IMAGE_URL}/${selectedRfps.file}`,
           },
         ]);
+      } else {
+        setFileList([]);
       }
     } else {
       form.resetFields();
@@ -76,51 +99,69 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
     }
   }, [selectedRfps, form]);
 
-  const handleUpdate = (values) => {
+  const handleUpdate = async (values) => {
     setLoading(true);
-
-    const formData = new FormData();
-    const transformedValues = {
-      ...values,
-      post_date: values.post_date
-        ? dayjs(values.post_date).format("YYYY-MM-DD")
-        : null,
-      close_date: values.close_date
-        ? dayjs(values.close_date).format("YYYY-MM-DD")
-        : null,
-      logged_in_user_id: 1, // should come from auth
-    };
-
-    Object.entries(transformedValues).forEach(([key, value]) => {
-      if (value !== undefined && value !== "") {
-        formData.append(key, value);
+    try {
+      const validatedData = {
+        ...values,
+        post_date: values.post_date
+          ? dayjs(values.post_date).format("YYYY-MM-DD")
+          : null,
+        close_date: values.close_date
+          ? dayjs(values.close_date).format("YYYY-MM-DD")
+          : null,
+        logged_in_user_id: user?.id,
+        user_id: user?.id,
+      };
+      // Validate with Yup
+      await VALIDATION_SCHEMA.validate(
+        { ...validatedData, file: fileList[0]?.originFileObj || fileList[0] },
+        { abortEarly: false }
+      );
+      const formData = new FormData();
+      Object.entries(validatedData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      });
+      // Append file only if user uploaded a new one
+      if (fileList.length && fileList[0]?.originFileObj) {
+        formData.append("file", fileList[0].originFileObj);
       }
-    });
-
-    // Append file only if user uploaded a new one
-    if (fileList.length && fileList[0]?.originFileObj) {
-      formData.append("file", fileList[0].originFileObj);
+      formData.append("_method", "PUT");
+      mutate(formData, {
+        onSuccess: () => {
+          notification.success({ message: "RFP updated successfully!" });
+          form.resetFields();
+          setFileList([]);
+          onCancel();
+        },
+        onError: (error) => {
+          const errorMsg = error.response?.data;
+          message.error(
+            errorMsg?.message || "Failed to update RFP. Please try again."
+          );
+        },
+        onSettled: () => {
+          setLoading(false);
+        },
+      });
+    } catch (error) {
+      if (error.inner) {
+        const fieldErrors = {};
+        error.inner.forEach((err) => {
+          fieldErrors[err.path] = [err.message];
+        });
+        form.setFields(
+          Object.entries(fieldErrors).map(([name, errors]) => ({
+            name,
+            errors,
+          }))
+        );
+      }
+      message.error("Please fill in all required fields correctly.");
+      setLoading(false);
     }
-
-    formData.append("_method", "PUT");
-
-    mutate(formData, {
-      onSuccess: () => {
-        notification.success({ message: "RFP updated successfully!" });
-        form.resetFields();
-        setFileList([]);
-        onCancel();
-      },
-      onError: (error) => {
-        const errorMessage =
-          error.response?.data?.message ||
-          "An error occurred. Please try again.";
-        message.error(errorMessage);
-      },
-      onSettled: () => {
-        setLoading(false);
-      },
-    });
   };
 
   const handleModalCancel = () => {
@@ -128,11 +169,6 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
     setFileList([]);
     onCancel();
   };
-
-  const requestTypeOptions = [
-    { label: "Request for Proposal", value: "RFP" },
-    { label: "Request for Quote", value: "RFQ" },
-  ];
 
   return (
     <Modal
@@ -162,12 +198,11 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
             >
               <Select
                 placeholder="Select request type"
-                options={requestTypeOptions}
+                options={REQUEST_TYPE_OPTIONS}
               />
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -196,29 +231,7 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="User"
-              name="user_id"
-              rules={[{ required: true, message: "Please select a user!" }]}
-            >
-              <Select
-                showSearch
-                placeholder="Select a user"
-                options={users?.data?.map((user) => ({
-                  label: user.name || user.email,
-                  value: user.id,
-                }))}
-                filterOption={(input, option) =>
-                  (option?.label ?? "")
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-              />
-            </Form.Item>
-          </Col>
           <Col span={12}>
             <Form.Item label="File" name="file">
               <Dragger
@@ -232,8 +245,11 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
                     message.error("Only JPG, PNG, and PDF files are allowed!");
                     return Upload.LIST_IGNORE;
                   }
+
+                  // مهم: اضافه کردن فایل به originFileObj
+                  file.originFileObj = file; // این تضمین می‌کند که فایل در آپدیت در دسترس باشد
                   setFileList([file]);
-                  return false;
+                  return false; // چون ما به صورت دستی آپلود می‌کنیم
                 }}
                 fileList={fileList}
                 onRemove={() => setFileList([])}
@@ -269,7 +285,6 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
@@ -281,7 +296,6 @@ const UpdateRfps = ({ open, onCancel, selectedRfps }) => {
             </Form.Item>
           </Col>
         </Row>
-
         <Row justify="end">
           <Form.Item>
             <CancelButton onClick={handleModalCancel} />

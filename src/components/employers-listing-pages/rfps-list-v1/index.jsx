@@ -42,6 +42,22 @@ const Index = () => {
 
       <section className="ls-section">
         <div className="auto-container">
+          {/* Mobile filter toggle */}
+          <div
+            className="show-1023"
+            style={{ padding: "0 15px", marginBottom: 15 }}
+          >
+            <button
+              type="button"
+              className="theme-btn btn-style-one w-100"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#filter-sidebar"
+              aria-controls="filter-sidebar"
+            >
+              <span className="la la-filter" style={{ marginRight: 8 }}></span>
+              Filters
+            </button>
+          </div>
           <div className="row">
             <div
               className="offcanvas offcanvas-start"

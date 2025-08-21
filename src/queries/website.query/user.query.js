@@ -41,7 +41,7 @@ export const usePostUserCreate = () => {
 
 // Update create_User Query
 export const updateUser = async (params) => {
-  return postRequest(`user/user/${params.get("id")}`, params, {
+  return postRequest(`user-list/${params.get("id")}`, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

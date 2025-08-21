@@ -3,15 +3,12 @@ import FooterDefault from "@/components/footer/common-footer";
 import DefaulHeader from "@/components/header/DefaulHeader";
 import MobileMenu from "@/components/header/MobileMenu";
 import SocialTwo from "@/components/job-single-pages/social/SocialTwo";
-import JobDetailsDescriptions from "@/components/job-single-pages/shared-components/JobDetailsDescriptions";
 import Contact from "@/components/job-single-pages/shared-components/Contact";
 import { useParams } from "react-router-dom";
 import { useGetRfpById } from "@/queries/website.query/rfps.query";
-import { formatImageUrl } from "@/utils/imageUtils";
+import { downloadFile, formatImageUrl } from "@/utils/imageUtils";
 import {
   HiBuildingOffice2,
-  HiCalendar,
-  HiClock,
   HiDocumentText,
   HiUser,
   HiDocument,
@@ -29,7 +26,6 @@ import {
   Typography,
 } from "antd";
 import {
-  MdDownloadForOffline,
   MdShare,
   MdEmail,
   MdPhone,
@@ -44,7 +40,7 @@ import Advertisement from "@/components/advertisement/Advertisement";
 import { useAuthStore } from "@/auth/auth.store";
 import AdBlockDisplay from "@/components/common/AdBlockDisplay";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const metadata = {
   title: "RFP Details - View Request for Proposals | ABC.AF Directory Platform",
@@ -148,6 +144,9 @@ const RfpSingleDynamicV2 = () => {
 
   const isExpired = new Date(rfp.close_date) < new Date();
 
+  const handleDownload = async (file) => {
+    await downloadFile(file, "download");
+  };
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -382,7 +381,7 @@ const RfpSingleDynamicV2 = () => {
                             type="primary"
                             size="large"
                             icon={<MdFileDownload />}
-                            href={formatImageUrl(rfp.file)}
+                            // href={formatImageUrl(rfp.file)}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -393,6 +392,7 @@ const RfpSingleDynamicV2 = () => {
                               alignItems: "center",
                               gap: "8px",
                             }}
+                            onClick={() => handleDownload(rfp.file)}
                           >
                             Download
                           </Button>

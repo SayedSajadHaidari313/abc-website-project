@@ -1,13 +1,12 @@
 import { useGetAuthUserData } from "@/queries/user.query";
 import { Tag, Progress, Card, Row, Col, Typography, Space } from "antd";
-import { useGetMyRfpsData } from "@/queries/website.query/rfps.query";
+import { useGetAuthUserRfp } from "@/queries/website.query/rfps.query";
 import { useAuthStore } from "@/auth/auth.store";
 import {
   FileTextOutlined,
   UserOutlined,
   TrophyOutlined,
   RiseOutlined,
-  CheckCircleOutlined,
 } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
@@ -15,8 +14,7 @@ const { Title, Text } = Typography;
 const TopCardBlock = () => {
   const { data: userData } = useGetAuthUserData();
   const { user } = useAuthStore();
-  // Fetch all RFPs for this user (first page, large pageSize to get all)
-  const { data: rfpsData } = useGetMyRfpsData(1, 1000, null);
+  const { data: rfpsData } = useGetAuthUserRfp(1, 1000, null);
   const userRfps = (rfpsData?.data || [])?.filter(
     (rfp) => rfp.user_id === user?.id
   );

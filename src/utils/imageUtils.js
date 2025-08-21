@@ -8,6 +8,16 @@ const getImageBaseUrl = () => {
   return apiUrl.replace(/\/api$/, "");
 };
 
+const getFileBaseUrl = () => {
+  if (process.env.NODE_ENV === "development") {
+    // In development, use proxy
+    return "";
+  } else {
+    // In production, use frontend domain (proxy handles backend forwarding)
+    return "https://admin.abc.af";
+  }
+};
+
 /**
  * Formats image URLs for different types of images
  * @param {string} path - The image path from the API
@@ -180,4 +190,118 @@ export const createSafeImageErrorHandler = (
       if (onFallbackError) onFallbackError(e);
     }
   };
+};
+
+/**
+ * Utility function to handle file downloads consistently across environments
+ * @param {string} file - The file path or URL
+ * @param {string} folder - The folder name (e.g., 'cases', 'tasks')
+ * @param {string} filename - Optional custom filename
+ */
+export const downloadFile = async (file, folder, filename = null) => {
+  if (!file) {
+    console.error("No file provided for download");
+    return;
+  }
+
+  const extractedFilename = filename || file.split("/").pop();
+
+  // استفاده از route لاراول
+  const fileUrl = `${BASE_IMAGE_URL}/download/${extractedFilename}`;
+
+  try {
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.setAttribute("download", extractedFilename);
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("Download failed:", error);
+    window.open(fileUrl, "_blank");
+  }
+};
+
+/**
+ * Fetches a file from backend download endpoints and returns a Blob object URL.
+ * Tries /download-user first, then falls back to /download.
+ * The returned URL should be revoked by calling revokeObjectUrl when no longer needed.
+ * @param {string} file - Full path or filename
+ * @returns {Promise<string|null>} - Object URL or null
+ */
+export const getDownloadObjectUrl = async (file) => {
+  if (!file) return null;
+
+  // Normalize to just the filename
+  const fileName = (() => {
+    try {
+      const raw = (file || "").toString();
+      const base = raw.split("/").pop() || raw;
+      return base.split("?")[0].split("#")[0];
+    } catch (e) {
+      return null;
+    }
+  })();
+
+  if (!fileName) return null;
+
+  // In dev, prefer relative paths so Vite proxy handles CORS
+  const inDev =
+    typeof process !== "undefined" &&
+    process.env &&
+    process.env.NODE_ENV === "development";
+  const candidateUrls = inDev
+    ? [`/download-user/${fileName}`, `/download/${fileName}`]
+    : [
+        `${BASE_IMAGE_URL}/download-user/${fileName}`,
+        `${BASE_IMAGE_URL}/download/${fileName}`,
+      ];
+
+  for (const url of candidateUrls) {
+    try {
+      const res = await fetch(url, { mode: "cors", credentials: "include" });
+      if (!res.ok) continue;
+      const blob = await res.blob();
+      return URL.createObjectURL(blob);
+    } catch (e) {
+      // try next
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Safely revokes an object URL.
+ * @param {string} url
+ */
+export const revokeObjectUrl = (url) => {
+  if (!url) return;
+  try {
+    URL.revokeObjectURL(url);
+  } catch (e) {}
+};
+
+/**
+ * Triggers a download for a given data URL (e.g., from canvas.toDataURL()).
+ * @param {string} filename
+ * @param {string} dataUrl
+ */
+export const downloadDataUrl = (filename, dataUrl) => {
+  if (!dataUrl) return;
+  try {
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.setAttribute("download", filename || "download.png");
+    link.rel = "noopener";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (e) {
+    try {
+      window.open(dataUrl, "_blank");
+    } catch (_) {}
+  }
 };

@@ -1,3 +1,4 @@
+import Advertisement from "@/components/advertisement/Advertisement";
 import Categories from "../components/Categories";
 import LocationBox from "../components/LocationBox";
 import SearchBox from "../components/SearchBox";
@@ -41,22 +42,22 @@ const FilterSidebar = ({
         </div>
         {/* <!-- Filter Block --> */}
 
-        <div className="filter-block">
+        {/* <div className="filter-block">
           <h4>Category</h4>
           <div className="form-group">
             <Categories category={category} setCategory={setCategory} />
           </div>
-        </div>
+        </div> */}
         {/* <!-- Filter Block --> */}
-      <div
-        style={{
-          margin: "32px 0",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <AdBlockDisplay position="left_side_of_company_listing" />
-      </div>
+        <div
+          style={{
+            margin: "32px 0",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <AdBlockDisplay position="left_side_of_company_listing" />
+        </div>
       </div>
       {/* Filter Outer */}
     </div>

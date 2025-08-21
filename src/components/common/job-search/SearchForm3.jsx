@@ -39,12 +39,20 @@ const SearchForm3 = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const params = new URLSearchParams({
-      page: "1",
-      search: searchInput,
-      location: locationInput,
-      category: categoryInput,
-    });
+    const params = new URLSearchParams();
+    params.set("page", "1");
+
+    // Only add parameters if they have values
+    if (searchInput?.trim()) {
+      params.set("search", searchInput.trim());
+    }
+    if (locationInput?.trim()) {
+      params.set("location", locationInput.trim());
+    }
+    if (categoryInput) {
+      params.set("category", categoryInput);
+    }
+
     navigate(`/listing?${params.toString()}`);
   };
 

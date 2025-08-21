@@ -156,6 +156,9 @@ function CreateRfps({ open, onCancel }) {
         ref={formRef}
         initialValues={INITIAL_VALUES}
       >
+        <Col span={12}>
+          <Form.Item hidden name="user_id" />
+        </Col>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -169,9 +172,7 @@ function CreateRfps({ open, onCancel }) {
               <Input placeholder="Enter RFP title" />
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item hidden name="user_id" />
-          </Col>
+
           <Col span={12}>
             <Form.Item
               label="Request Type"

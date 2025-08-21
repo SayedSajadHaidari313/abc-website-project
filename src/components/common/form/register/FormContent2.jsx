@@ -17,6 +17,8 @@ const BusinessRegistrationForm = () => {
     hasNumber: false,
     hasSpecialChar: false,
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -167,7 +169,7 @@ const BusinessRegistrationForm = () => {
       onSuccess: () => {
         notification.success({
           message: "Registration successful",
-          item_description: "Please check your email for verification!",
+          description: "Please check your email for verification!",
         });
         setFormData({
           name: "",
@@ -245,15 +247,46 @@ const BusinessRegistrationForm = () => {
 
           <div className="form-group">
             <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="********"
-              value={formData.password}
-              onChange={handleChange}
-              className="form-control"
-              required
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="********"
+                value={formData.password}
+                onChange={handleChange}
+                className="form-control"
+                required
+                style={{ paddingRight: "2.75rem" }}
+              />
+              <button
+                type="button"
+                title={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  width: "32px",
+                  height: "32px",
+                  color: "#6c757d",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <i
+                  className={showPassword ? "la la-eye-slash" : "la la-eye"}
+                  style={{ fontSize: 18 }}
+                />
+              </button>
+            </div>
             {passwordTouched && (
               <div className="password-validation mt-2">
                 <div
@@ -311,15 +344,50 @@ const BusinessRegistrationForm = () => {
 
           <div className="form-group">
             <label>Confirm Password</label>
-            <input
-              type="password"
-              name="confirm_password"
-              placeholder="********"
-              value={formData.confirm_password}
-              onChange={handleChange}
-              className="form-control"
-              required
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirm_password"
+                placeholder="********"
+                value={formData.confirm_password}
+                onChange={handleChange}
+                className="form-control"
+                required
+                style={{ paddingRight: "2.75rem" }}
+              />
+              <button
+                type="button"
+                title={showConfirmPassword ? "Hide password" : "Show password"}
+                aria-label={
+                  showConfirmPassword ? "Hide password" : "Show password"
+                }
+                aria-pressed={showConfirmPassword}
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  width: "32px",
+                  height: "32px",
+                  color: "#6c757d",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <i
+                  className={
+                    showConfirmPassword ? "la la-eye-slash" : "la la-eye"
+                  }
+                  style={{ fontSize: 18 }}
+                />
+              </button>
+            </div>
             {errors.confirm_password && (
               <div className="text-danger" style={{ marginTop: "5px" }}>
                 {errors.confirm_password}

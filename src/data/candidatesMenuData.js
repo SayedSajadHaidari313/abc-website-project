@@ -36,6 +36,12 @@ const candidateMenus = [
     icon: "la la-plus-circle",
     routePath: `${baseCandidatePath}/post-new-rfps`,
   },
+  {
+    id: 7,
+    name: "Your Visit Card",
+    icon: "la-id-card",
+    routePath: `${baseCandidatePath}/visit-card`,
+  },
   // {
   //   id: 7,
   //   name: "Professional Community",

@@ -1,11 +1,9 @@
 import FormContent2 from "./FormContent2";
 import { Link } from "react-router-dom";
-import LoginWithSocial from "./LoginWithSocial";
 
 const Register2 = () => {
   return (
     <>
-
       <div className="form-inner">
         <h3>Create Your Business Account</h3>
         <FormContent2 />
@@ -17,10 +15,10 @@ const Register2 = () => {
               LogIn
             </Link>
           </div>
-          <div className="divider">
+          {/* <div className="divider">
             <span>or</span>
           </div>
-          <LoginWithSocial />
+          <LoginWithSocial /> */}
         </div>
       </div>
     </>

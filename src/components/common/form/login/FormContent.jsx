@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import LoginWithSocial from "./LoginWithSocial";
+import { useState } from "react";
 
 const FormContent = () => {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="form-inner">
       <h3>Login to InsightDeed</h3>
@@ -16,12 +17,43 @@ const FormContent = () => {
 
         <div className="form-group">
           <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              required
+              style={{ paddingRight: "2.75rem" }}
+            />
+            <button
+              type="button"
+              title={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+              onClick={() => setShowPassword((prev) => !prev)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                width: "32px",
+                height: "32px",
+                color: "#6c757d",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <i
+                className={showPassword ? "la la-eye-slash" : "la la-eye"}
+                style={{ fontSize: 18 }}
+              />
+            </button>
+          </div>
         </div>
         {/* password */}
 
@@ -65,12 +97,12 @@ const FormContent = () => {
             Signup
           </Link>
         </div>
-
+        {/* 
         <div className="divider">
           <span>or</span>
-        </div>
+        </div> */}
 
-        <LoginWithSocial />
+        {/* <LoginWithSocial /> */}
       </div>
       {/* End bottom-box LoginWithSocial */}
     </div>

@@ -9,4 +9,20 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/download-user": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "/download": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "/user_photos": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 });
