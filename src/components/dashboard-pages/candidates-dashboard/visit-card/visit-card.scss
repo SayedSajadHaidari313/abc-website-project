@@ -4,6 +4,26 @@
 	justify-content: center;
 	padding: 28px 0;
 
+	/* responsive helpers for VisitCardPreview overlays */
+	.vc-front, .vc-back { width: 100%; }
+	.vc-overlay { max-width: 100%; }
+	.vc-company-name { word-break: break-word; }
+	.vc-desc, .vc-email, .vc-phone, .vc-address-overlay { max-width: 86%; }
+	.vc-qr-overlay { pointer-events: none; }
+
+	@media (max-width: 720px) {
+		/* Stack overlays nicely on mobile and reduce sizes */
+		.vc-overlay { top: 24% !important; left: 16px !important; transform: translateY(-50%) !important; }
+		.vc-company-name { font-size: 20px !important; }
+		.vc-tagline { font-size: 12px !important; }
+		.vc-desc { position: static !important; margin-top: 8px !important; color: #111827 !important; }
+		.vc-email { position: static !important; margin-top: 8px !important; color: #111827 !important; }
+		.vc-phone { position: static !important; margin-top: 8px !important; color: #111827 !important; }
+		.vc-address-overlay { position: static !important; margin-top: 10px !important; color: #111827 !important; }
+		.vc-logo-overlay { right: 12px !important; top: -40% !important; }
+		.vc-qr-overlay { left: auto !important; right: 12px !important; top: 12px !important; }
+	}
+
 	.vc-card {
 		width: 100%;
 		max-width: 980px;

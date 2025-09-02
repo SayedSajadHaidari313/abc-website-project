@@ -257,8 +257,8 @@ Banner Section Four
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
-  height: 100vh;
-  min-height: 700px;
+  height: 50vh;
+  min-height: 400px;
   text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -273,7 +273,7 @@ Banner Section Four
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding: 120px 0;
+  padding: 0 0;
 }
 
 .banner-section-four .title-box {

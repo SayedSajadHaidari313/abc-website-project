@@ -1327,7 +1327,7 @@
 	.main-footer.style-six .widgets-section,
 	.main-footer.style-three .widgets-section,
 	.features-section {
-		padding: 50px 0 20px;
+		padding: 70px 0 20px !important;
 	}
 
 	.top-companies,
@@ -1457,12 +1457,15 @@
 
 	.banner-section-four {
 		padding: 220px 0 100px;
+		width: 100%;
+
 	}
 
 	.banner-section-four,
 	.main-footer.style-three {
 		background: none !important;
 		background-color: #00989a !important;
+		height: 700px;
 	}
 
 	.testimonial-section-three {
@@ -1711,6 +1714,8 @@
 	.banner-section-four {
 		.job-search-form {
 			padding: 0;
+			max-width: 100%;
+
 		}
 
 		.popular-searches .title {

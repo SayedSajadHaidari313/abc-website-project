@@ -387,6 +387,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
       {/* FRONT SIDE */}
       <div
         ref={frontRef}
+        className="vc-front"
         style={{
           position: "relative",
           display: "inline-block",
@@ -408,6 +409,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
 
         {/* Overlay area positioned on the right dark panel of the background */}
         <div
+          className="vc-overlay"
           style={{
             position: "absolute",
             top: "30%",
@@ -420,6 +422,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
           }}
         >
           <div
+            className="vc-company-name"
             style={{
               fontSize: 30,
               fontWeight: 800,
@@ -430,7 +433,10 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
             {companyName}
           </div>
           {tagline && (
-            <div style={{ fontSize: 14, marginTop: 6, opacity: 0.95 }}>
+            <div
+              className="vc-tagline"
+              style={{ fontSize: 14, marginTop: 6, opacity: 0.95 }}
+            >
               {tagline}
             </div>
           )}
@@ -445,6 +451,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
           >
             {CompanyDescription && (
               <div
+                className="vc-desc"
                 style={{
                   display: "flex",
                   justifyContent: "flex-center",
@@ -470,6 +477,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
           >
             {EmailAddress && (
               <div
+                className="vc-email"
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
@@ -494,6 +502,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
           >
             {PhoneNumber && (
               <div
+                className="vc-phone"
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
@@ -519,6 +528,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
           >
             {CompanyImage && (
               <div
+                className="vc-logo-overlay"
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
@@ -565,6 +575,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
 
           <div style={{ marginTop: 22, color: "black", opacity: 0.95 }}>
             <div
+              className="vc-address-overlay"
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -580,6 +591,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
           </div>
           {/* QR code added at top-left */}
           <div
+            className="vc-qr-overlay"
             style={{
               position: "absolute",
               top: 175,
@@ -622,6 +634,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
       {/* BACK SIDE - logo centered on back.png */}
       <div
         ref={backRef}
+        className="vc-back"
         style={{
           position: "relative",
           display: "inline-block",
@@ -644,6 +657,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
 
         {/* centered company logo */}
         <div
+          className="vc-back-overlay"
           style={{
             position: "absolute",
             top: "50%",
@@ -683,6 +697,7 @@ const VisitCardPreview = ({ companyData: propCompanyData }) => {
             )
           ) : null}
           <div
+            className="vc-back-company-name"
             style={{
               fontSize: 20,
               fontWeight: 800,

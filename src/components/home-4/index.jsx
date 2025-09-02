@@ -26,7 +26,7 @@ const index = () => {
       <Hero4 />
       {/* <!-- End Banner Section--> */}
 
-      <section className="top-companies style-two">
+      <section className="">
         <CompanySponsored />
         {/* Only show Advertisement if location is 'home-page' and status is 'enabled' */}
       </section>
